@@ -246,13 +246,6 @@
   "resolved" "https://registry.npmjs.org/@rushstack/eslint-patch/-/eslint-patch-1.2.0.tgz"
   "version" "1.2.0"
 
-"@tinymce/tinymce-vue@^5.1.1":
-  "integrity" "sha512-iO57HOWesFOhsaqjA5Ea6sDvQBmJJH3/dq00Uvg7metlct2kLF+ctRgoDsetLt6gmeZ7COPftr814/XzqnJ/dg=="
-  "resolved" "https://registry.npmjs.org/@tinymce/tinymce-vue/-/tinymce-vue-5.1.1.tgz"
-  "version" "5.1.1"
-  dependencies:
-    "tinymce" "^6.0.0 || ^5.5.1"
-
 "@types/array-sort@^1.0.0":
   "integrity" "sha512-RvlCHZdp+XAlFtVxHxG5LY3rj4GIr65FquoniYpE5/oXX22Z6w/LYt2I2sBt87V+qmltHfcySM98LdkJ/fqi7w=="
   "resolved" "https://registry.npmjs.org/@types/array-sort/-/array-sort-1.0.0.tgz"
@@ -2936,11 +2929,6 @@
   "resolved" "https://registry.npmjs.org/tiny-emitter/-/tiny-emitter-2.1.0.tgz"
   "version" "2.1.0"
 
-"tinymce@^6.0.0 || ^5.5.1", "tinymce@^6.6.2":
-  "integrity" "sha512-ShoaznNP3qI8dPtEnYt3ByhAJfMhzIY1K04CoFu1IPDeAxmAZCUJLgfiplo8etP4wN8zrBIxHEqpwYYb2IllOQ=="
-  "resolved" "https://registry.npmjs.org/tinymce/-/tinymce-6.6.2.tgz"
-  "version" "6.6.2"
-
 "to-regex-range@^5.0.1":
   "integrity" "sha512-65P7iz6X5yEr1cwcgvQxbbIw7Uk3gOy5dIdtZ4rDveLqhrdJP+Li/Hx6tyK0NEb+2GCyneCMJiGqrADCSNk8sQ=="
   "resolved" "https://registry.npmjs.org/to-regex-range/-/to-regex-range-5.0.1.tgz"
@@ -3157,6 +3145,11 @@
     "immutability-helper" "^3.1.1"
     "path" "^0.12.7"
     "vue" "^3.2.31"
+
+"vue3-pdf-app@^1.0.3":
+  "integrity" "sha512-qegWTIF4wYKiocZ3KreB70wRXhqSdXWbdERDyyKzT7d5PbjKbS9tD6vaKkCqh3PzTM84NyKPYrQ3iuwJb60YPQ=="
+  "resolved" "https://registry.npmjs.org/vue3-pdf-app/-/vue3-pdf-app-1.0.3.tgz"
+  "version" "1.0.3"
 
 "watchpack@^2.4.0":
   "integrity" "sha512-Lcvm7MGST/4fup+ifyKi2hjyIAwcdI4HRgtvTpIUxBRhB+RFtUh8XtDOxUfctVCnhVi+QQj49i91OyvzkJl6cg=="

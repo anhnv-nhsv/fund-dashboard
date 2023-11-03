@@ -8,7 +8,7 @@
         :data="getItems"
         :header-cell-style="
           themeMode === 'light'
-            ? { 'background-color': '#ffc342' }
+            ? { 'background-color': 'rgb(219 219 219)' }
             : { 'background-color': '#1568B3' }
         "
         header-row-class-name="text-gray-800 fw-bolder fs-7 text-uppercase gs-0"
@@ -26,6 +26,7 @@
         <template v-for="(item, i) in tableHeader" :key="i">
           <el-table-column
             :show-overflow-tooltip="showOverflowTooltip"
+            :fixed="item.fix"
             header-align="center"
             class-name="text-center"
             v-if="item.visible"
@@ -44,6 +45,7 @@
             <template v-if="item.hasOwnProperty('children')">
               <el-table-column
                 :show-overflow-tooltip="showOverflowTooltip"
+                :fixed="item.fix"
                 header-align="center"
                 class-name="text-center"
                 v-for="(child, j) in item.children"

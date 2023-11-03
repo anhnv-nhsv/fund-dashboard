@@ -51,10 +51,9 @@ const routes: Array<RouteRecordRaw> = [
       },
 
       {
-        path: "/apps/fund-certificates/:id?",
-        name: "FundDetails",
-        // component: () => import("@/views/apps/fund/FundDetails.vue"),
-        component: () => import("@/views/apps/fund/FundMgmt.vue"),
+        path: "/apps/fund-certificate/:id?",
+        name: "fund-certificates-detail",
+        component: () => import("@/views/apps/fund/FundDetails.vue"),
         meta: {
           pageTitle: "Fund Details",
           breadcrumbs: ["apps", "Fund Details"],
@@ -74,10 +73,9 @@ const routes: Array<RouteRecordRaw> = [
       },
 
       {
-        path: "/apps/fund-information/:id?",
-        name: "FundInforDetails",
-        // component: () => import("@/views/apps/fund-infor/FundInforDetails.vue"),
-        component: () => import("@/views/apps/fund-infor/FundInformation.vue"),
+        path: "/apps/fund-infor/:id?",
+        name: "fund-infor-detail",
+        component: () => import("@/views/apps/fund-infor/FundInforDetails.vue"),
         meta: {
           pageTitle: "Fund Details",
           breadcrumbs: ["apps", "Fund Details"],

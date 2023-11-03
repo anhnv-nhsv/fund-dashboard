@@ -8,6 +8,7 @@
           >
             <el-input
               autofocus
+              v-model="formSearchData.name"
               size="large"
               :placeholder="translate('searchInput')"
               clearable
@@ -18,11 +19,13 @@
             class="col-md-5 d-flex align-items-center position-relative my-1"
           >
             <el-date-picker
-              v-model="value1"
+              v-model="formSearchData.date_search"
               type="daterange"
               range-separator="To"
               start-placeholder="Start date"
               end-placeholder="End date"
+              format="DD/MM/YYYY"
+              value-format="DD-MM-YYYY"
               size="large"
             />
           </div>
@@ -94,6 +97,10 @@ export default defineComponent({
     FundDeclarationModal,
   },
   setup() {
+    const formSearchData = ref({
+      name: "",
+      date_search: "",
+    });
     const tableHeader = ref([
       {
         label: "Order",
@@ -178,12 +185,14 @@ export default defineComponent({
     ];
 
     const handleSearch = (e) => {
-      e.prevenDefault();
+      const formData = JSON.parse(JSON.stringify(formSearchData.value));
+      console.log("formData: ", formData);
     };
     const handleCloseModal = () => {};
 
     return {
       userList,
+      formSearchData,
       value1,
       tableHeader,
       userAction,

@@ -100,7 +100,7 @@ import { defineComponent, ref } from "vue";
 import { Search } from "@element-plus/icons-vue";
 
 export default defineComponent({
-  name: "apps-fund-information-details",
+  name: "fund-information-details",
   components: {},
   setup() {
     return {};

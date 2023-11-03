@@ -9,6 +9,7 @@
             >
               <el-input
                 autofocus
+                v-model="formSearchData.name"
                 size="large"
                 placeholder="Tìm kiếm tên"
                 clearable
@@ -20,6 +21,7 @@
             >
               <el-input
                 autofocus
+                v-model="formSearchData.trading_code"
                 size="large"
                 placeholder="Tìm kiếm VSD trading code"
                 clearable
@@ -31,6 +33,7 @@
             >
               <el-input
                 autofocus
+                v-model="formSearchData.ccq_code"
                 size="large"
                 placeholder="Tìm kiếm mã CCQ"
                 clearable
@@ -42,6 +45,7 @@
             >
               <el-input
                 autofocus
+                v-model="formSearchData.term"
                 size="large"
                 :placeholder="translate('searchInput')"
                 clearable
@@ -53,8 +57,12 @@
             <div
               class="col-md-3 d-flex align-items-center position-relative my-1"
             >
-              <el-select placeholder="Tổ chức phát hành" size="large">
-                <el-option :label="translate('all')" value />
+              <el-select
+                placeholder="Tổ chức phát hành"
+                size="large"
+                clearable
+                v-model="formSearchData.issuers"
+              >
                 <el-option :label="translate('enable')" value="1" />
                 <el-option :label="translate('disable')" value="0" />
               </el-select>
@@ -62,8 +70,12 @@
             <div
               class="col-md-3 d-flex align-items-center position-relative my-1"
             >
-              <el-select placeholder="Trạng thái thanh toán" size="large">
-                <el-option :label="translate('all')" value />
+              <el-select
+                placeholder="Trạng thái thanh toán"
+                size="large"
+                clearable
+                v-model="formSearchData.payment_status"
+              >
                 <el-option :label="translate('enable')" value="1" />
                 <el-option :label="translate('disable')" value="0" />
               </el-select>
@@ -71,8 +83,12 @@
             <div
               class="col-md-3 d-flex align-items-center position-relative my-1"
             >
-              <el-select placeholder="Trạng thái lệnh" size="large">
-                <el-option :label="translate('all')" value />
+              <el-select
+                placeholder="Trạng thái lệnh"
+                size="large"
+                clearable
+                v-model="formSearchData.command_status"
+              >
                 <el-option :label="translate('enable')" value="1" />
                 <el-option :label="translate('disable')" value="0" />
               </el-select>
@@ -80,8 +96,12 @@
             <div
               class="col-md-3 d-flex align-items-center position-relative my-1"
             >
-              <el-select placeholder="Loại lệnh" size="large">
-                <el-option :label="translate('all')" value />
+              <el-select
+                placeholder="Loại lệnh"
+                size="large"
+                clearable
+                v-model="formSearchData.command_type"
+              >
                 <el-option :label="translate('enable')" value="1" />
                 <el-option :label="translate('disable')" value="0" />
               </el-select>
@@ -115,15 +135,12 @@
         :table-header="tableHeader"
         :table-data="tableData"
         :loading="loading"
-        :show-overflow-tooltip="true"
+        :show-overflow-tooltip="false"
       >
         <template v-slot:name="{ row }">
-          <!-- <router-link :to="`/app/fund-certificates/${row.id}`">{{
-            row.name
-          }}</router-link> -->
           <router-link
             :to="{
-              name: 'FundDetails',
+              name: 'fund-certificates-detail',
               params: {
                 id: row.id,
               },
@@ -144,17 +161,28 @@ import { translate } from "@/core/helpers/i18n-translate";
 import NHDatatable from "@/components/nh-datatable/NHDatatable.vue";
 
 export default defineComponent({
-  name: "apps-fund-management",
+  name: "fund-management",
   components: {
     NHDatatable,
   },
   setup() {
+    const formSearchData = ref({
+      name: "",
+      trading_code: "",
+      ccq_code: "",
+      term: "",
+      issuers: "",
+      payment_status: "",
+      command_status: "",
+      command_type: "",
+    });
     const tableHeader = ref([
       {
         label: "Full name",
         prop: "name",
         visible: true,
         width: "260",
+        fix: true,
       },
       {
         label: "VSD Trading code",
@@ -241,7 +269,7 @@ export default defineComponent({
         id: 1,
         vsd: "039FIC0001",
         name: "Nguyen A",
-        date: "04/10/2023 00:00:00",
+        date: "04/10/2023 00:00:00 04/10/2023 00:00:00 ",
         order_type: "Buy",
         fund_code: "VCAM-NH VABF",
         issuers: "Viet Capital",
@@ -307,14 +335,16 @@ export default defineComponent({
       },
     ];
 
-    const handleSearch = (e) => {
-      e.prevenDefault();
+    const handleSearch = () => {
+      const formData = JSON.parse(JSON.stringify(formSearchData.value));
+      console.log("formData", formData);
     };
 
     return {
       userList,
       tableHeader,
       loading,
+      formSearchData,
       Search,
       tableData,
       translate,

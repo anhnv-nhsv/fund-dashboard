@@ -41,12 +41,6 @@ export const getMainMenu = (role): Array<MenuItem> => {
           accessible: "setting" in role.grantedPermissions,
           keenthemesIcon: "people",
           bootstrapIcon: "bi-graph-up",
-          sub: [
-            {
-              heading: "Fund Detail",
-              route: "apps/fund-certificates/:id?",
-            },
-          ],
         },
         {
           heading: "Fund Information",

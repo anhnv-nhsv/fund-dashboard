@@ -1,14 +1,15 @@
 <template>
   <div class="card">
     <div class="card-header border-0 pt-6">
-      <div class="flex-column">
-        <form class="form row" autoComplete="on">
+      <div>
+        <form class="form" autoComplete="on">
           <div class="row">
             <div
-              class="col-md-5 d-flex align-items-center position-relative my-1"
+              class="col-md-10 d-flex align-items-center position-relative my-1"
             >
               <el-input
                 autofocus
+                v-model="formSearchData.name"
                 size="large"
                 placeholder="Tìm kiếm tên"
                 clearable
@@ -47,12 +48,9 @@
         :show-overflow-tooltip="false"
       >
         <template v-slot:name="{ row }">
-          <!-- <router-link :to="`/app/fund-certificates/${row.id}`">{{
-            row.name
-          }}</router-link> -->
           <router-link
             :to="{
-              name: 'FundDetails',
+              name: 'fund-infor-detail',
               params: {
                 id: row.id,
               },
@@ -73,17 +71,20 @@ import { translate } from "@/core/helpers/i18n-translate";
 import NHDatatable from "@/components/nh-datatable/NHDatatable.vue";
 
 export default defineComponent({
-  name: "apps-fund-information",
+  name: "fund-information",
   components: {
     NHDatatable,
   },
   setup() {
+    const formSearchData = ref({
+      name: "",
+    });
     const tableHeader = ref([
       {
         label: "Fund",
         prop: "name",
         visible: true,
-        width: "260",
+        fix: true,
       },
       {
         label: "Fund name",
@@ -94,41 +95,34 @@ export default defineComponent({
         label: "Fund company",
         prop: "date",
         visible: true,
-        width: 300,
       },
       {
         label: "Founded date",
-        width: 150,
         prop: "order_type",
         visible: true,
       },
       {
         label: "Minimum amount (VND)",
-        width: 150,
         prop: "fund_code",
         visible: true,
       },
       {
         label: "NAV",
-        width: 150,
         prop: "issuers",
         visible: true,
       },
       {
         label: "Updated nav date",
-        width: 150,
         prop: "fluctuations",
         visible: true,
       },
       {
         label: "redemption fee (%)",
-        width: 150,
         prop: "amount",
         visible: true,
       },
     ]);
     const loading = ref<boolean>(false);
-    const userList = ref([]);
     const tableData = [
       {
         id: 1,
@@ -176,17 +170,15 @@ export default defineComponent({
       },
     ];
 
-    const value1 = ref();
-
-    const handleSearch = (e) => {
-      e.prevenDefault();
+    const handleSearch = () => {
+      const formData = JSON.parse(JSON.stringify(formSearchData.value));
+      console.log("formData: ", formData);
     };
 
     return {
-      userList,
+      formSearchData,
       tableHeader,
       loading,
-      value1,
       Search,
       tableData,
       translate,
