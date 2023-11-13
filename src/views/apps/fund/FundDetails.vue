@@ -9,13 +9,13 @@
               <span class="line my-4"></span>
               <div class="row px-4">
                 <div class="col-6 d-flex align-items-center">
-                  <div class="fs-5" style="min-width: 200px">
+                  <div class="fs-5" style="min-width: 50%">
                     VSD trading code
                   </div>
                   <span class="fs-5">039C0000001</span>
                 </div>
                 <div class="col-6 d-flex align-items-center">
-                  <div class="fs-5" style="min-width: 200px">Họ tên</div>
+                  <div class="fs-5" style="min-width: 50%">Họ tên</div>
                   <span class="fs-5">Nguyen A</span>
                 </div>
               </div>
@@ -24,11 +24,11 @@
               <span class="line my-4"></span>
               <div class="row px-4">
                 <div class="col-6 d-flex align-items-center">
-                  <div class="fs-5" style="min-width: 200px">Loại hình TK</div>
+                  <div class="fs-5" style="min-width: 50%">Loại hình TK</div>
                   <span class="fs-5">Trong nước</span>
                 </div>
                 <div class="col-6 d-flex align-items-center">
-                  <div class="fs-5" style="min-width: 200px">Loại NĐT</div>
+                  <div class="fs-5" style="min-width: 50%">Loại NĐT</div>
                   <span class="fs-5">Cá nhân</span>
                 </div>
               </div>
@@ -37,11 +37,11 @@
               <span class="line my-4"></span>
               <div class="row px-4">
                 <div class="col-6 d-flex align-items-center">
-                  <div class="fs-5" style="min-width: 200px">Quốc tịch</div>
+                  <div class="fs-5" style="min-width: 50%">Quốc tịch</div>
                   <span class="fs-5">Việt Nam</span>
                 </div>
                 <div class="col-6 d-flex align-items-center">
-                  <div class="fs-5" style="min-width: 200px">Giới tính</div>
+                  <div class="fs-5" style="min-width: 50%">Giới tính</div>
                   <span class="fs-5">Nam</span>
                 </div>
               </div>
@@ -50,11 +50,11 @@
               <span class="line my-4"></span>
               <div class="row px-4">
                 <div class="col-6 d-flex align-items-center">
-                  <div class="fs-5" style="min-width: 200px">Ngày sinh</div>
+                  <div class="fs-5" style="min-width: 50%">Ngày sinh</div>
                   <span class="fs-5">dd/MM/yyyy</span>
                 </div>
                 <div class="col-6 d-flex align-items-center">
-                  <div class="fs-5" style="min-width: 200px">Số ĐKSH</div>
+                  <div class="fs-5" style="min-width: 50%">Số ĐKSH</div>
                   <span class="fs-5">0000001111</span>
                 </div>
               </div>
@@ -63,13 +63,11 @@
               <span class="line my-4"></span>
               <div class="row px-4">
                 <div class="col-6 d-flex align-items-center">
-                  <div class="fs-5" style="min-width: 200px">
-                    Loại hình ĐKSH
-                  </div>
+                  <div class="fs-5" style="min-width: 50%">Loại hình ĐKSH</div>
                   <span class="fs-5">CCCD</span>
                 </div>
                 <div class="col-6 d-flex align-items-center">
-                  <div class="fs-5" style="min-width: 200px">Ngày cấp</div>
+                  <div class="fs-5" style="min-width: 50%">Ngày cấp</div>
                   <span class="fs-5">dd/MM/yyyy</span>
                 </div>
               </div>
@@ -78,11 +76,11 @@
               <span class="line my-4"></span>
               <div class="row px-4">
                 <div class="col-6 d-flex align-items-center">
-                  <div class="fs-5" style="min-width: 200px">Nơi cấp</div>
+                  <div class="fs-5" style="min-width: 50%">Nơi cấp</div>
                   <span class="fs-5">Hà Nội</span>
                 </div>
                 <div class="col-6 d-flex align-items-center">
-                  <div class="fs-5" style="min-width: 200px">SĐT</div>
+                  <div class="fs-5" style="min-width: 50%">SĐT</div>
                   <span class="fs-5">0000001111</span>
                 </div>
               </div>
@@ -91,11 +89,11 @@
               <span class="line my-4"></span>
               <div class="row px-4">
                 <div class="col-6 d-flex align-items-center">
-                  <div class="fs-5" style="min-width: 200px">Địa chỉ</div>
+                  <div class="fs-5" style="min-width: 50%">Địa chỉ</div>
                   <span class="fs-5">Hà Nội</span>
                 </div>
                 <div class="col-6 d-flex align-items-center">
-                  <div class="fs-5" style="min-width: 200px">Email</div>
+                  <div class="fs-5" style="min-width: 50%">Email</div>
                   <span class="fs-5">xxx@gmail.com</span>
                 </div>
               </div>
@@ -241,14 +239,14 @@
         <div class="my-8 mx-8">
           <h2>Order form</h2>
           <div>
-            <vue-pdf-app
-              style="height: 50vh"
-              pdf="https://pdfobject.com/pdf/sample.pdf"
-            ></vue-pdf-app>
+            <NhPdf pdfFund="https://pdfobject.com/pdf/sample-3pp.pdf" />
           </div>
         </div>
         <div class="my-8 mx-8">
-          <h2>VSD Confirmmation</h2>
+          <h2>VSD Trading</h2>
+          <div>
+            <!-- <NhPdf pdfFund="https://pdfobject.com/pdf/sample.pdf" /> -->
+          </div>
         </div>
       </div>
     </div>
@@ -257,15 +255,14 @@
 
 <script lang="ts">
 import { defineComponent, ref } from "vue";
-import VuePdfApp from "vue3-pdf-app";
-import "vue3-pdf-app/dist/icons/main.css";
-import { Search } from "@element-plus/icons-vue";
+import NhPdf from "@/components/pdf-fund/NHPdf.vue";
+
 import { translate } from "@/core/helpers/i18n-translate";
 
 export default defineComponent({
   name: "apps-fund-details-management",
   components: {
-    VuePdfApp,
+    NhPdf,
   },
   setup() {
     return {};

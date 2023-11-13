@@ -21,9 +21,9 @@
             <el-date-picker
               v-model="formSearchData.date_search"
               type="daterange"
-              range-separator="To"
-              start-placeholder="Start date"
-              end-placeholder="End date"
+              :range-separator="translate('to')"
+              :start-placeholder="translate('startDate')"
+              :end-placeholder="translate('endDate')"
               format="DD/MM/YYYY"
               value-format="DD-MM-YYYY"
               size="large"
@@ -62,7 +62,7 @@
             data-bs-target="#kt_fund_declaration_action_modal"
           >
             <KTIcon icon-name="plus" icon-class="fs-2" />
-            Add
+            {{ translate("addBtn") }}
           </button>
         </div>
       </div>
@@ -99,7 +99,7 @@ export default defineComponent({
   setup() {
     const formSearchData = ref({
       name: "",
-      date_search: "",
+      date_search: [],
     });
     const tableHeader = ref([
       {
@@ -145,7 +145,6 @@ export default defineComponent({
     ]);
     const loading = ref<boolean>(false);
     const userList = ref([]);
-    const value1 = ref();
     const rowDetail = ref();
     let userAction = ref("");
     const tableData = [
@@ -193,7 +192,6 @@ export default defineComponent({
     return {
       userList,
       formSearchData,
-      value1,
       tableHeader,
       userAction,
       loading,

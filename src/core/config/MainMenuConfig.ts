@@ -36,28 +36,22 @@ export const getMainMenu = (role): Array<MenuItem> => {
         //   bootstrapIcon: "bi-graph-up",
         // },
         {
-          heading: "Fund",
+          heading: "fund",
           route: "/apps/fund-certificates",
           accessible: "setting" in role.grantedPermissions,
           keenthemesIcon: "people",
           bootstrapIcon: "bi-graph-up",
         },
         {
-          heading: "Fund Information",
-          route: "/apps/fund-information",
+          heading: "fundDeclaration",
+          route: "/apps/fund-declaration",
           accessible: "setting" in role.grantedPermissions,
           keenthemesIcon: "people",
           bootstrapIcon: "bi-graph-up",
-          sub: [
-            {
-              heading: "Fund Information Detail",
-              route: "/apps/fund-information/:id?",
-            },
-          ],
         },
         {
-          heading: "Fund Declaration",
-          route: "/apps/fund-declaration",
+          heading: "fundInformation",
+          route: "/apps/fund-information",
           accessible: "setting" in role.grantedPermissions,
           keenthemesIcon: "people",
           bootstrapIcon: "bi-graph-up",

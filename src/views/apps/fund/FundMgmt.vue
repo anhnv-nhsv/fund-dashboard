@@ -2,7 +2,7 @@
   <div class="card">
     <div class="card-header border-0 pt-6">
       <div class="flex-column">
-        <form class="form row" autoComplete="on">
+        <form class="form row" autoComplete="on" @submit.prevent="handleSearch">
           <div class="row">
             <div
               class="col-md-3 d-flex align-items-center position-relative my-1"
@@ -11,7 +11,7 @@
                 autofocus
                 v-model="formSearchData.name"
                 size="large"
-                placeholder="Tìm kiếm tên"
+                :placeholder="translate('searchNameCode')"
                 clearable
                 :prefix-icon="Search"
               />
@@ -23,7 +23,7 @@
                 autofocus
                 v-model="formSearchData.trading_code"
                 size="large"
-                placeholder="Tìm kiếm VSD trading code"
+                :placeholder="translate('searchTradingCode')"
                 clearable
                 :prefix-icon="Search"
               />
@@ -35,7 +35,7 @@
                 autofocus
                 v-model="formSearchData.ccq_code"
                 size="large"
-                placeholder="Tìm kiếm mã CCQ"
+                :placeholder="translate('searchFundCode')"
                 clearable
                 :prefix-icon="Search"
               />
@@ -43,13 +43,15 @@
             <div
               class="col-md-3 d-flex align-items-center position-relative my-1"
             >
-              <el-input
-                autofocus
-                v-model="formSearchData.term"
+              <el-date-picker
+                v-model="formSearchData.date_search"
+                type="daterange"
+                :range-separator="translate('to')"
+                :start-placeholder="translate('startDate')"
+                :end-placeholder="translate('endDate')"
+                format="DD/MM/YYYY"
+                value-format="DD-MM-YYYY"
                 size="large"
-                :placeholder="translate('searchInput')"
-                clearable
-                :prefix-icon="Search"
               />
             </div>
           </div>
@@ -58,7 +60,7 @@
               class="col-md-3 d-flex align-items-center position-relative my-1"
             >
               <el-select
-                placeholder="Tổ chức phát hành"
+                :placeholder="translate('issuers')"
                 size="large"
                 clearable
                 v-model="formSearchData.issuers"
@@ -71,39 +73,41 @@
               class="col-md-3 d-flex align-items-center position-relative my-1"
             >
               <el-select
-                placeholder="Trạng thái thanh toán"
+                :placeholder="translate('paymentStatus')"
                 size="large"
                 clearable
                 v-model="formSearchData.payment_status"
               >
-                <el-option :label="translate('enable')" value="1" />
-                <el-option :label="translate('disable')" value="0" />
+                <el-option :label="translate('pending')" value="1" />
+                <el-option :label="translate('successfully')" value="0" />
+                <el-option :label="translate('fail')" value="3" />
               </el-select>
             </div>
             <div
               class="col-md-3 d-flex align-items-center position-relative my-1"
             >
               <el-select
-                placeholder="Trạng thái lệnh"
+                :placeholder="translate('commandStatus')"
                 size="large"
                 clearable
                 v-model="formSearchData.command_status"
               >
-                <el-option :label="translate('enable')" value="1" />
-                <el-option :label="translate('disable')" value="0" />
+                <el-option :label="translate('pending')" value="1" />
+                <el-option :label="translate('successfully')" value="0" />
+                <el-option :label="translate('fail')" value="3" />
               </el-select>
             </div>
             <div
               class="col-md-3 d-flex align-items-center position-relative my-1"
             >
               <el-select
-                placeholder="Loại lệnh"
+                :placeholder="translate('commandType')"
                 size="large"
                 clearable
                 v-model="formSearchData.command_type"
               >
-                <el-option :label="translate('enable')" value="1" />
-                <el-option :label="translate('disable')" value="0" />
+                <el-option :label="translate('buy')" value="1" />
+                <el-option :label="translate('sell')" value="0" />
               </el-select>
             </div>
             <div
@@ -113,7 +117,6 @@
                 :data-kt-indicator="false ? 'on' : null"
                 type="submit"
                 class="btn btn-primary"
-                @click="handleSearch"
               >
                 <span v-if="true" class="indicator-label">{{
                   translate("search")
@@ -175,88 +178,89 @@ export default defineComponent({
       payment_status: "",
       command_status: "",
       command_type: "",
+      date_search: [],
     });
     const tableHeader = ref([
       {
-        label: "Full name",
+        label: "fullname",
         prop: "name",
         visible: true,
         width: "260",
         fix: true,
       },
       {
-        label: "VSD Trading code",
+        label: "vsdTradingCode",
         prop: "vsd",
         visible: true,
       },
       {
-        label: "Date",
+        label: "date",
         prop: "date",
         visible: true,
         width: 300,
       },
       {
-        label: "Order type",
+        label: "orderType",
         width: 150,
         prop: "order_type",
         visible: true,
       },
       {
-        label: "Fund code",
+        label: "fundCode",
         width: 150,
         prop: "fund_code",
         visible: true,
       },
       {
-        label: "Tổ chức phát hành",
+        label: "issuers",
         width: 150,
         prop: "issuers",
         visible: true,
       },
       {
-        label: "Lãi/lỗ",
+        label: "interestHole",
         width: 150,
         prop: "fluctuations",
         visible: true,
       },
       {
-        label: "Amount",
+        label: "amount",
         width: 150,
         prop: "amount",
         visible: true,
       },
       {
-        label: "Quantity",
+        label: "quantity",
         width: 150,
         prop: "quantity",
         visible: true,
       },
       {
-        label: "NAV/Share",
+        label: "navShare",
         width: 150,
         prop: "nav_share",
         visible: true,
       },
       {
-        label: "Payment status",
+        label: "paymentStatus",
         width: 150,
         prop: "payment_status",
         visible: true,
       },
       {
-        label: "Order status",
+        label: "orderStatus",
         width: 150,
         prop: "order_status",
         visible: true,
       },
       {
-        label: "Pre-balance",
+        label: "preBalance",
         width: 150,
         prop: "pre_balance",
         visible: true,
       },
       {
-        label: "Post balance",
+        label: "postBalance",
         width: 150,
         prop: "post_balance",
         visible: true,

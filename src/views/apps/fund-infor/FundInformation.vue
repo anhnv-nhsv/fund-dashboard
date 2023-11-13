@@ -1,44 +1,35 @@
 <template>
   <div class="card">
     <div class="card-header border-0 pt-6">
-      <div>
-        <form class="form" autoComplete="on">
-          <div class="row">
-            <div
-              class="col-md-10 d-flex align-items-center position-relative my-1"
-            >
-              <el-input
-                autofocus
-                v-model="formSearchData.name"
-                size="large"
-                placeholder="Tìm kiếm tên"
-                clearable
-                :prefix-icon="Search"
-              />
-            </div>
-            <div
-              class="col-md-2 d-flex align-items-center position-relative my-2"
-            >
-              <button
-                :data-kt-indicator="false ? 'on' : null"
-                type="submit"
-                class="btn btn-primary"
-                @click="handleSearch"
-              >
-                <span v-if="true" class="indicator-label">{{
-                  translate("search")
-                }}</span>
-                <span v-if="false" class="indicator-progress"
-                  >Please wait...
-                  <span
-                    class="spinner-border spinner-border-sm align-middle ms-2"
-                  ></span
-                ></span>
-              </button>
-            </div>
-          </div>
-        </form>
-      </div>
+      <form class="form row" autoComplete="on" @submit.prevent="handleSearch">
+        <div class="col-md-8 d-flex align-items-center position-relative my-1">
+          <el-input
+            autofocus
+            v-model="formSearchData.name"
+            size="large"
+            :placeholder="translate('searchNameCode')"
+            clearable
+            :prefix-icon="Search"
+          />
+        </div>
+        <div class="col-md-4 d-flex align-items-center position-relative my-2">
+          <button
+            :data-kt-indicator="false ? 'on' : null"
+            type="submit"
+            class="btn btn-primary"
+          >
+            <span v-if="true" class="indicator-label">{{
+              translate("search")
+            }}</span>
+            <span v-if="false" class="indicator-progress"
+              >Please wait...
+              <span
+                class="spinner-border spinner-border-sm align-middle ms-2"
+              ></span
+            ></span>
+          </button>
+        </div>
+      </form>
     </div>
     <div class="card-body pt-0">
       <NHDatatable
