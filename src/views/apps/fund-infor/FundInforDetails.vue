@@ -57,6 +57,38 @@
                 </div>
                 <span class="fs-5 text-muted">0.05%</span>
               </div>
+              <div class="d-flex mt-4 align-items-center">
+                <div class="fs-5 fw-bolder" style="min-width: 200px">
+                  Redemption fee
+                </div>
+                <span class="fs-5 text-muted">0.05%</span>
+              </div>
+              <div class="d-flex mt-4 align-items-center">
+                <div class="fs-5 fw-bolder" style="min-width: 200px">
+                  Sell tax
+                </div>
+                <span class="fs-5 text-muted">0.1%</span>
+              </div>
+              <div class="d-flex mt-4 align-items-center">
+                <div class="fs-5 fw-bolder" style="min-width: 200px">
+                  Bank name
+                </div>
+                <span class="fs-5 text-muted">Ngân hàng BIDV</span>
+              </div>
+              <div class="d-flex mt-4 align-items-center">
+                <div class="fs-5 fw-bolder" style="min-width: 200px">
+                  Bank acccount name
+                </div>
+                <span class="fs-5 text-muted"
+                  >Quỹ Đầu tư cân bằng Bản Việt</span
+                >
+              </div>
+              <div class="d-flex mt-4 align-items-center">
+                <div class="fs-5 fw-bolder" style="min-width: 200px">
+                  Bank acccount number
+                </div>
+                <span class="fs-5 text-muted">123456789</span>
+              </div>
             </div>
             <div class="col-6 py-4">
               <div class="d-flex mt-4 align-items-center">
@@ -84,6 +116,36 @@
               <div class="d-flex mt-4 align-items-center">
                 <div class="fs-5 fw-bolder" style="min-width: 200px">
                   Growth in 6M
+                </div>
+                <span class="fs-5 text-success">10.75%</span>
+              </div>
+              <div class="d-flex mt-4 align-items-center">
+                <div class="fs-5 fw-bolder" style="min-width: 200px">
+                  Growth in 1Y
+                </div>
+                <span class="fs-5 text-success">10.75%</span>
+              </div>
+              <div class="d-flex mt-4 align-items-center">
+                <div class="fs-5 fw-bolder" style="min-width: 200px">
+                  Growth in 3Y
+                </div>
+                <span class="fs-5 text-success">10.75%</span>
+              </div>
+              <div class="d-flex mt-4 align-items-center">
+                <div class="fs-5 fw-bolder" style="min-width: 200px">
+                  Growth in 5Y
+                </div>
+                <span class="fs-5 text-success">10.75%</span>
+              </div>
+              <div class="d-flex mt-4 align-items-center">
+                <div class="fs-5 fw-bolder" style="min-width: 200px">
+                  Growth YTD
+                </div>
+                <span class="fs-5 text-success">10.75%</span>
+              </div>
+              <div class="d-flex mt-4 align-items-center">
+                <div class="fs-5 fw-bolder" style="min-width: 200px">
+                  Growth inception
                 </div>
                 <span class="fs-5 text-success">10.75%</span>
               </div>

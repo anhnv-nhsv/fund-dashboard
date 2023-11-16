@@ -34,21 +34,47 @@
     <div class="card-body pt-0">
       <NHDatatable
         :table-header="tableHeader"
-        :table-data="tableData"
+        :table-data="dataRequestFundInfor"
         :loading="loading"
-        :show-overflow-tooltip="false"
+        :pagination="pagination"
+        :enable-items-per-page-dropdown="true"
+        userRole="all"
+        @change-page="changePage"
+        @change-page-size="changePageSize"
       >
-        <template v-slot:name="{ row }">
+        <template v-slot:fnd_full_cd="{ row }">
           <router-link
             :to="{
               name: 'fund-infor-detail',
               params: {
-                id: row.id,
+                id: row.fnd_full_cd,
               },
             }"
           >
-            {{ row.name }}
+            {{ row.fnd_full_cd }}
           </router-link>
+        </template>
+        <template v-slot:found_dt="{ row }">
+          <div v-if="row.found_dt">
+            {{ formatDate(row.found_dt) }}
+          </div>
+          <div v-if="row.found_dt === undefined">-</div>
+        </template>
+        <template v-slot:buy_min_amt="{ row }">
+          <div>
+            {{ row.buy_min_amt.toLocaleString() }}
+          </div>
+        </template>
+        <template v-slot:nav="{ row }">
+          <div>
+            {{ row.nav.toLocaleString() }}
+          </div>
+        </template>
+        <template v-slot:nav_upd_dt="{ row }">
+          <div v-if="row.nav_upd_dt">
+            {{ formatDate(row.nav_upd_dt) }}
+          </div>
+          <div v-if="row.nav_upd_dt === undefined">-</div>
         </template>
       </NHDatatable>
     </div>
@@ -56,10 +82,11 @@
 </template>
 
 <script lang="ts">
-import { defineComponent, ref } from "vue";
+import { defineComponent, onBeforeMount, ref } from "vue";
 import { Search } from "@element-plus/icons-vue";
 import { translate } from "@/core/helpers/i18n-translate";
 import NHDatatable from "@/components/nh-datatable/NHDatatable.vue";
+import { useFundInforStore } from "@/stores/fund-infor";
 
 export default defineComponent({
   name: "fund-information",
@@ -67,112 +94,128 @@ export default defineComponent({
     NHDatatable,
   },
   setup() {
+    const store = useFundInforStore();
+    let pagination = ref();
+    let dataRequestFundInfor = ref();
     const formSearchData = ref({
       name: "",
     });
     const tableHeader = ref([
       {
         label: "Fund",
-        prop: "name",
+        prop: "fnd_full_cd",
         visible: true,
         fix: true,
       },
       {
         label: "Fund name",
-        prop: "vsd",
+        prop: "fnd_nm",
         visible: true,
       },
       {
         label: "Fund company",
-        prop: "date",
+        prop: "fnd_co_nm",
         visible: true,
       },
       {
         label: "Founded date",
-        prop: "order_type",
+        prop: "found_dt",
         visible: true,
       },
       {
         label: "Minimum amount (VND)",
-        prop: "fund_code",
+        prop: "buy_min_amt",
         visible: true,
       },
       {
         label: "NAV",
-        prop: "issuers",
+        prop: "nav",
         visible: true,
       },
       {
         label: "Updated nav date",
-        prop: "fluctuations",
+        prop: "nav_upd_dt",
         visible: true,
       },
       {
         label: "redemption fee (%)",
-        prop: "amount",
+        prop: "fnd_rdpt_fee_rng",
         visible: true,
       },
     ]);
     const loading = ref<boolean>(false);
-    const tableData = [
-      {
-        id: 1,
-        vsd: "Quỹ Đầu tư Trái phiếu phát triển Việt Nam VCAM-NH",
-        name: "VCAM-NH VBAH",
-        date: "CTCP Quản lý Quỹ Đầu tư Chứng khoán Bản Việt",
-        order_type: "12/10/2019",
-        fund_code: "1,000,000",
-        issuers: "99,888,000,200",
-        fluctuations: "12/10/2023",
-        amount: "0.05%",
-      },
-      {
-        id: 2,
-        vsd: "Quỹ Đầu tư Trái phiếu phát triển Việt Nam VCAM-NH",
-        name: "VCAM-NH VBAH",
-        date: "CTCP Quản lý Quỹ Đầu tư Chứng khoán Bản Việt",
-        order_type: "12/10/2019",
-        fund_code: "1,000,000",
-        issuers: "99,888,000,200",
-        fluctuations: "12/10/2023",
-        amount: "0.05%",
-      },
-      {
-        id: 3,
-        vsd: "Quỹ Đầu tư Trái phiếu phát triển Việt Nam VCAM-NH",
-        name: "VCAM-NH VBAH",
-        date: "CTCP Quản lý Quỹ Đầu tư Chứng khoán Bản Việt",
-        order_type: "12/10/2019",
-        fund_code: "1,000,000",
-        issuers: "99,888,000,200",
-        fluctuations: "12/10/2023",
-        amount: "0.05%",
-      },
-      {
-        id: 4,
-        vsd: "Quỹ Đầu tư Trái phiếu phát triển Việt Nam VCAM-NH",
-        name: "VCAM-NH VBAH",
-        date: "CTCP Quản lý Quỹ Đầu tư Chứng khoán Bản Việt",
-        order_type: "12/10/2019",
-        fund_code: "1,000,000",
-        issuers: "99,888,000,200",
-        fluctuations: "12/10/2023",
-        amount: "0.05%",
-      },
-    ];
+
+    const getRequestFundInfor = async (
+      pageNo?: number,
+      name?: string,
+      pageSize = "10"
+    ) => {
+      loading.value = true;
+      await store.getFundInforList({
+        params: {
+          name: name ? name : "",
+          pageNo: pageNo,
+          pageSize: pageSize,
+        },
+      });
+
+      const requestPageResponse = JSON.parse(
+        JSON.stringify(store.fundInforList)
+      );
+
+      dataRequestFundInfor.value = requestPageResponse.data;
+      pagination.value = {
+        totalPages: requestPageResponse.totalPages,
+        pageNo: requestPageResponse.pageNo,
+        pageSize: requestPageResponse.pageSize,
+        totalCount: requestPageResponse.totalCount,
+        currentCount: requestPageResponse.currentCount,
+      };
+      loading.value = false;
+    };
 
     const handleSearch = () => {
       const formData = JSON.parse(JSON.stringify(formSearchData.value));
-      console.log("formData: ", formData);
+      console.log("formData", formData);
+      getRequestFundInfor(1, formData.name, pagination.value.pageSize);
     };
+
+    function changePage(page) {
+      const formData = JSON.parse(JSON.stringify(formSearchData.value));
+      getRequestFundInfor(page, formData.name, pagination.value.pageSize);
+    }
+
+    const changePageSize = (pageSize) => {
+      const formData = JSON.parse(JSON.stringify(formSearchData.value));
+      pagination.value.pageSize = pageSize;
+      getRequestFundInfor(1, formData.name, pageSize);
+    };
+
+    const formatDate = (val) => {
+      const year = val.substring(0, 4);
+      const month = val.substring(4, 6);
+      const day = val.substring(6, 8);
+
+      // Create the formatted date string
+      const formattedDate = year + "-" + month + "-" + day;
+      return formattedDate;
+    };
+
+    onBeforeMount(() => {
+      getRequestFundInfor(1);
+    });
 
     return {
       formSearchData,
       tableHeader,
       loading,
+      dataRequestFundInfor,
+      pagination,
       Search,
-      tableData,
       translate,
+      changePage,
+      changePageSize,
+      formatDate,
       handleSearch,
     };
   },

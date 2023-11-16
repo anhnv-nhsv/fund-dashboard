@@ -136,9 +136,13 @@
     <div class="card-body pt-0">
       <NHDatatable
         :table-header="tableHeader"
-        :table-data="tableData"
+        :table-data="dataRequestFundManager"
+        :pagination="pagination"
         :loading="loading"
+        :enable-items-per-page-dropdown="true"
         :show-overflow-tooltip="false"
+        @change-page="changePage"
+        @change-page-size="changePageSize"
       >
         <template v-slot:name="{ row }">
           <router-link
@@ -152,16 +156,23 @@
             {{ row.name }}
           </router-link>
         </template>
+        <template v-slot:created_dtm="{ row }">
+          <div v-if="row.created_dtm">
+            {{ formatDate(row.created_dtm) }}
+          </div>
+          <div v-if="row.created_dtm === undefined">-</div>
+        </template>
       </NHDatatable>
     </div>
   </div>
 </template>
 
 <script lang="ts">
-import { defineComponent, ref } from "vue";
+import { defineComponent, onBeforeMount, ref } from "vue";
 import { Search } from "@element-plus/icons-vue";
 import { translate } from "@/core/helpers/i18n-translate";
 import NHDatatable from "@/components/nh-datatable/NHDatatable.vue";
+import { useFundStore } from "@/stores/fund";
 
 export default defineComponent({
   name: "fund-management",
@@ -169,6 +180,9 @@ export default defineComponent({
     NHDatatable,
   },
   setup() {
+    const store = useFundStore();
+    let pagination = ref();
+    let dataRequestFundManager = ref();
     const formSearchData = ref({
       name: "",
       trading_code: "",
@@ -195,20 +209,20 @@ export default defineComponent({
       },
       {
         label: "date",
-        prop: "date",
+        prop: "created_dtm",
         visible: true,
         width: 300,
       },
       {
         label: "orderType",
         width: 150,
-        prop: "order_type",
+        prop: "ord_tp",
         visible: true,
       },
       {
         label: "fundCode",
         width: 150,
-        prop: "fund_code",
+        prop: "fnd_cd",
         visible: true,
       },
       {
@@ -226,13 +240,13 @@ export default defineComponent({
       {
         label: "amount",
         width: 150,
-        prop: "amount",
+        prop: "gross_amt",
         visible: true,
       },
       {
         label: "quantity",
         width: 150,
-        prop: "quantity",
+        prop: "ord_qty",
         visible: true,
       },
       {
@@ -244,13 +258,13 @@ export default defineComponent({
       {
         label: "paymentStatus",
         width: 150,
-        prop: "payment_status",
+        prop: "pymt_stat",
         visible: true,
       },
       {
         label: "orderStatus",
         width: 150,
-        prop: "order_status",
+        prop: "ord_stat",
         visible: true,
       },
       {
@@ -267,90 +281,95 @@ export default defineComponent({
       },
     ]);
     const loading = ref<boolean>(false);
-    const userList = ref([]);
-    const tableData = [
-      {
-        id: 1,
-        vsd: "039FIC0001",
-        name: "Nguyen A",
-        date: "04/10/2023 00:00:00 04/10/2023 00:00:00 ",
-        order_type: "Buy",
-        fund_code: "VCAM-NH VABF",
-        issuers: "Viet Capital",
-        fluctuations: "",
-        amount: "1,000,000,000",
-        quantity: "",
-        nav_share: "",
-        payment_status: "Successful",
-        order_status: "Pending",
-        pre_balance: "10,986.35",
-        post_balance: "",
-      },
-      {
-        id: 2,
-        vsd: "039FIC0001",
-        name: "Nguyen A",
-        date: "02/10/2023 00:00:00",
-        order_type: "Buy",
-        fund_code: "VCAM-NH VABF",
-        issuers: "Viet Capital",
-        fluctuations: "1,000,000,000",
-        amount: "1,000,000,000",
-        quantity: "986.35",
-        nav_share: "11,000.25",
-        payment_status: "Successful",
-        order_status: "Successful",
-        pre_balance: "10,000",
-        post_balance: "10,986.35",
-      },
-      {
-        id: 3,
-        vsd: "039FIC0002",
-        name: "Tran BB",
-        date: "02/10/2023 00:00:00",
-        order_type: "Sell",
-        fund_code: "VCAM-NH VABF",
-        issuers: "Viet Capital",
-        fluctuations: "",
-        amount: "1,000,000",
-        quantity: "986.35",
-        nav_share: "11,000.35",
-        payment_status: "Successful",
-        order_status: "Successful",
-        pre_balance: "10,000",
-        post_balance: "9,013.65",
-      },
-      {
-        id: 4,
-        vsd: "039FIC0001",
-        name: "Nguyen A",
-        date: "02/10/2023 00:00:00",
-        order_type: "Buy",
-        fund_code: "VCAM-NH VABF 1",
-        issuers: "Viet Capital",
-        fluctuations: "1,000,000,000",
-        amount: "1,000,000,000",
-        quantity: "1,000.25",
-        nav_share: "11,000.35",
-        payment_status: "Successful",
-        order_status: "Successful",
-        pre_balance: "0",
-        post_balance: "1,000.25",
-      },
-    ];
+
+    const getRequestFundManager = async (
+      pageNo?: number,
+      // name?: string,
+      // publish?: string,
+      pageSize = "10"
+    ) => {
+      loading.value = true;
+      await store.getFundList({
+        params: {
+          // name: name ? name : "",
+          // publish: publish ? publish : "",
+          pageNo: pageNo,
+          pageSize: pageSize,
+        },
+      });
+
+      const requestPageResponse = JSON.parse(JSON.stringify(store.fundList));
+
+      dataRequestFundManager.value = requestPageResponse.data;
+      pagination.value = {
+        totalPages: requestPageResponse.totalPages,
+        pageNo: requestPageResponse.pageNo,
+        pageSize: requestPageResponse.pageSize,
+        totalCount: requestPageResponse.totalCount,
+        currentCount: requestPageResponse.currentCount,
+      };
+      loading.value = false;
+    };
 
     const handleSearch = () => {
       const formData = JSON.parse(JSON.stringify(formSearchData.value));
       console.log("formData", formData);
+      getRequestFundManager(
+        1
+        // formData.name,
+        // formData.publish ? formData.publish : "",
+        // pagination.value.pageSize
+      );
     };
 
+    function changePage(page) {
+      const formData = JSON.parse(JSON.stringify(formSearchData.value));
+      getRequestFundManager(
+        page
+        // formData.name,
+        // formData.publish ? formData.publish : "",
+        // pagination.value.pageSize
+      );
+    }
+
+    const changePageSize = (pageSize) => {
+      const formData = JSON.parse(JSON.stringify(formSearchData.value));
+      pagination.value.pageSize = pageSize;
+      getRequestFundManager(
+        1
+        // formData.name,
+        // formData.publish ? formData.publish : "",
+        // pageSize
+      );
+    };
+
+    const formatDate = (val) => {
+      const date = new Date(val);
+      const dateObject = new Date(date);
+
+      const year = dateObject.getFullYear();
+      const month = String(dateObject.getMonth() + 1).padStart(2, "0");
+      const day = String(dateObject.getDate()).padStart(2, "0");
+
+      const desiredDateString = `${year}-${month}-${day}`;
+
+      return desiredDateString;
+    };
+
+    onBeforeMount(() => {
+      getRequestFundManager(1);
+    });
+
     return {
-      userList,
       tableHeader,
       loading,
       formSearchData,
       Search,
-      tableData,
+      dataRequestFundManager,
+      pagination,
+      formatDate,
+      changePage,
+      changePageSize,
       translate,
       handleSearch,
     };

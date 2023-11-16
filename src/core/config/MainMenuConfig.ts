@@ -12,29 +12,10 @@ export interface MenuItem {
 export const getMainMenu = (role): Array<MenuItem> => {
   return [
     {
-      accessible: true,
-      pages: [
-        {
-          heading: "dashboard",
-          route: "/dashboard",
-          accessible: true,
-          keenthemesIcon: "element-11",
-          bootstrapIcon: "bi-app-indicator",
-        },
-      ],
-    },
-    {
       heading: "apps",
       route: "/apps",
       accessible: true,
       pages: [
-        // {
-        //   heading: "user",
-        //   route: "/apps/user-management",
-        //   accessible: "user" in role.grantedPermissions,
-        //   keenthemesIcon: "people",
-        //   bootstrapIcon: "bi-graph-up",
-        // },
         {
           heading: "fund",
           route: "/apps/fund-certificates",

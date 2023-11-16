@@ -336,7 +336,7 @@ const messages = {
     contactList: "Contact List",
     addContact: "Add Contact",
     user: "User",
-    fund: "Fund",
+    fund: "Fund A",
     fundInformation: "Fund Information",
     fundDeclaration: "Fund Declaration",
     userMgmt: "User Management",

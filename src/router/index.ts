@@ -11,34 +11,12 @@ import JwtService from "@/core/services/JwtService";
 const routes: Array<RouteRecordRaw> = [
   {
     path: "/",
-    redirect: "/dashboard",
+    redirect: "/apps/fund-certificates",
     component: () => import("@/layouts/main-layout/MainLayout.vue"),
     meta: {
       middleware: "auth",
     },
     children: [
-      {
-        path: "/dashboard",
-        name: "dashboard",
-        component: () => import("@/views/Dashboard.vue"),
-        meta: {
-          pageTitle: "dashboard",
-          breadcrumbs: ["dashboard"],
-        },
-      },
-
-      // USER START
-      // {
-      //   path: "/apps/user-management",
-      //   name: "apps-user-management",
-      //   component: () => import("@/views/apps/user/UserMgmt.vue"),
-      //   meta: {
-      //     pageTitle: "user",
-      //     breadcrumbs: ["apps", "user"],
-      //   },
-      // },
-      // USER END
-
       // FUND START
       {
         path: "/apps/fund-certificates",
@@ -83,7 +61,7 @@ const routes: Array<RouteRecordRaw> = [
       },
       // FUND INFOR END
 
-      // fund declaration START
+      // FUND DECLARATION START
       {
         path: "/apps/fund-declaration",
         name: "apps-declaration-management",
@@ -94,7 +72,7 @@ const routes: Array<RouteRecordRaw> = [
           breadcrumbs: ["apps", "Fund Declaration"],
         },
       },
-      // fund declaration END
+      // FUND DECLARATION END
     ],
   },
   {
