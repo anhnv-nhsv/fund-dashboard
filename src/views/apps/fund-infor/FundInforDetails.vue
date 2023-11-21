@@ -174,6 +174,7 @@ export default defineComponent({
 .container-fund-detail {
   border: 1px solid #d4d3d3;
   margin-top: 12px;
+  border-radius: 4px;
 }
 
 .line {

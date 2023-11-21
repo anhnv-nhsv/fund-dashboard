@@ -60,6 +60,7 @@
             class="btn btn-primary"
             data-bs-toggle="modal"
             data-bs-target="#kt_fund_declaration_action_modal"
+            @click="addFundDeclaration"
           >
             <KTIcon icon-name="plus" icon-class="fs-2" />
             {{ translate("addBtn") }}
@@ -70,25 +71,47 @@
     <div class="card-body pt-0">
       <NHDatatable
         :table-header="tableHeader"
-        :table-data="tableData"
+        :table-data="dataRequestFundInfor"
         :loading="loading"
       >
+        <template v-slot:actionColumn>
+          <el-table-column
+            header-align="center"
+            class-name="text-center"
+            :label="translate('action')"
+          >
+            <template #default="scope">
+              <div class="change-status">
+                <el-button
+                  size="small"
+                  type="default"
+                  data-bs-toggle="modal"
+                  data-bs-target="#kt_fund_declaration_action_modal"
+                  @click.prevent="editFundDeclaration(scope.row)"
+                >
+                  {{ translate("editBtn") }}
+                </el-button>
+              </div>
+            </template>
+          </el-table-column>
+        </template>
       </NHDatatable>
     </div>
   </div>
   <FundDeclarationModal
     @on-close="handleCloseModal"
     :data="rowDetail"
-    :action="userAction"
+    :action="fundDeclaAction"
   />
 </template>
 
 <script lang="ts">
-import { defineComponent, ref } from "vue";
+import { defineComponent, onBeforeMount, ref } from "vue";
 import { Search } from "@element-plus/icons-vue";
 import { translate } from "@/core/helpers/i18n-translate";
 import FundDeclarationModal from "@/components/modals/forms/FundDeclarationModal.vue";
 import NHDatatable from "@/components/nh-datatable/NHDatatable.vue";
+import { useFundInforStore } from "@/stores/fund-infor";
 
 export default defineComponent({
   name: "apps-declaration-management",
@@ -97,6 +120,7 @@ export default defineComponent({
     FundDeclarationModal,
   },
   setup() {
+    const store = useFundInforStore();
     const formSearchData = ref({
       name: "",
       date_search: [],
@@ -104,7 +128,7 @@ export default defineComponent({
     const tableHeader = ref([
       {
         label: "Order",
-        prop: "order",
+        prop: "seq_no",
         visible: true,
       },
       {
@@ -114,17 +138,17 @@ export default defineComponent({
       },
       {
         label: "Fund",
-        prop: "name",
+        prop: "fnd_full_cd",
         visible: true,
       },
       {
         label: "Fund name",
-        prop: "date",
+        prop: "fnd_nm",
         visible: true,
       },
       {
         label: "Fund company",
-        prop: "order_type",
+        prop: "fnd_co_nm",
         visible: true,
       },
       {
@@ -144,63 +168,72 @@ export default defineComponent({
       },
     ]);
     const loading = ref<boolean>(false);
+    let pagination = ref();
+    let dataRequestFundInfor = ref();
     const userList = ref([]);
     const rowDetail = ref();
-    let userAction = ref("");
-    const tableData = [
-      {
-        id: 1,
-        order: 1,
-        vsd: "10/12/2023 00:00:00",
-        name: "VCAM-NH VABF",
-        date: "Quỹ Đầu tư Trái phiếu phát triển Việt Nam VCAM-NH",
-        order_type: "CTCP Quản lý Quỹ Đầu tư Chứng khoán Bản Việt",
-        fund_code: "Sell",
-        issuers: "mietnt",
-        fluctuations: "20/12/2023- mietnt 00:00:00",
-      },
-      {
-        id: 1,
-        order: 1,
-        vsd: "10/12/2023 00:00:00",
-        name: "VCAM-NH VABF",
-        date: "Quỹ Đầu tư Trái phiếu phát triển Việt Nam VCAM-NH",
-        order_type: "CTCP Quản lý Quỹ Đầu tư Chứng khoán Bản Việt",
-        fund_code: "Sell",
-        issuers: "mietnt",
-        fluctuations: "20/12/2023- mietnt 00:00:00",
-      },
-      {
-        id: 1,
-        order: 1,
-        vsd: "10/12/2023 00:00:00",
-        name: "VCAM-NH VABF",
-        date: "Quỹ Đầu tư Trái phiếu phát triển Việt Nam VCAM-NH",
-        order_type: "CTCP Quản lý Quỹ Đầu tư Chứng khoán Bản Việt",
-        fund_code: "Sell",
-        issuers: "mietnt",
-        fluctuations: "20/12/2023- mietnt 00:00:00",
-      },
-    ];
+    let fundDeclaAction = ref("");
+
+    const getRequestFundInfor = async (
+      pageNo?: number,
+      name?: string,
+      pageSize = "10"
+    ) => {
+      loading.value = true;
+      await store.getFundInforList({
+        params: {
+          name: name ? name : "",
+          pageNo: pageNo,
+          pageSize: pageSize,
+        },
+      });
+
+      const requestPageResponse = JSON.parse(
+        JSON.stringify(store.fundInforList)
+      );
+
+      dataRequestFundInfor.value = requestPageResponse.data;
+
+      pagination.value = {
+        totalPages: requestPageResponse.totalPages,
+        pageNo: requestPageResponse.pageNo,
+        pageSize: requestPageResponse.pageSize,
+        totalCount: requestPageResponse.totalCount,
+        currentCount: requestPageResponse.currentCount,
+      };
+      loading.value = false;
+    };
 
     const handleSearch = (e) => {
       const formData = JSON.parse(JSON.stringify(formSearchData.value));
       console.log("formData: ", formData);
     };
+    const addFundDeclaration = () => {
+      fundDeclaAction.value = "add";
+    };
+    const editFundDeclaration = (val?: object | undefined) => {
+      fundDeclaAction.value = "edit";
+    };
+
     const handleCloseModal = () => {};
 
+    onBeforeMount(() => {
+      getRequestFundInfor(1);
+    });
     return {
       userList,
       formSearchData,
+      fundDeclaAction,
       tableHeader,
-      userAction,
       loading,
       Search,
-      tableData,
+      dataRequestFundInfor,
       rowDetail,
       translate,
       handleSearch,
       handleCloseModal,
+      editFundDeclaration,
+      addFundDeclaration,
     };
   },
 });

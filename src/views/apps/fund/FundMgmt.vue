@@ -139,28 +139,58 @@
         :table-data="dataRequestFundManager"
         :pagination="pagination"
         :loading="loading"
-        :enable-items-per-page-dropdown="true"
         :show-overflow-tooltip="false"
         @change-page="changePage"
         @change-page-size="changePageSize"
       >
-        <template v-slot:name="{ row }">
-          <router-link
-            :to="{
-              name: 'fund-certificates-detail',
-              params: {
-                id: row.id,
-              },
-            }"
-          >
-            {{ row.name }}
-          </router-link>
+        <template v-slot:cust_nm="{ row }">
+          <div v-if="row.cust_nm !== null">
+            <router-link
+              :to="{
+                name: 'fund-certificates-detail',
+                query: {
+                  userId: row.acnt_id,
+                  orderId: row.ord_id,
+                },
+              }"
+            >
+              {{ row.cust_nm }}
+            </router-link>
+          </div>
+          <div v-if="row.cust_nm === null">-</div>
+        </template>
+
+        <template v-slot:gross_amt="{ row }">
+          <div>
+            {{ row.gross_amt.toLocaleString() }}
+          </div>
+        </template>
+        <template v-slot:cert_nav="{ row }">
+          <div>
+            {{ row.cert_nav.toLocaleString() }}
+          </div>
+        </template>
+        <template v-slot:ord_tp="{ row }">
+          <div v-if="row.ord_tp === 'buy'">
+            <div
+              class="bg-success rounded border border-1 border-white order-type"
+            >
+              {{ row.ord_tp }}
+            </div>
+          </div>
+          <div v-if="row.ord_tp !== 'buy'">
+            <div
+              class="bg-danger rounded border border-1 border-white order-type"
+            >
+              {{ row.ord_tp }}
+            </div>
+          </div>
         </template>
         <template v-slot:created_dtm="{ row }">
           <div v-if="row.created_dtm">
             {{ formatDate(row.created_dtm) }}
           </div>
-          <div v-if="row.created_dtm === undefined">-</div>
+          <div v-if="row.created_dtm === null">-</div>
         </template>
       </NHDatatable>
     </div>
@@ -197,19 +227,19 @@ export default defineComponent({
     const tableHeader = ref([
       {
         label: "fullname",
-        prop: "name",
+        prop: "cust_nm",
         visible: true,
         width: "260",
         fix: true,
       },
       {
         label: "vsdTradingCode",
-        prop: "vsd",
+        prop: "trading_code",
         visible: true,
       },
       {
         label: "date",
-        prop: "created_dtm",
+        prop: "created_at",
         visible: true,
         width: 300,
       },
@@ -228,7 +258,7 @@ export default defineComponent({
       {
         label: "issuers",
         width: 150,
-        prop: "issuers",
+        prop: "fnd_co_nm",
         visible: true,
       },
       {
@@ -252,7 +282,7 @@ export default defineComponent({
       {
         label: "navShare",
         width: 150,
-        prop: "nav_share",
+        prop: "cert_nav",
         visible: true,
       },
       {
@@ -351,7 +381,7 @@ export default defineComponent({
       const month = String(dateObject.getMonth() + 1).padStart(2, "0");
       const day = String(dateObject.getDate()).padStart(2, "0");
 
-      const desiredDateString = `${year}-${month}-${day}`;
+      const desiredDateString = `${day}-${month}-${year}`;
 
       return desiredDateString;
     };
@@ -378,6 +408,11 @@ export default defineComponent({
 </script>
 
 <style scoped>
+.order-type {
+  max-width: fit-content;
+  padding: 0 8px;
+  margin: auto;
+}
 .del-btn {
   padding: 14px 15px;
 }

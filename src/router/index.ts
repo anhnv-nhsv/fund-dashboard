@@ -29,7 +29,7 @@ const routes: Array<RouteRecordRaw> = [
       },
 
       {
-        path: "/apps/fund-certificate/:id?",
+        path: "/apps/fund-certificate/",
         name: "fund-certificates-detail",
         component: () => import("@/views/apps/fund/FundDetails.vue"),
         meta: {

@@ -40,6 +40,10 @@
             <template #default="scope" v-if="item.hasOwnProperty('prop')">
               <slot :name="item.prop" :row="scope.row">
                 {{ scope.row[item.prop] }}
+                <div v-if="scope.row[item.prop] === null">-</div>
+                <div v-if="scope.row[item.prop] === 'null'">
+                  {{ (scope.row[item.prop] = "-") }}
+                </div>
               </slot>
             </template>
             <template v-if="item.hasOwnProperty('children')">

@@ -37,7 +37,6 @@
         :table-data="dataRequestFundInfor"
         :loading="loading"
         :pagination="pagination"
-        :enable-items-per-page-dropdown="true"
         userRole="all"
         @change-page="changePage"
         @change-page-size="changePageSize"
@@ -72,9 +71,22 @@
         </template>
         <template v-slot:nav_upd_dt="{ row }">
           <div v-if="row.nav_upd_dt">
-            {{ formatDate(row.nav_upd_dt) }}
+            {{ row.nav_upd_dt }}
           </div>
           <div v-if="row.nav_upd_dt === undefined">-</div>
+        </template>
+        <template v-slot:redemption_fee="{ row }">
+          <div v-for="(item, index) in row.redemption_fee" :key="index">
+            <div class="d-flex">
+              <div v-if="item.holding_min === 0 || item.holding_min === 12">
+                Từ tháng {{ item.holding_min }} - {{ item.holding_max }}:
+              </div>
+              <div v-if="item.holding_min === 24">
+                Trên {{ item.holding_min }} tháng:
+              </div>
+              <div>&nbsp;{{ item.fee_percentage_text }}</div>
+            </div>
+          </div>
         </template>
       </NHDatatable>
     </div>
@@ -139,7 +151,7 @@ export default defineComponent({
       },
       {
         label: "redemption fee (%)",
-        prop: "fnd_rdpt_fee_rng",
+        prop: "redemption_fee",
         visible: true,
       },
     ]);
@@ -163,7 +175,9 @@ export default defineComponent({
         JSON.stringify(store.fundInforList)
       );
 
-      dataRequestFundInfor.value = requestPageResponse.data;
+      dataRequestFundInfor.value = formatDataGetFund(requestPageResponse.data);
+      console.log("dataRequestFundInfor.value: ", dataRequestFundInfor.value);
+
       pagination.value = {
         totalPages: requestPageResponse.totalPages,
         pageNo: requestPageResponse.pageNo,
@@ -172,6 +186,22 @@ export default defineComponent({
         currentCount: requestPageResponse.currentCount,
       };
       loading.value = false;
+    };
+
+    const formatDataGetFund = (items) => {
+      if (items.length > 0) {
+        return items.map((item) => {
+          return {
+            ...item,
+            redemption_fee: formatRedemption(item.redemption_fee),
+          };
+        });
+      }
+    };
+
+    const formatRedemption = (item) => {
+      const formattedJsonString = JSON.parse(item);
+      return formattedJsonString;
     };
 
     const handleSearch = () => {
@@ -197,7 +227,7 @@ export default defineComponent({
       const day = val.substring(6, 8);
 
       // Create the formatted date string
-      const formattedDate = year + "-" + month + "-" + day;
+      const formattedDate = day + "-" + month + "-" + year;
       return formattedDate;
     };
 
