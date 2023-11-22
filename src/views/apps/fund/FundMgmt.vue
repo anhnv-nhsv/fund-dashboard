@@ -65,8 +65,7 @@
                 clearable
                 v-model="formSearchData.issuers"
               >
-                <el-option :label="translate('enable')" value="1" />
-                <el-option :label="translate('disable')" value="0" />
+                <el-option :label="translate('all')" value="1" />
               </el-select>
             </div>
             <div
@@ -78,9 +77,12 @@
                 clearable
                 v-model="formSearchData.payment_status"
               >
-                <el-option :label="translate('pending')" value="1" />
-                <el-option :label="translate('successfully')" value="0" />
-                <el-option :label="translate('fail')" value="3" />
+                <el-option
+                  v-for="item in paymentStatus"
+                  :key="item.Key"
+                  :label="item.VI"
+                  :value="item.Key"
+                />
               </el-select>
             </div>
             <div
@@ -92,9 +94,12 @@
                 clearable
                 v-model="formSearchData.command_status"
               >
-                <el-option :label="translate('pending')" value="1" />
-                <el-option :label="translate('successfully')" value="0" />
-                <el-option :label="translate('fail')" value="3" />
+                <el-option
+                  v-for="item in commandStatus"
+                  :key="item.Key"
+                  :label="item.VI"
+                  :value="item.Key"
+                />
               </el-select>
             </div>
             <div
@@ -106,8 +111,12 @@
                 clearable
                 v-model="formSearchData.command_type"
               >
-                <el-option :label="translate('buy')" value="1" />
-                <el-option :label="translate('sell')" value="0" />
+                <el-option
+                  v-for="item in commandType"
+                  :key="item.Key"
+                  :label="item.VI"
+                  :value="item.Key"
+                />
               </el-select>
             </div>
             <div
@@ -213,6 +222,9 @@ export default defineComponent({
     const store = useFundStore();
     let pagination = ref();
     let dataRequestFundManager = ref();
+    let paymentStatus = ref();
+    let commandStatus = ref();
+    let commandType = ref();
     const formSearchData = ref({
       name: "",
       trading_code: "",
@@ -229,12 +241,13 @@ export default defineComponent({
         label: "fullname",
         prop: "cust_nm",
         visible: true,
-        width: "260",
+        width: 260,
         fix: true,
       },
       {
         label: "vsdTradingCode",
         prop: "trading_code",
+        width: 200,
         visible: true,
       },
       {
@@ -341,6 +354,19 @@ export default defineComponent({
       loading.value = false;
     };
 
+    const getFundStatus = async () => {
+      loading.value = true;
+      await store.getStatusFundList();
+
+      const requestFundResponse = JSON.parse(
+        JSON.stringify(store.fundStatusList)
+      );
+      paymentStatus.value = requestFundResponse.data.payment_status;
+      commandStatus.value = requestFundResponse.data.order_status;
+      commandType.value = requestFundResponse.data.order_type;
+      loading.value = false;
+    };
+
     const handleSearch = () => {
       const formData = JSON.parse(JSON.stringify(formSearchData.value));
       console.log("formData", formData);
@@ -388,6 +414,7 @@ export default defineComponent({
 
     onBeforeMount(() => {
       getRequestFundManager(1);
+      getFundStatus();
     });
 
     return {
@@ -397,6 +424,9 @@ export default defineComponent({
       Search,
       dataRequestFundManager,
       pagination,
+      paymentStatus,
+      commandStatus,
+      commandType,
       formatDate,
       changePage,
       changePageSize,

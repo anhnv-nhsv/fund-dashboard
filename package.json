@@ -20,6 +20,7 @@
     "@fullcalendar/timegrid": "^5.9.0",
     "@fullcalendar/vue3": "^5.9.0",
     "@popperjs/core": "2.11.6",
+    "@tato30/vue-pdf": "^1.8.1",
     "@vueform/multiselect": "^1.2.5",
     "animate.css": "^4.1.1",
     "apexcharts": "^3.35.5",
@@ -52,7 +53,6 @@
     "vue-router": "^4.1.5",
     "vue3-apexcharts": "^1.4.1",
     "vue3-nestable": "^3.0.3",
-    "vue3-pdf-app": "^1.0.3",
     "yup": "^0.32.8"
   },
   "devDependencies": {

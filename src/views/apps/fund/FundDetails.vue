@@ -275,20 +275,20 @@
         <div v-for="(item, index) in detailOrderResponse" :key="index">
           <div class="my-8 mx-8">
             <h2>Order form</h2>
-            <div v-if="item.sync_order_form">
-              <!-- <NhPdf pdfFund="https://pdfobject.com/pdf/sample-3pp.pdf" /> -->
-              <NhPdf :pdfFund="item.sync_order_form" />
+            <div v-if="!item.sync_vsd_confirmation">
+              <NhPdf pdfFund="https://pdfobject.com/pdf/sample-3pp.pdf" />
+              <!-- <NhPdf /> -->
             </div>
-            <div v-if="!item.sync_order_form">
+            <div v-if="item.sync_order_form">
               <div class="no-pdf"></div>
             </div>
           </div>
           <div class="my-8 mx-8">
             <h2>VSD Trading</h2>
-            <div v-if="item.sync_vsd_confirmation">
-              <NhPdf :pdfFund="item.sync_vsd_confirmation" />
-            </div>
             <div v-if="!item.sync_vsd_confirmation">
+              <NhPdf pdfFund="https://pdfobject.com/pdf/sample.pdf" />
+            </div>
+            <div v-if="item.sync_vsd_confirmation">
               <div class="no-pdf"></div>
             </div>
           </div>
@@ -317,7 +317,6 @@ export default defineComponent({
     const detailOrderResponse = ref();
     const store = useFundStore();
     const route = useRoute();
-    console.log(route.query.orderId);
 
     const getFundManagerDetail = async () => {
       loading.value = true;
@@ -337,7 +336,6 @@ export default defineComponent({
       const requestOrderResponse = JSON.parse(
         JSON.stringify(store.fundListOrderDetail)
       );
-      console.log("requestOrderResponse: ", requestOrderResponse.data);
 
       detailOrderResponse.value = requestOrderResponse?.data;
       loading.value = false;
@@ -366,15 +364,15 @@ export default defineComponent({
 
 .no-pdf {
   position: relative;
-  background-image: url(https://static.thenounproject.com/png/504708-200.png);
+  background-image: url(https://sandbox.vcam.dev/assets/admin_v2/examples/image-default-bfa5d396aa260191d8ec7ec4e8f6da1f593ddd667a0aa98be24487d3202e4263.png);
   background-position: 50% 50%;
   background-repeat: no-repeat;
   -moz-background-size: contain;
   -o-background-size: contain;
   -webkit-background-size: contain;
   background-size: contain;
-  height: 250px;
-  width: 250px;
+  height: 450px;
+  width: 450px;
   content: "";
   margin: 0 10px 10px 0;
 }
