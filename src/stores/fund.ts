@@ -5,6 +5,7 @@ import ApiService from "@/core/services/ApiService";
 export const useFundStore = defineStore("fund-mgmt", () => {
   const fundList = ref([]);
   const fundStatusList = ref();
+  const fundSearchList = ref();
   const fundListDetail = ref([]);
   const fundListOrderDetail = ref([]);
   const errors = ref({});
@@ -19,6 +20,10 @@ export const useFundStore = defineStore("fund-mgmt", () => {
 
   function setStatusFundList(data) {
     fundStatusList.value = data;
+  }
+
+  function setSearchFundList(data) {
+    fundSearchList.value = data;
   }
 
   function setFundListDetail(data) {
@@ -43,6 +48,16 @@ export const useFundStore = defineStore("fund-mgmt", () => {
     return ApiService.query("/customers/statusList", params)
       .then(({ data }) => {
         setStatusFundList(data);
+      })
+      .catch(({ response }) => {
+        setError(response.data.errors);
+      });
+  }
+
+  function getSearchFundList(params) {
+    return ApiService.query("/order/searchOrders", params)
+      .then(({ data }) => {
+        setSearchFundList(data);
       })
       .catch(({ response }) => {
         setError(response.data.errors);
@@ -75,9 +90,11 @@ export const useFundStore = defineStore("fund-mgmt", () => {
     fundListDetail,
     fundListOrderDetail,
     errors,
+    fundSearchList,
     getFundList,
     getStatusFundList,
     getFundListDetails,
     getFundListOrderDetails,
+    getSearchFundList,
   };
 });

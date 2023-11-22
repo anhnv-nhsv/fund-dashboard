@@ -149,8 +149,6 @@
         :pagination="pagination"
         :loading="loading"
         :show-overflow-tooltip="false"
-        @change-page="changePage"
-        @change-page-size="changePageSize"
       >
         <template v-slot:cust_nm="{ row }">
           <div v-if="row.cust_nm !== null">
@@ -207,7 +205,7 @@
 </template>
 
 <script lang="ts">
-import { defineComponent, onBeforeMount, ref } from "vue";
+import { defineComponent, onBeforeMount, ref, watch } from "vue";
 import { Search } from "@element-plus/icons-vue";
 import { translate } from "@/core/helpers/i18n-translate";
 import NHDatatable from "@/components/nh-datatable/NHDatatable.vue";
@@ -225,6 +223,8 @@ export default defineComponent({
     let paymentStatus = ref();
     let commandStatus = ref();
     let commandType = ref();
+    let fromDate = ref();
+    let toDate = ref();
     const formSearchData = ref({
       name: "",
       trading_code: "",
@@ -325,32 +325,60 @@ export default defineComponent({
     ]);
     const loading = ref<boolean>(false);
 
+    watch(formSearchData.value, (_) => {
+      if (formSearchData?.value?.date_search) {
+        const formatData = JSON.parse(
+          JSON.stringify(formSearchData.value.date_search)
+        );
+
+        fromDate.value = formatData[0];
+        toDate.value = formatData[1];
+      } else {
+        formSearchData.value.date_search = [];
+      }
+    });
+
+    const changeDate = (date) => {
+      const parts = date.split("-");
+
+      const newDate = new Date(parts[2], parts[1] - 1, parts[0]);
+
+      const formattedDate =
+        newDate.getFullYear() +
+        "-" +
+        (newDate.getMonth() + 1).toString().padStart(2, "0") +
+        "-" +
+        newDate.getDate().toString().padStart(2, "0");
+      return formattedDate;
+    };
+
     const getRequestFundManager = async (
-      pageNo?: number,
-      // name?: string,
-      // publish?: string,
-      pageSize = "10"
+      name?: string,
+      VsdTradingCode?: string,
+      fundCode?: string,
+      fromDate?: string,
+      toDate?: string,
+      paymentStatus?: string,
+      commandStatus?: string,
+      commandType?: string
     ) => {
       loading.value = true;
       await store.getFundList({
         params: {
-          // name: name ? name : "",
-          // publish: publish ? publish : "",
-          pageNo: pageNo,
-          pageSize: pageSize,
+          name: name ? name : "",
+          VsdTradingCode: VsdTradingCode ? VsdTradingCode : "",
+          fund_code: fundCode ? fundCode : "",
+          fromDate: fromDate ? fromDate : "",
+          toDate: toDate ? toDate : "",
+          payment_status: paymentStatus ? paymentStatus : "",
+          order_type: commandType ? commandType : "",
+          order_status: commandStatus ? commandStatus : "",
         },
       });
 
       const requestPageResponse = JSON.parse(JSON.stringify(store.fundList));
 
       dataRequestFundManager.value = requestPageResponse.data;
-      pagination.value = {
-        totalPages: requestPageResponse.totalPages,
-        pageNo: requestPageResponse.pageNo,
-        pageSize: requestPageResponse.pageSize,
-        totalCount: requestPageResponse.totalCount,
-        currentCount: requestPageResponse.currentCount,
-      };
       loading.value = false;
     };
 
@@ -371,31 +399,14 @@ export default defineComponent({
       const formData = JSON.parse(JSON.stringify(formSearchData.value));
       console.log("formData", formData);
       getRequestFundManager(
-        1
-        // formData.name,
-        // formData.publish ? formData.publish : "",
-        // pagination.value.pageSize
-      );
-    };
-
-    function changePage(page) {
-      const formData = JSON.parse(JSON.stringify(formSearchData.value));
-      getRequestFundManager(
-        page
-        // formData.name,
-        // formData.publish ? formData.publish : "",
-        // pagination.value.pageSize
-      );
-    }
-
-    const changePageSize = (pageSize) => {
-      const formData = JSON.parse(JSON.stringify(formSearchData.value));
-      pagination.value.pageSize = pageSize;
-      getRequestFundManager(
-        1
-        // formData.name,
-        // formData.publish ? formData.publish : "",
-        // pageSize
+        formData.name ? formData.name : "",
+        formData.trading_code ? formData.trading_code : "",
+        formData.ccq_code ? formData.ccq_code : "",
+        fromDate.value,
+        toDate.value,
+        formData.payment_status ? formData.payment_status : "",
+        formData.command_status ? formData.command_status : "",
+        formData.command_type ? formData.command_type : ""
       );
     };
 
@@ -413,7 +424,7 @@ export default defineComponent({
     };
 
     onBeforeMount(() => {
-      getRequestFundManager(1);
+      getRequestFundManager();
       getFundStatus();
     });
 
@@ -428,8 +439,6 @@ export default defineComponent({
       commandStatus,
       commandType,
       formatDate,
-      changePage,
-      changePageSize,
       translate,
       handleSearch,
     };
