@@ -331,25 +331,36 @@ export default defineComponent({
           JSON.stringify(formSearchData.value.date_search)
         );
 
-        fromDate.value = formatData[0];
-        toDate.value = formatData[1];
+        fromDate.value = customDate(formatData[0]);
+        toDate.value = customDate(formatData[1]);
       } else {
         formSearchData.value.date_search = [];
       }
     });
 
-    const changeDate = (date) => {
-      const parts = date.split("-");
+    const customDate = (date) => {
+      if (date) {
+        const dateComponents = date.split("-");
 
-      const newDate = new Date(parts[2], parts[1] - 1, parts[0]);
+        const dateObject = new Date(
+          dateComponents[2],
+          dateComponents[1] - 1,
+          dateComponents[0]
+        );
 
-      const formattedDate =
-        newDate.getFullYear() +
-        "-" +
-        (newDate.getMonth() + 1).toString().padStart(2, "0") +
-        "-" +
-        newDate.getDate().toString().padStart(2, "0");
-      return formattedDate;
+        dateObject.setHours(0, 0, 0, 0);
+
+        const formattedDate = `${("0" + dateObject.getDate()).slice(-2)}-${(
+          "0" +
+          (dateObject.getMonth() + 1)
+        ).slice(-2)}-${dateObject.getFullYear()} ${(
+          "0" + dateObject.getHours()
+        ).slice(-2)}:${("0" + dateObject.getMinutes()).slice(-2)}:${(
+          "0" + dateObject.getSeconds()
+        ).slice(-2)}`;
+
+        return formattedDate;
+      }
     };
 
     const getRequestFundManager = async (
@@ -397,7 +408,6 @@ export default defineComponent({
 
     const handleSearch = () => {
       const formData = JSON.parse(JSON.stringify(formSearchData.value));
-      console.log("formData", formData);
       getRequestFundManager(
         formData.name ? formData.name : "",
         formData.trading_code ? formData.trading_code : "",

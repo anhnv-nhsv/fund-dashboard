@@ -51,7 +51,7 @@ const routes: Array<RouteRecordRaw> = [
       },
 
       {
-        path: "/apps/fund-infor/:id?",
+        path: "/apps/fund-infor/",
         name: "fund-infor-detail",
         component: () => import("@/views/apps/fund-infor/FundInforDetails.vue"),
         meta: {

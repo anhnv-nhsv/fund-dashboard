@@ -98,8 +98,11 @@
 <script lang="ts">
 import { defineComponent, reactive, ref, watch } from "vue";
 import NhForm from "@/components/nh-forms/NHForm.vue";
+import Swal from "sweetalert2/dist/sweetalert2.js";
 import type { FormInstance } from "element-plus";
+import { hideModal } from "@/core/helpers/dom";
 import { translate } from "@/core/helpers/i18n-translate";
+import { useFundDeclarationStore } from "@/stores/fund-declaration";
 
 export default defineComponent({
   name: "fund-category-modal",
@@ -112,12 +115,17 @@ export default defineComponent({
       },
       required: true,
     },
+    submitSearch: {
+      type: Function,
+    },
   },
   components: { NhForm },
   setup(props, ctx) {
     const loading = ref(false);
     const ruleFormRef = ref<FormInstance>();
+    const store = useFundDeclarationStore();
     const fundDeclarationModalRef = ref<null | HTMLElement>(null);
+
     const fundForm = ref({
       id: undefined,
       fundCode: "",
@@ -149,7 +157,97 @@ export default defineComponent({
       ],
     });
 
-    const handleRequest = (formEl: FormInstance | undefined) => {};
+    watch(
+      () => props.data,
+      (newData) => {
+        const data = JSON.parse(JSON.stringify(newData));
+        fundForm.value = {
+          id: data.id,
+          fundCode: data.fundCode,
+          fundName: data.fundName,
+          companyName: data.companyName,
+          isSell: data.isSell === "stopped" ? false : true,
+        };
+      }
+    );
+
+    const handleRequest = (formEl: FormInstance | undefined) => {
+      const today = new Date();
+      const date =
+        today.getDate() +
+        "-" +
+        (today.getMonth() + 1) +
+        "-" +
+        today.getFullYear();
+      const time =
+        today.getHours() + ":" + today.getMinutes() + ":" + today.getSeconds();
+      const dateTime = date + " " + time;
+
+      loading.value = true;
+      if (!formEl) return;
+      formEl.validate(async (valid, fields) => {
+        if (valid) {
+          const rawForm = JSON.parse(JSON.stringify(fundForm.value));
+
+          const formData = {
+            fnd_co_cd_p: rawForm.fundCode,
+            fnd_nm_p: rawForm.fundName,
+            fnd_co_nm_p: rawForm.companyName,
+            fnd_status_p: rawForm.isSell === true ? "sell" : "stopped",
+            created_at_p: dateTime,
+          };
+
+          if (props.action === "add") {
+            const result = await store.createFund(formData);
+            if (result.data.success === true) {
+              Swal.fire({
+                position: "center",
+                icon: "success",
+                title: translate("addBannerSuccessfully"),
+                showConfirmButton: false,
+                timer: 1000,
+              }).then(() => {
+                ctx.emit("submitSearch");
+                hideModal(fundDeclarationModalRef.value);
+              });
+            } else {
+              Swal.fire({
+                position: "center",
+                icon: "error",
+                title: result.data.mess,
+                showConfirmButton: false,
+                timer: 1000,
+              });
+            }
+          } else {
+            // const result = await store.editFund((formData));
+            // if (result.data.success === true) {
+            //   Swal.fire({
+            //     position: "center",
+            //     icon: "success",
+            //     title: translate("editBannerSuccessfully"),
+            //     showConfirmButton: false,
+            //     timer: 1000,
+            //   }).then(() => {
+            //     ctx.emit("on-close");
+            //     hideModal(fundDeclarationModalRef.value);
+            //   });
+            // } else {
+            //   Swal.fire({
+            //     position: "center",
+            //     icon: "error",
+            //     title: result.data.mess,
+            //     showConfirmButton: false,
+            //     timer: 1000,
+            //   });
+            // }
+          }
+        } else {
+          console.log("error submit!", fields);
+        }
+      });
+      loading.value = false;
+    };
 
     return {
       fundForm,

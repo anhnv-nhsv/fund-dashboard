@@ -100,8 +100,9 @@
   </div>
   <FundDeclarationModal
     @on-close="handleCloseModal"
-    :data="rowDetail"
+    :data="fundFormData"
     :action="fundDeclaAction"
+    @submitSearch="handleSearch"
   />
 </template>
 
@@ -111,7 +112,7 @@ import { Search } from "@element-plus/icons-vue";
 import { translate } from "@/core/helpers/i18n-translate";
 import FundDeclarationModal from "@/components/modals/forms/FundDeclarationModal.vue";
 import NHDatatable from "@/components/nh-datatable/NHDatatable.vue";
-import { useFundInforStore } from "@/stores/fund-infor";
+import { useFundDeclarationStore } from "@/stores/fund-declaration";
 
 export default defineComponent({
   name: "apps-declaration-management",
@@ -120,7 +121,7 @@ export default defineComponent({
     FundDeclarationModal,
   },
   setup() {
-    const store = useFundInforStore();
+    const store = useFundDeclarationStore();
     const formSearchData = ref({
       name: "",
       date_search: [],
@@ -128,17 +129,17 @@ export default defineComponent({
     const tableHeader = ref([
       {
         label: "Order",
-        prop: "seq_no",
+        prop: "id",
         visible: true,
       },
       {
         label: "Date",
-        prop: "vsd",
+        prop: "created_at",
         visible: true,
       },
       {
         label: "Fund",
-        prop: "fnd_full_cd",
+        prop: "fnd_co_cd",
         visible: true,
       },
       {
@@ -153,7 +154,7 @@ export default defineComponent({
       },
       {
         label: "Status",
-        prop: "fund_code",
+        prop: "fnd_status",
         visible: true,
       },
       {
@@ -168,57 +169,55 @@ export default defineComponent({
       },
     ]);
     const loading = ref<boolean>(false);
-    let pagination = ref();
     let dataRequestFundInfor = ref();
     const userList = ref([]);
-    const rowDetail = ref();
     let fundDeclaAction = ref("");
+    const fundFormData = ref({});
 
-    const getRequestFundInfor = async (
-      pageNo?: number,
-      name?: string,
-      pageSize = "10"
-    ) => {
+    const getRequestFundInfor = async () => {
       loading.value = true;
-      await store.getFundInforList({
-        params: {
-          name: name ? name : "",
-          pageNo: pageNo,
-          pageSize: pageSize,
-        },
-      });
+      await store.getFundNhsvList();
 
       const requestPageResponse = JSON.parse(
-        JSON.stringify(store.fundInforList)
+        JSON.stringify(store.fundNhsvList)
       );
 
       dataRequestFundInfor.value = requestPageResponse.data;
-
-      pagination.value = {
-        totalPages: requestPageResponse.totalPages,
-        pageNo: requestPageResponse.pageNo,
-        pageSize: requestPageResponse.pageSize,
-        totalCount: requestPageResponse.totalCount,
-        currentCount: requestPageResponse.currentCount,
-      };
       loading.value = false;
     };
 
     const handleSearch = (e) => {
       const formData = JSON.parse(JSON.stringify(formSearchData.value));
       console.log("formData: ", formData);
+      getRequestFundInfor();
     };
     const addFundDeclaration = () => {
       fundDeclaAction.value = "add";
+      fundFormData.value = {
+        fundCode: "",
+        fundName: "",
+        companyName: "",
+        isSell: "sell",
+      };
     };
     const editFundDeclaration = (val?: object | undefined) => {
       fundDeclaAction.value = "edit";
+      const row = JSON.parse(JSON.stringify(val));
+
+      fundFormData.value = {
+        id: row.id,
+        fundCode: row.fnd_co_cd,
+        fundName: row.fnd_nm,
+        companyName: row.fnd_co_nm,
+        date: row.created_at,
+        isSell: row.fnd_status,
+      };
     };
 
     const handleCloseModal = () => {};
 
     onBeforeMount(() => {
-      getRequestFundInfor(1);
+      getRequestFundInfor();
     });
     return {
       userList,
@@ -228,7 +227,7 @@ export default defineComponent({
       loading,
       Search,
       dataRequestFundInfor,
-      rowDetail,
+      fundFormData,
       translate,
       handleSearch,
       handleCloseModal,

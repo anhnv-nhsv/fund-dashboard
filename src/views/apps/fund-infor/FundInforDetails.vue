@@ -1,8 +1,9 @@
 <template>
   <div class="card">
-    <div class="p-8">
+    <div class="p-8" v-for="(item, index) in detailResponse" :key="index">
       <div class="text-center fs-3 fw-bolder">
-        VCAM-NH VABF-Quỹ Đầu tư Trái phiếu phát triển Việt Nam VCAM-NH
+        {{ item?.fnd_full_cd }}-Quỹ Đầu tư Trái phiếu phát triển Việt Nam
+        {{ item?.fnd_cd }}
       </div>
       <div class="container-fund-detail">
         <div class="px-12">
@@ -12,82 +13,96 @@
                 <div class="fs-5 fw-bolder" style="min-width: 200px">
                   Fund code
                 </div>
-                <span class="fs-5 text-muted">VCAM-NH VABF</span>
+                <span class="fs-5 text-muted">{{ item?.fnd_full_cd }}</span>
               </div>
               <div class="d-flex mt-4 align-items-center">
                 <div class="fs-5 fw-bolder" style="min-width: 200px">
                   Fund name
                 </div>
-                <span class="fs-5 text-muted"
-                  >Quỹ Đầu tư Trái phiếu phát triển Việt Nam VCAM-NH</span
-                >
+                <span class="fs-5 text-muted">{{ item?.fnd_nm }}</span>
               </div>
               <div class="d-flex mt-4 align-items-center">
                 <div class="fs-5 fw-bolder" style="min-width: 200px">
                   Company name
                 </div>
-                <span class="fs-5 text-muted"
-                  >CTCP Quản lý Quỹ Đầu tư Chứng khoán Bản Việt</span
-                >
+                <span class="fs-5 text-muted">{{ item?.fnd_co_nm }}</span>
               </div>
               <div class="d-flex mt-4 align-items-center">
                 <div class="fs-5 fw-bolder" style="min-width: 200px">
                   Strategy
                 </div>
-                <span class="fs-5 text-muted"
-                  >Quỹ áp dụng chiến lược đa dạng hóa danh mục và đầu tư chọn
-                  lọc nhắm hướng đến mục tiêu ...</span
-                >
+                <span class="fs-5 text-muted">{{ item?.strategy }}</span>
               </div>
               <div class="d-flex mt-4 align-items-center">
                 <div class="fs-5 fw-bolder" style="min-width: 200px">
                   Trading date
                 </div>
-                <span class="fs-5 text-muted">Daily</span>
+                <span class="fs-5 text-muted">{{ item?.trd_dt }}</span>
               </div>
               <div class="d-flex mt-4 align-items-center">
                 <div class="fs-5 fw-bolder" style="min-width: 200px">
                   Closing time
                 </div>
-                <span class="fs-5 text-muted">14:45:00 daily</span>
+                <span class="fs-5 text-muted">{{ item?.ord_cls_tm }}</span>
               </div>
               <div class="d-flex mt-4 align-items-center">
                 <div class="fs-5 fw-bolder" style="min-width: 200px">
                   Subsciption fee
                 </div>
-                <span class="fs-5 text-muted">0.05%</span>
+                <span class="fs-5 text-muted"
+                  >{{ (item?.subs_fee_rt * 100).toFixed(1) }}%</span
+                >
               </div>
               <div class="d-flex mt-4 align-items-center">
                 <div class="fs-5 fw-bolder" style="min-width: 200px">
                   Redemption fee
                 </div>
-                <span class="fs-5 text-muted">0.05%</span>
+                <div
+                  class="fs-5 text-muted"
+                  v-for="(redemp, index) in item?.redemption_fee"
+                  :key="index"
+                >
+                  <div class="d-flex">
+                    <div
+                      v-if="
+                        redemp?.holding_min === 0 || redemp?.holding_min === 12
+                      "
+                    >
+                      Từ tháng {{ redemp?.holding_min }} -
+                      {{ redemp?.holding_max }}:
+                    </div>
+                    <div v-if="redemp?.holding_min === 24">
+                      Trên {{ redemp?.holding_min }} tháng:
+                    </div>
+                    <div>&nbsp;{{ redemp?.fee_percentage_text }},&nbsp;</div>
+                  </div>
+                </div>
               </div>
               <div class="d-flex mt-4 align-items-center">
                 <div class="fs-5 fw-bolder" style="min-width: 200px">
                   Sell tax
                 </div>
-                <span class="fs-5 text-muted">0.1%</span>
+                <span class="fs-5 text-muted"
+                  >{{ (item?.sell_tax_rt * 100).toFixed(1) }}%</span
+                >
               </div>
               <div class="d-flex mt-4 align-items-center">
                 <div class="fs-5 fw-bolder" style="min-width: 200px">
                   Bank name
                 </div>
-                <span class="fs-5 text-muted">Ngân hàng BIDV</span>
+                <span class="fs-5 text-muted">{{ item.bank_nm }}</span>
               </div>
               <div class="d-flex mt-4 align-items-center">
                 <div class="fs-5 fw-bolder" style="min-width: 200px">
                   Bank acccount name
                 </div>
-                <span class="fs-5 text-muted"
-                  >Quỹ Đầu tư cân bằng Bản Việt</span
-                >
+                <span class="fs-5 text-muted">{{ item.bank_acnt_nm }}</span>
               </div>
               <div class="d-flex mt-4 align-items-center">
                 <div class="fs-5 fw-bolder" style="min-width: 200px">
                   Bank acccount number
                 </div>
-                <span class="fs-5 text-muted">123456789</span>
+                <span class="fs-5 text-muted">{{ item.bank_acnt_no }}</span>
               </div>
             </div>
             <div class="col-6 py-4">
@@ -95,59 +110,85 @@
                 <div class="fs-5 fw-bolder" style="min-width: 200px">
                   Buy minmum amount
                 </div>
-                <span class="fs-5 text-muted">1,000,000 VND</span>
+                <span class="fs-5 text-muted"
+                  >{{ item?.buy_min_amt.toLocaleString() }} VND</span
+                >
               </div>
               <div class="d-flex mt-4 align-items-center">
                 <div class="fs-5 fw-bolder" style="min-width: 200px">NAV</div>
-                <span class="fs-5 text-muted">99,888,000,200 VND</span>
+                <span class="fs-5 text-muted"
+                  >{{ item?.nav.toLocaleString() }} VND</span
+                >
               </div>
               <div class="d-flex mt-4 align-items-center">
                 <div class="fs-5 fw-bolder" style="min-width: 200px">
                   Updated NAV date
                 </div>
-                <span class="fs-5 text-muted">12/10/2023</span>
+                <span class="fs-5 text-muted">{{ item?.nav_upd_dt }}</span>
               </div>
               <div class="d-flex mt-4 align-items-center">
                 <div class="fs-5 fw-bolder" style="min-width: 200px">
                   Growth in month
                 </div>
-                <span class="fs-5 text-danger">-2.75%</span>
+                <span class="fs-5 text-danger">{{
+                  item?.growth_in_mth === null ? "-" : item?.growth_in_mth
+                }}</span>
               </div>
               <div class="d-flex mt-4 align-items-center">
                 <div class="fs-5 fw-bolder" style="min-width: 200px">
                   Growth in 6M
                 </div>
-                <span class="fs-5 text-success">10.75%</span>
+                <span class="fs-5 text-success">{{
+                  item?.growth_in_last_6m === null
+                    ? "-"
+                    : item?.growth_in_last_6m
+                }}</span>
               </div>
               <div class="d-flex mt-4 align-items-center">
                 <div class="fs-5 fw-bolder" style="min-width: 200px">
                   Growth in 1Y
                 </div>
-                <span class="fs-5 text-success">10.75%</span>
+                <span class="fs-5 text-success">{{
+                  item?.growth_in_last_1y === null
+                    ? "-"
+                    : item?.growth_in_last_1y
+                }}</span>
               </div>
               <div class="d-flex mt-4 align-items-center">
                 <div class="fs-5 fw-bolder" style="min-width: 200px">
                   Growth in 3Y
                 </div>
-                <span class="fs-5 text-success">10.75%</span>
+                <span class="fs-5 text-success">{{
+                  item?.growth_in_last_3y === null
+                    ? "-"
+                    : item?.growth_in_last_3y
+                }}</span>
               </div>
               <div class="d-flex mt-4 align-items-center">
                 <div class="fs-5 fw-bolder" style="min-width: 200px">
                   Growth in 5Y
                 </div>
-                <span class="fs-5 text-success">10.75%</span>
+                <span class="fs-5 text-success">{{
+                  item?.growth_in_last_5y === null
+                    ? "-"
+                    : item?.growth_in_last_5y
+                }}</span>
               </div>
               <div class="d-flex mt-4 align-items-center">
                 <div class="fs-5 fw-bolder" style="min-width: 200px">
                   Growth YTD
                 </div>
-                <span class="fs-5 text-success">10.75%</span>
+                <span class="fs-5 text-success">{{
+                  item?.growth_ytd === null ? "-" : item?.growth_ytd
+                }}</span>
               </div>
               <div class="d-flex mt-4 align-items-center">
                 <div class="fs-5 fw-bolder" style="min-width: 200px">
                   Growth inception
                 </div>
-                <span class="fs-5 text-success">10.75%</span>
+                <span class="fs-5 text-success">{{
+                  item?.growth_icpt === null ? "-" : item?.growth_icpt
+                }}</span>
               </div>
             </div>
           </div>
@@ -158,14 +199,58 @@
 </template>
 
 <script lang="ts">
-import { defineComponent, ref } from "vue";
-import { Search } from "@element-plus/icons-vue";
+import { defineComponent, onBeforeMount, ref } from "vue";
+import { useFundInforStore } from "@/stores/fund-infor";
+import { useRoute } from "vue-router";
 
 export default defineComponent({
   name: "fund-information-details",
   components: {},
   setup() {
-    return {};
+    const loading = ref<boolean>(false);
+    const detailResponse = ref();
+    const detailOrderResponse = ref();
+    const store = useFundInforStore();
+    const route = useRoute();
+
+    const getFundInforDetail = async () => {
+      loading.value = true;
+      await store.getFundInforDetails(route.query.fundCode);
+
+      const requestFundResponse = JSON.parse(
+        JSON.stringify(store.fundInforDetail)
+      );
+
+      detailResponse.value = formatDataGetFund(requestFundResponse?.data);
+      console.log("detailResponse.value: ", detailResponse.value);
+
+      loading.value = false;
+    };
+
+    const formatDataGetFund = (items) => {
+      if (items.length > 0) {
+        return items.map((item) => {
+          return {
+            ...item,
+            redemption_fee: formatRedemption(item.redemption_fee),
+          };
+        });
+      }
+    };
+
+    const formatRedemption = (item) => {
+      const formattedJsonString = JSON.parse(item);
+      return formattedJsonString;
+    };
+
+    onBeforeMount(() => {
+      getFundInforDetail();
+    });
+
+    return {
+      detailResponse,
+      detailOrderResponse,
+    };
   },
 });
 </script>

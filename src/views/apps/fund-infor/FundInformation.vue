@@ -38,15 +38,13 @@
         :loading="loading"
         :pagination="pagination"
         userRole="all"
-        @change-page="changePage"
-        @change-page-size="changePageSize"
       >
         <template v-slot:fnd_full_cd="{ row }">
           <router-link
             :to="{
               name: 'fund-infor-detail',
-              params: {
-                id: row.fnd_full_cd,
+              query: {
+                fundCode: row.fnd_co_cd,
               },
             }"
           >
@@ -157,34 +155,15 @@ export default defineComponent({
     ]);
     const loading = ref<boolean>(false);
 
-    const getRequestFundInfor = async (
-      pageNo?: number,
-      name?: string,
-      pageSize = "10"
-    ) => {
+    const getRequestFundInfor = async () => {
       loading.value = true;
-      await store.getFundInforList({
-        params: {
-          name: name ? name : "",
-          pageNo: pageNo,
-          pageSize: pageSize,
-        },
-      });
+      await store.getFundInforList();
 
       const requestPageResponse = JSON.parse(
         JSON.stringify(store.fundInforList)
       );
 
       dataRequestFundInfor.value = formatDataGetFund(requestPageResponse.data);
-      console.log("dataRequestFundInfor.value: ", dataRequestFundInfor.value);
-
-      pagination.value = {
-        totalPages: requestPageResponse.totalPages,
-        pageNo: requestPageResponse.pageNo,
-        pageSize: requestPageResponse.pageSize,
-        totalCount: requestPageResponse.totalCount,
-        currentCount: requestPageResponse.currentCount,
-      };
       loading.value = false;
     };
 
@@ -207,18 +186,7 @@ export default defineComponent({
     const handleSearch = () => {
       const formData = JSON.parse(JSON.stringify(formSearchData.value));
       console.log("formData", formData);
-      getRequestFundInfor(1, formData.name, pagination.value.pageSize);
-    };
-
-    function changePage(page) {
-      const formData = JSON.parse(JSON.stringify(formSearchData.value));
-      getRequestFundInfor(page, formData.name, pagination.value.pageSize);
-    }
-
-    const changePageSize = (pageSize) => {
-      const formData = JSON.parse(JSON.stringify(formSearchData.value));
-      pagination.value.pageSize = pageSize;
-      getRequestFundInfor(1, formData.name, pageSize);
+      getRequestFundInfor();
     };
 
     const formatDate = (val) => {
@@ -232,7 +200,7 @@ export default defineComponent({
     };
 
     onBeforeMount(() => {
-      getRequestFundInfor(1);
+      getRequestFundInfor();
     });
 
     return {
@@ -243,8 +211,6 @@ export default defineComponent({
       pagination,
       Search,
       translate,
-      changePage,
-      changePageSize,
       formatDate,
       handleSearch,
     };
