@@ -1,18 +1,16 @@
 <template>
   <div
     class="modal fade"
-    id="kt_banner_modal"
-    ref="bannerModalRef"
+    id="kt_fund_declaration_action_modal"
+    ref="fundDeclarationModalRef"
     tabindex="-1"
     aria-hidden="true"
   >
     <div class="modal-dialog modal-dialog-centered mw-800px">
       <div class="modal-content">
         <div class="modal-header">
-          <h2 class="fw-bolder" v-if="action === 'add'">
-            {{ translate("addBanner") }}
-          </h2>
-          <h2 class="fw-bolder" v-else>{{ translate("editBanner") }}</h2>
+          <h2 class="fw-bolder" v-if="action === 'add'">Add Funds</h2>
+          <h2 class="fw-bolder" v-else>Edit Funds</h2>
           <div
             id="kt_customer_export_close"
             data-bs-dismiss="modal"
@@ -28,48 +26,35 @@
             <template v-slot:customForm>
               <el-form
                 ref="ruleFormRef"
-                :model="bannerForm"
+                :model="fundForm"
                 label-width="160px"
+                :rules="rules"
               >
-                <el-form-item :label="translate('name')">
+                <el-form-item label="Fund code" prop="fundCode">
                   <el-input
-                    v-model="bannerForm.name"
-                    :placeholder="translate('name')"
+                    v-model="fundForm.fundCode"
+                    placeholder="Fund code"
                     clearable
                   />
                 </el-form-item>
-                <el-form-item :label="translate('url')">
+                <el-form-item label="Fund name" prop="fundName">
                   <el-input
-                    v-model="bannerForm.attachUrl"
-                    :placeholder="translate('url')"
+                    v-model="fundForm.fundName"
+                    placeholder="Fund name"
                     clearable
                   />
                 </el-form-item>
-                <el-form-item :label="translate('image')" prop="imageUrl">
+                <el-form-item label="Company name" prop="companyName">
                   <el-input
-                    v-model="bannerForm.imageUrl"
-                    :placeholder="translate('image')"
-                    clearable
-                    disabled
-                  >
-                    <template #prepend>
-                      <el-button type="primary" @click.prevent="chooseImage">
-                        {{ translate("chooseFile") }}
-                      </el-button>
-                    </template>
-                  </el-input>
-                </el-form-item>
-                <el-form-item :label="translate('content')">
-                  <el-input
-                    v-model="bannerForm.content"
-                    :placeholder="translate('content')"
+                    v-model="fundForm.companyName"
+                    placeholder="Company name"
                     clearable
                   />
                 </el-form-item>
                 <el-form-item>
                   <el-checkbox
-                    v-model="bannerForm.isPublish"
-                    :label="translate('publish')"
+                    v-model="fundForm.isSell"
+                    label="Sell"
                     size="large"
                   />
                 </el-form-item>
@@ -115,13 +100,12 @@ import { defineComponent, reactive, ref, watch } from "vue";
 import NhForm from "@/components/nh-forms/NHForm.vue";
 import Swal from "sweetalert2/dist/sweetalert2.js";
 import type { FormInstance } from "element-plus";
-import { useBanner } from "@/stores/banner";
-import qs from "qs";
 import { hideModal } from "@/core/helpers/dom";
 import { translate } from "@/core/helpers/i18n-translate";
+import { useFundDeclarationStore } from "@/stores/fund-declaration";
 
 export default defineComponent({
-  name: "banner-category-modal",
+  name: "fund-category-modal",
   props: {
     action: { type: String, default: () => "add", required: false },
     data: {
@@ -131,23 +115,40 @@ export default defineComponent({
       },
       required: true,
     },
+    submitSearch: {
+      type: Function,
+    },
   },
   components: { NhForm },
   setup(props, ctx) {
     const loading = ref(false);
-    const store = useBanner();
     const ruleFormRef = ref<FormInstance>();
-    const bannerModalRef = ref<null | HTMLElement>(null);
-    const bannerForm = ref({
+    const store = useFundDeclarationStore();
+    const fundDeclarationModalRef = ref<null | HTMLElement>(null);
+
+    const fundForm = ref({
       id: undefined,
-      name: "",
-      attachUrl: "",
-      imageUrl: "",
-      content: "",
-      isPublish: false,
+      fundCode: "",
+      fundName: "",
+      companyName: "",
+      isSell: false,
     });
     const rules = reactive({
-      imageUrl: [
+      fundCode: [
+        {
+          required: true,
+          message: translate("requiredField"),
+          trigger: "blur",
+        },
+      ],
+      fundName: [
+        {
+          required: true,
+          message: translate("requiredField"),
+          trigger: "blur",
+        },
+      ],
+      companyName: [
         {
           required: true,
           message: translate("requiredField"),
@@ -160,85 +161,59 @@ export default defineComponent({
       () => props.data,
       (newData) => {
         const data = JSON.parse(JSON.stringify(newData));
-        bannerForm.value = {
+        fundForm.value = {
           id: data.id,
-          name: data.name,
-          attachUrl: data.attachUrl,
-          imageUrl: data.imageUrl,
-          content: data.content,
-          isPublish: data.isPublish === 1,
+          fundCode: data.fundCode,
+          fundName: data.fundName,
+          companyName: data.companyName,
+          isSell: data.isSell === "stopped" ? false : true,
         };
-        console.log(bannerForm.value);
       }
     );
-
-    watch(
-      () => props.action,
-      (newAction) => {
-        if (newAction === "add") {
-          bannerForm.value.imageUrl = "";
-        }
-      }
-    );
-
-    const chooseImage = () => {
-      window.addEventListener("message", handleMessage);
-      Swal.fire({
-        width: "80%",
-        heightAuto: false,
-        /* eslint-disable no-useless-escape */
-        html: `<iframe
-                    ref="fileManagerIframe"
-                    class="rounded h-600px w-100"
-                    src="http://172.33.30.19:8010/filemanager/dialog.php?type=0&field_id=imgField&crossdomain=1&lang=en_EN&akey=YQv5t_7gG2.gu7b7\-xcoW"
-                    :allowfullscreen="true"
-               ></iframe>`,
-        closeButtonAriaLabel: "Close file manager",
-        showCloseButton: true,
-        showConfirmButton: false,
-        customClass: {
-          htmlContainer: "rfm-height-100",
-        },
-      });
-    };
-
-    const handleMessage = (event) => {
-      if (event.data.sender === "responsivefilemanager") {
-        if (event.data.field_id) {
-          bannerForm.value.imageUrl = event.data.url;
-          Swal.close();
-          // Delete handler of the message from ResponsiveFilemanager
-          window.removeEventListener("message", handleMessage);
-        }
-      }
-    };
 
     const handleRequest = (formEl: FormInstance | undefined) => {
+      const today = new Date();
+      const date =
+        today.getDate() +
+        "-" +
+        (today.getMonth() + 1) +
+        "-" +
+        today.getFullYear();
+      const currentSeconds = today.getSeconds();
+
+      const formattedSeconds =
+        currentSeconds < 10 ? "0" + currentSeconds : currentSeconds;
+
+      const time =
+        today.getHours() + ":" + today.getMinutes() + ":" + formattedSeconds;
+      const dateTime = date + " " + time;
+
       loading.value = true;
       if (!formEl) return;
       formEl.validate(async (valid, fields) => {
         if (valid) {
-          const rawForm = JSON.parse(JSON.stringify(bannerForm.value));
+          const rawForm = JSON.parse(JSON.stringify(fundForm.value));
+
           const formData = {
-            id: rawForm.id,
-            name: rawForm.name,
-            content: rawForm.content,
-            publish: rawForm.isPublish ? 1 : 0,
-            link: rawForm.attachUrl,
-            image: rawForm.imageUrl,
+            fnd_co_cd_p: rawForm.fundCode,
+            fnd_nm_p: rawForm.fundName,
+            fnd_co_nm_p: rawForm.companyName,
+            fnd_status_p: rawForm.isSell === true ? "sell" : "stopped",
+            created_at_p: dateTime,
           };
+
           if (props.action === "add") {
-            const result = await store.createBanner(qs.stringify(formData));
+            const result = await store.createFund(formData);
             if (result.data.success === true) {
               Swal.fire({
                 position: "center",
                 icon: "success",
-                title: translate("addBannerSuccessfully"),
+                title: translate("successfully"),
                 showConfirmButton: false,
                 timer: 1000,
               }).then(() => {
-                ctx.emit("on-close");
-                hideModal(bannerModalRef.value);
+                ctx.emit("submitSearch");
+                hideModal(fundDeclarationModalRef.value);
               });
             } else {
               Swal.fire({
@@ -250,17 +225,17 @@ export default defineComponent({
               });
             }
           } else {
-            const result = await store.editBanner(qs.stringify(formData));
+            const result = await store.updateFund(formData);
             if (result.data.success === true) {
               Swal.fire({
                 position: "center",
                 icon: "success",
-                title: translate("editBannerSuccessfully"),
+                title: translate("successfully"),
                 showConfirmButton: false,
                 timer: 1000,
               }).then(() => {
-                ctx.emit("on-close");
-                hideModal(bannerModalRef.value);
+                ctx.emit("submitSearch");
+                hideModal(fundDeclarationModalRef.value);
               });
             } else {
               Swal.fire({
@@ -280,12 +255,11 @@ export default defineComponent({
     };
 
     return {
-      bannerForm,
+      fundForm,
       ruleFormRef,
       rules,
       loading,
-      bannerModalRef,
-      chooseImage,
+      fundDeclarationModalRef,
       handleRequest,
       translate,
     };

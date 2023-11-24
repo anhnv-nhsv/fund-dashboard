@@ -11,153 +11,68 @@ import JwtService from "@/core/services/JwtService";
 const routes: Array<RouteRecordRaw> = [
   {
     path: "/",
-    redirect: "/dashboard",
+    redirect: "/apps/fund-certificates",
     component: () => import("@/layouts/main-layout/MainLayout.vue"),
     meta: {
       middleware: "auth",
     },
     children: [
+      // FUND START
       {
-        path: "/dashboard",
-        name: "dashboard",
-        component: () => import("@/views/Dashboard.vue"),
+        path: "/apps/fund-certificates",
+        name: "apps-fund-management",
+        component: () => import("@/views/apps/fund/FundMgmt.vue"),
         meta: {
-          pageTitle: "dashboard",
-          breadcrumbs: ["dashboard"],
+          pageTitle: "Fund management",
+          breadcrumbs: ["apps", "Fund"],
         },
       },
-      // FILE MANAGER START
+
       {
-        path: "/apps/file-manager",
-        name: "apps-file-manager",
-        component: () => import("@/views/apps/file-manager/FileManager.vue"),
+        path: "/apps/fund-certificate/",
+        name: "fund-certificates-detail",
+        component: () => import("@/views/apps/fund/FundDetails.vue"),
         meta: {
-          pageTitle: "fileManager",
-          // breadcrumbs: ["Apps", "File Manager"],
+          pageTitle: "Fund Details",
+          breadcrumbs: ["apps", "Fund Details"],
         },
       },
-      // FILE MANAGER END
-      // PAGE START
+      // FUND END
+
+      // FUND INFOR START
       {
-        path: "/apps/page-management",
-        name: "apps-page-management",
+        path: "/apps/fund-information",
+        name: "apps-fund-information",
+        component: () => import("@/views/apps/fund-infor/FundInformation.vue"),
+        meta: {
+          pageTitle: "Fund management",
+          breadcrumbs: ["apps", "Fund"],
+        },
+      },
+
+      {
+        path: "/apps/fund-infor/",
+        name: "fund-infor-detail",
+        component: () => import("@/views/apps/fund-infor/FundInforDetails.vue"),
+        meta: {
+          pageTitle: "Fund Details",
+          breadcrumbs: ["apps", "Fund Details"],
+        },
+      },
+      // FUND INFOR END
+
+      // FUND DECLARATION START
+      {
+        path: "/apps/fund-declaration",
+        name: "apps-declaration-management",
         component: () =>
-          import("@/views/apps/page-management/PageManagement.vue"),
+          import("@/views/apps/fund-declaration/FundDeclaration.vue"),
         meta: {
-          pageTitle: "pageManagement",
-          breadcrumbs: ["apps", "pageManagement"],
+          pageTitle: "Fund Declaration",
+          breadcrumbs: ["apps", "Fund Declaration"],
         },
       },
-      // PAGE END
-
-      // NEWS START
-      {
-        path: "/apps/news/category",
-        name: "news-category",
-        component: () => import("@/views/apps/news/NewsCategories.vue"),
-        meta: {
-          pageTitle: "newsCategory",
-          breadcrumbs: ["apps", "news", "newsCategory"],
-        },
-      },
-      {
-        path: "/apps/news/list",
-        name: "news-listing",
-        component: () => import("@/views/apps/news/NewsListing.vue"),
-        meta: {
-          pageTitle: "newsList",
-          breadcrumbs: ["apps", "news", "newsList"],
-        },
-      },
-      // NEWS END
-
-      // REPORT START
-      {
-        path: "/apps/report/category",
-        name: "report-category",
-        component: () => import("@/views/apps/report/ReportCategory.vue"),
-        meta: {
-          pageTitle: "reportCategory",
-          breadcrumbs: ["apps", "report", "reportCategory"],
-        },
-      },
-      {
-        path: "/apps/report/list",
-        name: "report-list",
-        component: () => import("@/views/apps/report/ReportList.vue"),
-        meta: {
-          pageTitle: "reportList",
-          breadcrumbs: ["apps", "report", "reportList"],
-        },
-      },
-      // REPORT END
-
-      // CONTACT START
-      {
-        path: "/apps/contact",
-        name: "contact-category",
-        component: () => import("@/views/apps/contact/Contact.vue"),
-        meta: {
-          pageTitle: "contact",
-          breadcrumbs: ["apps", "contact"],
-        },
-      },
-      // CONTACT END
-
-      // BANNER START
-      {
-        path: "/apps/banner-management",
-        name: "apps-banner-management",
-        component: () => import("@/views/apps/banner/Banner.vue"),
-        meta: {
-          pageTitle: "bannerManagement",
-          breadcrumbs: ["apps", "bannerManagement"],
-        },
-      },
-      // BANNER END
-
-      // USER START
-      {
-        path: "/apps/user-management",
-        name: "apps-user-management",
-        component: () => import("@/views/apps/user/UserMgmt.vue"),
-        meta: {
-          pageTitle: "user",
-          breadcrumbs: ["apps", "user"],
-        },
-      },
-      // USER END
-
-      // SETTING START
-      {
-        path: "/apps/setting/menu",
-        name: "menu-management",
-        component: () => import("@/views/apps/settings/Menu.vue"),
-        meta: {
-          pageTitle: "Menu",
-          breadcrumbs: ["apps", "setting", "Menu"],
-        },
-      },
-
-      {
-        path: "/apps/setting/display",
-        name: "display-management",
-        component: () => import("@/views/apps/settings/Display.vue"),
-        meta: {
-          pageTitle: "Display",
-          breadcrumbs: ["apps", "setting", "Display"],
-        },
-      },
-      {
-        path: "/apps/setting/custom",
-        name: "setting-management",
-        component: () => import("@/views/apps/settings/Setting.vue"),
-        meta: {
-          pageTitle: "Setting",
-          breadcrumbs: ["apps", "setting", "Custom"],
-        },
-      },
-      // SETTING END
+      // FUND DECLARATION END
     ],
   },
   {
