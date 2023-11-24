@@ -11,7 +11,7 @@
       <!--begin::Heading-->
       <div class="text-center mb-10">
         <!--begin::Title-->
-        <h1 class="text-dark mb-3">Sign-in to new homepage dashboard</h1>
+        <h1 class="text-dark mb-3">Sign-in to Fund Management</h1>
         <!--end::Title-->
 
         <!--begin::Link-->
@@ -217,7 +217,7 @@ export default defineComponent({
           },
         }).then(() => {
           // Go to page after successfully login
-          router.push({ name: "dashboard" });
+          router.push({ name: "apps-fund-management" });
         });
       } else {
         Swal.fire({
@@ -237,7 +237,7 @@ export default defineComponent({
       //Deactivate indicator
       submitButton.value?.removeAttribute("data-kt-indicator");
       // eslint-disable-next-line
-        submitButton.value!.disabled = false;
+      submitButton.value!.disabled = false;
     };
 
     return {

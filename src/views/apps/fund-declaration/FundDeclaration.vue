@@ -107,7 +107,7 @@
 </template>
 
 <script lang="ts">
-import { defineComponent, onBeforeMount, ref } from "vue";
+import { defineComponent, onBeforeMount, ref, watch } from "vue";
 import { Search } from "@element-plus/icons-vue";
 import { translate } from "@/core/helpers/i18n-translate";
 import FundDeclarationModal from "@/components/modals/forms/FundDeclarationModal.vue";
@@ -173,10 +173,60 @@ export default defineComponent({
     const userList = ref([]);
     let fundDeclaAction = ref("");
     const fundFormData = ref({});
+    let fromDate = ref();
+    let toDate = ref();
 
-    const getRequestFundInfor = async () => {
+    watch(formSearchData.value, (_) => {
+      if (formSearchData?.value?.date_search) {
+        const formatData = JSON.parse(
+          JSON.stringify(formSearchData.value.date_search)
+        );
+
+        fromDate.value = customDate(formatData[0]);
+        toDate.value = customDate(formatData[1]);
+      } else {
+        formSearchData.value.date_search = [];
+      }
+    });
+
+    const customDate = (date) => {
+      if (date) {
+        const dateComponents = date.split("-");
+
+        const dateObject = new Date(
+          dateComponents[2],
+          dateComponents[1] - 1,
+          dateComponents[0]
+        );
+
+        dateObject.setHours(0, 0, 0, 0);
+
+        const formattedDate = `${("0" + dateObject.getDate()).slice(-2)}-${(
+          "0" +
+          (dateObject.getMonth() + 1)
+        ).slice(-2)}-${dateObject.getFullYear()} ${(
+          "0" + dateObject.getHours()
+        ).slice(-2)}:${("0" + dateObject.getMinutes()).slice(-2)}:${(
+          "0" + dateObject.getSeconds()
+        ).slice(-2)}`;
+
+        return formattedDate;
+      }
+    };
+
+    const getRequestFundInfor = async (
+      fundName?: string,
+      fromDate?: string,
+      toDate?: string
+    ) => {
       loading.value = true;
-      await store.getFundNhsvList();
+      await store.getFundNhsvList({
+        params: {
+          fnd_nm: fundName ? fundName : "",
+          fromDate: fromDate ? fromDate : "",
+          toDate: toDate ? toDate : "",
+        },
+      });
 
       const requestPageResponse = JSON.parse(
         JSON.stringify(store.fundNhsvList)
@@ -186,10 +236,13 @@ export default defineComponent({
       loading.value = false;
     };
 
-    const handleSearch = (e) => {
+    const handleSearch = () => {
       const formData = JSON.parse(JSON.stringify(formSearchData.value));
-      console.log("formData: ", formData);
-      getRequestFundInfor();
+      getRequestFundInfor(
+        formData.name ? formData.name : "",
+        fromDate.value,
+        toDate.value
+      );
     };
     const addFundDeclaration = () => {
       fundDeclaAction.value = "add";
@@ -219,6 +272,7 @@ export default defineComponent({
     onBeforeMount(() => {
       getRequestFundInfor();
     });
+
     return {
       userList,
       formSearchData,

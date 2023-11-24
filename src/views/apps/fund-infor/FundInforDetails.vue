@@ -2,7 +2,7 @@
   <div class="card">
     <div class="p-8" v-for="(item, index) in detailResponse" :key="index">
       <div class="text-center fs-3 fw-bolder">
-        {{ item?.fnd_full_cd }}-Quỹ Đầu tư Trái phiếu phát triển Việt Nam
+        {{ item?.fnd_full_cd }} - Quỹ Đầu tư Trái phiếu phát triển Việt Nam
         {{ item?.fnd_cd }}
       </div>
       <div class="container-fund-detail">

@@ -179,8 +179,13 @@ export default defineComponent({
         (today.getMonth() + 1) +
         "-" +
         today.getFullYear();
+      const currentSeconds = today.getSeconds();
+
+      const formattedSeconds =
+        currentSeconds < 10 ? "0" + currentSeconds : currentSeconds;
+
       const time =
-        today.getHours() + ":" + today.getMinutes() + ":" + today.getSeconds();
+        today.getHours() + ":" + today.getMinutes() + ":" + formattedSeconds;
       const dateTime = date + " " + time;
 
       loading.value = true;
@@ -203,7 +208,7 @@ export default defineComponent({
               Swal.fire({
                 position: "center",
                 icon: "success",
-                title: translate("addBannerSuccessfully"),
+                title: translate("successfully"),
                 showConfirmButton: false,
                 timer: 1000,
               }).then(() => {
@@ -220,27 +225,27 @@ export default defineComponent({
               });
             }
           } else {
-            // const result = await store.editFund((formData));
-            // if (result.data.success === true) {
-            //   Swal.fire({
-            //     position: "center",
-            //     icon: "success",
-            //     title: translate("editBannerSuccessfully"),
-            //     showConfirmButton: false,
-            //     timer: 1000,
-            //   }).then(() => {
-            //     ctx.emit("on-close");
-            //     hideModal(fundDeclarationModalRef.value);
-            //   });
-            // } else {
-            //   Swal.fire({
-            //     position: "center",
-            //     icon: "error",
-            //     title: result.data.mess,
-            //     showConfirmButton: false,
-            //     timer: 1000,
-            //   });
-            // }
+            const result = await store.updateFund(formData);
+            if (result.data.success === true) {
+              Swal.fire({
+                position: "center",
+                icon: "success",
+                title: translate("successfully"),
+                showConfirmButton: false,
+                timer: 1000,
+              }).then(() => {
+                ctx.emit("submitSearch");
+                hideModal(fundDeclarationModalRef.value);
+              });
+            } else {
+              Swal.fire({
+                position: "center",
+                icon: "error",
+                title: result.data.mess,
+                showConfirmButton: false,
+                timer: 1000,
+              });
+            }
           }
         } else {
           console.log("error submit!", fields);

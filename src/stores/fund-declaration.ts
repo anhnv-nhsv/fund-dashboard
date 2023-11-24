@@ -14,7 +14,7 @@ export const useFundDeclarationStore = defineStore("fund-declaration", () => {
     fundNhsvList.value = data;
   }
 
-  function getFundNhsvList(params?: any) {
+  function getFundNhsvList(params) {
     return ApiService.query("/funds/getFundsNhsv", params)
       .then(({ data }) => {
         setFundNhsvList(data);
@@ -28,10 +28,15 @@ export const useFundDeclarationStore = defineStore("fund-declaration", () => {
     return ApiService.post("/funds/createFund", val);
   }
 
+  function updateFund(val) {
+    return ApiService.post("funds/updateFundsNhsv", val);
+  }
+
   return {
     fundNhsvList,
     errors,
     getFundNhsvList,
     createFund,
+    updateFund,
   };
 });
