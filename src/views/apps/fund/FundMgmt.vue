@@ -146,9 +146,12 @@
       <NHDatatable
         :table-header="tableHeader"
         :table-data="dataRequestFundManager"
-        :pagination="pagination"
         :loading="loading"
         :show-overflow-tooltip="false"
+        :pagination="pagination"
+        :enable-items-per-page-dropdown="true"
+        @change-page="changePage"
+        @change-page-size="changePageSize"
       >
         <template v-slot:cust_nm="{ row }">
           <div v-if="row.cust_nm !== null">
@@ -177,19 +180,34 @@
             {{ row.cert_nav.toLocaleString() }}
           </div>
         </template>
+        <template v-slot:fnd_full_cd="{ row }">
+          <div class="text-uppercase">
+            {{ row.fnd_full_cd }}
+          </div>
+        </template>
+        <template v-slot:pymt_stat="{ row }">
+          <div>
+            {{ handlePaymentStatus(row.pymt_stat) }}
+          </div>
+        </template>
+        <template v-slot:ord_stat="{ row }">
+          <div>
+            {{ handleOrderStatus(row.ord_stat) }}
+          </div>
+        </template>
         <template v-slot:ord_tp="{ row }">
           <div v-if="row.ord_tp === 'buy'">
             <div
               class="bg-success rounded border border-1 border-white order-type"
             >
-              {{ row.ord_tp }}
+              Mua
             </div>
           </div>
-          <div v-if="row.ord_tp !== 'buy'">
+          <div v-if="row.ord_tp === 'sell'">
             <div
               class="bg-danger rounded border border-1 border-white order-type"
             >
-              {{ row.ord_tp }}
+              Bán
             </div>
           </div>
         </template>
@@ -265,7 +283,7 @@ export default defineComponent({
       {
         label: "fundCode",
         width: 150,
-        prop: "fnd_cd",
+        prop: "fnd_full_cd",
         visible: true,
       },
       {
@@ -331,14 +349,14 @@ export default defineComponent({
           JSON.stringify(formSearchData.value.date_search)
         );
 
-        fromDate.value = customDate(formatData[0]);
-        toDate.value = customDate(formatData[1]);
+        fromDate.value = customFromDate(formatData[0]);
+        toDate.value = customToDate(formatData[1]);
       } else {
         formSearchData.value.date_search = [];
       }
     });
 
-    const customDate = (date) => {
+    const customFromDate = (date) => {
       if (date) {
         const dateComponents = date.split("-");
 
@@ -362,8 +380,34 @@ export default defineComponent({
         return formattedDate;
       }
     };
+    const customToDate = (date) => {
+      if (date) {
+        const dateComponents = date.split("-");
+
+        const dateObject = new Date(
+          dateComponents[2],
+          dateComponents[1] - 1,
+          dateComponents[0]
+        );
+
+        dateObject.setHours(23, 59, 59, 23);
+
+        const formattedDate = `${("0" + dateObject.getDate()).slice(-2)}-${(
+          "0" +
+          (dateObject.getMonth() + 1)
+        ).slice(-2)}-${dateObject.getFullYear()} ${(
+          "0" + dateObject.getHours()
+        ).slice(-2)}:${("0" + dateObject.getMinutes()).slice(-2)}:${(
+          "0" + dateObject.getSeconds()
+        ).slice(-2)}`;
+
+        return formattedDate;
+      }
+    };
 
     const getRequestFundManager = async (
+      pageNo?: number,
+      pageSize = "10",
       name?: string,
       VsdTradingCode?: string,
       fundCode?: string,
@@ -384,12 +428,21 @@ export default defineComponent({
           payment_status: paymentStatus ? paymentStatus : "",
           order_type: commandType ? commandType : "",
           order_status: commandStatus ? commandStatus : "",
+          pageNo: pageNo,
+          pageSize: pageSize,
         },
       });
 
       const requestPageResponse = JSON.parse(JSON.stringify(store.fundList));
 
       dataRequestFundManager.value = requestPageResponse.data;
+      pagination.value = {
+        totalPages: requestPageResponse.totalPages,
+        pageNo: +requestPageResponse.pageNo,
+        pageSize: requestPageResponse.pageSize,
+        totalCount: requestPageResponse.totalCount,
+        currentCount: +requestPageResponse.currentCount,
+      };
       loading.value = false;
     };
 
@@ -409,6 +462,8 @@ export default defineComponent({
     const handleSearch = () => {
       const formData = JSON.parse(JSON.stringify(formSearchData.value));
       getRequestFundManager(
+        1,
+        pagination.value.pageSize,
         formData.name ? formData.name : "",
         formData.trading_code ? formData.trading_code : "",
         formData.ccq_code ? formData.ccq_code : "",
@@ -433,8 +488,71 @@ export default defineComponent({
       return desiredDateString;
     };
 
+    const handlePaymentStatus = (val) => {
+      let text = "";
+      switch (val) {
+        case "pending":
+          text = "Chưa thanh toán";
+          break;
+        case "fail":
+          text = "Chuyển tiền không thành công";
+          break;
+        case "waiting_confirm":
+          text = "Lệnh chuyển tiền đang chờ xác nhận";
+          break;
+        case "success":
+          text = "Chuyển tiền thành công";
+          break;
+        case "rollback":
+          text = "Hoàn tiền thành công";
+          break;
+        default:
+          break;
+      }
+      return text;
+    };
+
+    const handleOrderStatus = (val) => {
+      let text = "";
+      switch (val) {
+        case "pending_confirmation":
+          text = "Đợi người dùng xác nhận OTP";
+          break;
+        case "new":
+          text = "Mới tạo";
+          break;
+        case "cancel":
+          text = "Đã bị hủy";
+          break;
+        case "approved":
+          text = "Chờ nhập lên VSD";
+          break;
+        case "pending_completion":
+          text = "Chờ kết quả giao dịch";
+          break;
+        case "completed":
+          text = "Thành công";
+          break;
+        case "system_cancel":
+          text = "Hệ thống huỷ lệnh";
+          break;
+        default:
+          break;
+      }
+      return text;
+    };
+
+    function changePage(page) {
+      getRequestFundManager(page, pagination.value.pageSize);
+    }
+
+    const changePageSize = (pageSize) => {
+      pagination.value.pageSize = pageSize;
+      getRequestFundManager(1, pageSize);
+    };
+
     onBeforeMount(() => {
-      getRequestFundManager();
+      getRequestFundManager(1);
       getFundStatus();
     });
 
@@ -451,6 +569,10 @@ export default defineComponent({
       formatDate,
       translate,
       handleSearch,
+      handlePaymentStatus,
+      handleOrderStatus,
+      changePageSize,
+      changePage,
     };
   },
 });

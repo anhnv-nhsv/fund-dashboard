@@ -10,7 +10,7 @@
               autofocus
               v-model="formSearchData.name"
               size="large"
-              :placeholder="translate('searchInput')"
+              :placeholder="translate('searchFundName')"
               clearable
               :prefix-icon="Search"
             />
@@ -74,6 +74,14 @@
         :table-data="dataRequestFundInfor"
         :loading="loading"
       >
+        <template v-slot:fnd_status="{ row }">
+          <div v-if="row.fnd_status === 'sell'">
+            <div class="">Bán</div>
+          </div>
+          <div v-if="row.fnd_status === 'stopped'">
+            <div class="">Dừng bán</div>
+          </div>
+        </template>
         <template v-slot:actionColumn>
           <el-table-column
             header-align="center"
