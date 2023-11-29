@@ -10,55 +10,55 @@
           <div class="px-2 row">
             <div class="col-6 line py-4">
               <div class="d-flex mt-4 align-items-center">
-                <div class="fs-5 fw-bolder" style="min-width: 200px">
+                <div class="fs-5 text-muted" style="min-width: 200px">
                   Fund code
                 </div>
-                <span class="fs-5 text-muted">{{ item?.fnd_full_cd }}</span>
+                <span class="fs-5 text-dark">{{ item?.fnd_full_cd }}</span>
               </div>
               <div class="d-flex mt-4 align-items-center">
-                <div class="fs-5 fw-bolder" style="min-width: 200px">
+                <div class="fs-5 text-muted" style="min-width: 200px">
                   Fund name
                 </div>
-                <span class="fs-5 text-muted">{{ item?.fnd_nm }}</span>
+                <span class="fs-5 text-dark">{{ item?.fnd_nm }}</span>
               </div>
               <div class="d-flex mt-4 align-items-center">
-                <div class="fs-5 fw-bolder" style="min-width: 200px">
+                <div class="fs-5 text-muted" style="min-width: 200px">
                   Company name
                 </div>
-                <span class="fs-5 text-muted">{{ item?.fnd_co_nm }}</span>
+                <span class="fs-5 text-dark">{{ item?.fnd_co_nm }}</span>
               </div>
               <div class="d-flex mt-4 align-items-center">
-                <div class="fs-5 fw-bolder" style="min-width: 200px">
+                <div class="fs-5 text-muted" style="min-width: 200px">
                   Strategy
                 </div>
-                <span class="fs-5 text-muted">{{ item?.strategy }}</span>
+                <span class="fs-5 text-dark">{{ item?.strategy }}</span>
               </div>
               <div class="d-flex mt-4 align-items-center">
-                <div class="fs-5 fw-bolder" style="min-width: 200px">
+                <div class="fs-5 text-muted" style="min-width: 200px">
                   Trading date
                 </div>
-                <span class="fs-5 text-muted">{{ item?.trd_dt }}</span>
+                <span class="fs-5 text-dark">{{ item?.trd_dt }}</span>
               </div>
               <div class="d-flex mt-4 align-items-center">
-                <div class="fs-5 fw-bolder" style="min-width: 200px">
+                <div class="fs-5 text-muted" style="min-width: 200px">
                   Closing time
                 </div>
-                <span class="fs-5 text-muted">{{ item?.ord_cls_tm }}</span>
+                <span class="fs-5 text-dark">{{ item?.ord_cls_tm }}</span>
               </div>
               <div class="d-flex mt-4 align-items-center">
-                <div class="fs-5 fw-bolder" style="min-width: 200px">
+                <div class="fs-5 text-muted" style="min-width: 200px">
                   Subsciption fee
                 </div>
-                <span class="fs-5 text-muted"
+                <span class="fs-5"
                   >{{ (item?.subs_fee_rt * 100).toFixed(1) }}%</span
                 >
               </div>
               <div class="d-flex mt-4 align-items-center">
-                <div class="fs-5 fw-bolder" style="min-width: 200px">
+                <div class="fs-5 text-muted" style="min-width: 200px">
                   Redemption fee
                 </div>
                 <div
-                  class="fs-5 text-muted"
+                  class="fs-5"
                   v-for="(redemp, index) in item?.redemption_fee"
                   :key="index"
                 >
@@ -79,115 +79,173 @@
                 </div>
               </div>
               <div class="d-flex mt-4 align-items-center">
-                <div class="fs-5 fw-bolder" style="min-width: 200px">
+                <div class="fs-5 text-muted" style="min-width: 200px">
                   Sell tax
                 </div>
-                <span class="fs-5 text-muted"
+                <span class="fs-5"
                   >{{ (item?.sell_tax_rt * 100).toFixed(1) }}%</span
                 >
               </div>
               <div class="d-flex mt-4 align-items-center">
-                <div class="fs-5 fw-bolder" style="min-width: 200px">
+                <div class="fs-5 text-muted" style="min-width: 200px">
                   Bank name
                 </div>
-                <span class="fs-5 text-muted">{{ item.bank_nm }}</span>
+                <span class="fs-5 text-dark">{{ item.bank_nm }}</span>
               </div>
               <div class="d-flex mt-4 align-items-center">
-                <div class="fs-5 fw-bolder" style="min-width: 200px">
+                <div class="fs-5 text-muted" style="min-width: 200px">
                   Bank acccount name
                 </div>
-                <span class="fs-5 text-muted">{{ item.bank_acnt_nm }}</span>
+                <span class="fs-5 text-dark">{{ item.bank_acnt_nm }}</span>
               </div>
               <div class="d-flex mt-4 align-items-center">
-                <div class="fs-5 fw-bolder" style="min-width: 200px">
+                <div class="fs-5 text-muted" style="min-width: 200px">
                   Bank acccount number
                 </div>
-                <span class="fs-5 text-muted">{{ item.bank_acnt_no }}</span>
+                <span class="fs-5 text-dark">{{ item.bank_acnt_no }}</span>
               </div>
             </div>
             <div class="col-6 py-4">
               <div class="d-flex mt-4 align-items-center">
-                <div class="fs-5 fw-bolder" style="min-width: 200px">
+                <div class="fs-5 text-muted" style="min-width: 200px">
                   Buy minmum amount
                 </div>
-                <span class="fs-5 text-muted"
+                <span class="fs-5"
                   >{{ item?.buy_min_amt.toLocaleString() }} VND</span
                 >
               </div>
               <div class="d-flex mt-4 align-items-center">
-                <div class="fs-5 fw-bolder" style="min-width: 200px">NAV</div>
-                <span class="fs-5 text-muted"
+                <div class="fs-5 text-muted" style="min-width: 200px">NAV</div>
+                <span class="fs-5 text-dark"
                   >{{ item?.nav.toLocaleString() }} VND</span
                 >
               </div>
               <div class="d-flex mt-4 align-items-center">
-                <div class="fs-5 fw-bolder" style="min-width: 200px">
+                <div class="fs-5 text-muted" style="min-width: 200px">
                   Updated NAV date
                 </div>
-                <span class="fs-5 text-muted">{{ item?.nav_upd_dt }}</span>
+                <span class="fs-5 text-dark">{{ item?.nav_upd_dt }}</span>
               </div>
               <div class="d-flex mt-4 align-items-center">
-                <div class="fs-5 fw-bolder" style="min-width: 200px">
+                <div class="fs-5 text-muted" style="min-width: 200px">
                   Growth in month
                 </div>
-                <span class="fs-5 text-danger">{{
-                  item?.growth_in_mth === null ? "-" : item?.growth_in_mth
+                <span v-if="item?.growth_in_mth > 0" class="fs-5 text-success"
+                  >{{ (item?.growth_in_mth * 100).toFixed(2) }}%</span
+                >
+                <span v-if="item?.growth_in_mth < 0" class="fs-5 text-danger"
+                  >{{ (item?.growth_in_mth * 100).toFixed(2) }}%</span
+                >
+                <span v-if="item?.growth_in_mth == 0" class="fs-5 text-muted">{{
+                  item?.growth_in_mth
                 }}</span>
               </div>
               <div class="d-flex mt-4 align-items-center">
-                <div class="fs-5 fw-bolder" style="min-width: 200px">
+                <div class="fs-5 text-muted" style="min-width: 200px">
                   Growth in 6M
                 </div>
-                <span class="fs-5 text-success">{{
-                  item?.growth_in_last_6m === null
-                    ? "-"
-                    : item?.growth_in_last_6m
-                }}</span>
+                <span
+                  v-if="item?.growth_in_last_6m > 0"
+                  class="fs-5 text-success"
+                  >{{ (item?.growth_in_last_6m * 100).toFixed(2) }}%</span
+                >
+                <span
+                  v-if="item?.growth_in_last_6m < 0"
+                  class="fs-5 text-danger"
+                  >{{ (item?.growth_in_last_6m * 100).toFixed(2) }}%</span
+                >
+                <span
+                  v-if="item?.growth_in_last_6m == 0"
+                  class="fs-5 text-muted"
+                  >{{ item?.growth_in_last_6m }}</span
+                >
               </div>
               <div class="d-flex mt-4 align-items-center">
-                <div class="fs-5 fw-bolder" style="min-width: 200px">
+                <div class="fs-5 text-muted" style="min-width: 200px">
                   Growth in 1Y
                 </div>
-                <span class="fs-5 text-success">{{
-                  item?.growth_in_last_1y === null
-                    ? "-"
-                    : item?.growth_in_last_1y
-                }}</span>
+                <span
+                  v-if="item?.growth_in_last_1y > 0"
+                  class="fs-5 text-success"
+                  >{{ (item?.growth_in_last_1y * 100).toFixed(2) }}%</span
+                >
+                <span
+                  v-if="item?.growth_in_last_1y < 0"
+                  class="fs-5 text-danger"
+                  >{{ (item?.growth_in_last_1y * 100).toFixed(2) }}%</span
+                >
+                <span
+                  v-if="item?.growth_in_last_1y == 0"
+                  class="fs-5 text-muted"
+                  >{{ item?.growth_in_last_1y }}</span
+                >
               </div>
               <div class="d-flex mt-4 align-items-center">
-                <div class="fs-5 fw-bolder" style="min-width: 200px">
+                <div class="fs-5 text-muted" style="min-width: 200px">
                   Growth in 3Y
                 </div>
-                <span class="fs-5 text-success">{{
-                  item?.growth_in_last_3y === null
-                    ? "-"
-                    : item?.growth_in_last_3y
-                }}</span>
+                <span
+                  v-if="item?.growth_in_last_3y > 0"
+                  class="fs-5 text-success"
+                  >{{ (item?.growth_in_last_3y * 100).toFixed(2) }}%</span
+                >
+                <span
+                  v-if="item?.growth_in_last_3y < 0"
+                  class="fs-5 text-danger"
+                  >{{ (item?.growth_in_last_3y * 100).toFixed(2) }}%</span
+                >
+                <span
+                  v-if="item?.growth_in_last_3y == 0"
+                  class="fs-5 text-muted"
+                  >{{ item?.growth_in_last_3y }}</span
+                >
               </div>
               <div class="d-flex mt-4 align-items-center">
-                <div class="fs-5 fw-bolder" style="min-width: 200px">
+                <div class="fs-5 text-muted" style="min-width: 200px">
                   Growth in 5Y
                 </div>
-                <span class="fs-5 text-success">{{
-                  item?.growth_in_last_5y === null
-                    ? "-"
-                    : item?.growth_in_last_5y
-                }}</span>
+                <span
+                  v-if="item?.growth_in_last_5y > 0"
+                  class="fs-5 text-success"
+                  >{{ (item?.growth_in_last_5y * 100).toFixed(2) }}%</span
+                >
+                <span
+                  v-if="item?.growth_in_last_5y < 0"
+                  class="fs-5 text-danger"
+                  >{{ (item?.growth_in_last_5y * 100).toFixed(2) }}%</span
+                >
+                <span
+                  v-if="item?.growth_in_last_5y == 0"
+                  class="fs-5 text-muted"
+                  >{{ item?.growth_in_last_5y }}</span
+                >
               </div>
               <div class="d-flex mt-4 align-items-center">
-                <div class="fs-5 fw-bolder" style="min-width: 200px">
+                <div class="fs-5 text-muted" style="min-width: 200px">
                   Growth YTD
                 </div>
-                <span class="fs-5 text-success">{{
-                  item?.growth_ytd === null ? "-" : item?.growth_ytd
+                <span v-if="item?.growth_ytd > 0" class="fs-5 text-success"
+                  >{{ (item?.growth_ytd * 100).toFixed(2) }}%</span
+                >
+                <span v-if="item?.growth_ytd < 0" class="fs-5 text-danger"
+                  >{{ (item?.growth_ytd * 100).toFixed(2) }}%</span
+                >
+                <span v-if="item?.growth_ytd == 0" class="fs-5 text-muted">{{
+                  item?.growth_ytd
                 }}</span>
               </div>
               <div class="d-flex mt-4 align-items-center">
-                <div class="fs-5 fw-bolder" style="min-width: 200px">
+                <div class="fs-5 text-muted" style="min-width: 200px">
                   Growth inception
                 </div>
-                <span class="fs-5 text-success">{{
-                  item?.growth_icpt === null ? "-" : item?.growth_icpt
+                <span v-if="item?.growth_icpt > 0" class="fs-5 text-success"
+                  >{{ (item?.growth_icpt * 100).toFixed(2) }}%</span
+                >
+                <span v-if="item?.growth_icpt < 0" class="fs-5 text-danger"
+                  >{{ (item?.growth_icpt * 100).toFixed(2) }}%</span
+                >
+                <span v-if="item?.growth_icpt == 0" class="fs-5 text-muted">{{
+                  item?.growth_icpt
                 }}</span>
               </div>
             </div>
@@ -222,7 +280,6 @@ export default defineComponent({
       );
 
       detailResponse.value = formatDataGetFund(requestFundResponse?.data);
-      console.log("detailResponse.value: ", detailResponse.value);
 
       loading.value = false;
     };
@@ -240,6 +297,7 @@ export default defineComponent({
 
     const formatRedemption = (item) => {
       const formattedJsonString = JSON.parse(item);
+
       return formattedJsonString;
     };
 
