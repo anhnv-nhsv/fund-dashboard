@@ -24,6 +24,13 @@ export const getMainMenu = (role): Array<MenuItem> => {
           bootstrapIcon: "bi-graph-up",
         },
         {
+          heading: "fundBalance",
+          route: "/apps/fund-balance",
+          accessible: true,
+          keenthemesIcon: "people",
+          bootstrapIcon: "bi-graph-up",
+        },
+        {
           heading: "fundDeclaration",
           route: "/apps/fund-declaration",
           accessible: true,

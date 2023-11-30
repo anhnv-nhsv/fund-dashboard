@@ -1,4 +1,7 @@
 <template>
+  <button class="btn btn-lg back-btn" @click="handleBack">
+    <span><i class="fa fa-arrow-left fa-3x"></i></span>
+  </button>
   <div class="card">
     <div class="row">
       <div class="col-6">
@@ -158,7 +161,7 @@
                         {{ translate("fundCode") }}
                       </div>
                       <span class="fs-5 transaction-right">{{
-                        item?.fnd_cd
+                        item?.fnd_full_cd
                       }}</span>
                     </div>
                   </div>
@@ -436,6 +439,10 @@ export default defineComponent({
       return cleanUrl;
     };
 
+    const handleBack = () => {
+      window.history.back();
+    };
+
     onBeforeMount(() => {
       getFundManagerDetail();
       getFundOrderDetails();
@@ -447,6 +454,7 @@ export default defineComponent({
       translate,
       getLastFile,
       cleanURLs,
+      handleBack,
     };
   },
 });
@@ -460,6 +468,27 @@ export default defineComponent({
   border-radius: 4px;
 }
 
+.back-btn {
+  border-radius: 50%;
+  margin-bottom: 12px;
+  background-color: rgb(145 123 123 / 20%);
+  color: white;
+  border: none;
+  padding: 30px 30px;
+  z-index: 9999;
+  -webkit-transition: background-color 1s, color 1s, -webkit-transform 0.5s;
+  transition: background-color 1s, transform 0.5s;
+}
+
+.back-btn:hover {
+  background-color: rgb(241 231 231 / 80%);
+  color: black;
+  -webkit-transform: translateX(-5px);
+  -webkit-box-shadow: 5px 0px 18px 0px rgba(105, 105, 105, 0.8);
+  -moz-box-shadow: 5px 0px 18px 0px rgba(105, 105, 105, 0.8);
+  box-shadow: 5px 0px 18px 0px rgba(105, 105, 105, 0.8);
+}
+
 .no-pdf {
   position: relative;
   background-image: url(https://sandbox.vcam.dev/assets/admin_v2/examples/image-default-bfa5d396aa260191d8ec7ec4e8f6da1f593ddd667a0aa98be24487d3202e4263.png);
@@ -469,8 +498,8 @@ export default defineComponent({
   -o-background-size: contain;
   -webkit-background-size: contain;
   background-size: contain;
-  height: 450px;
-  width: 450px;
+  height: 300px;
+  width: 300px;
   content: "";
   margin: 0 10px 10px 0;
 }
