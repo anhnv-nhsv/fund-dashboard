@@ -146,7 +146,7 @@ export default defineComponent({
         visible: true,
       },
       {
-        label: "Fund",
+        label: "Fund-NHSV",
         prop: "fnd_co_cd",
         visible: true,
       },

@@ -67,6 +67,11 @@
         :table-header="tableHeader"
         :table-data="dataRequestFundInfor"
         :loading="loading"
+        :show-overflow-tooltip="false"
+        :pagination="pagination"
+        :enable-items-per-page-dropdown="true"
+        @change-page="changePage"
+        @change-page-size="changePageSize"
       >
         <template v-slot:fnd_status="{ row }">
           <div v-if="row.fnd_status === 'sell'">
@@ -86,7 +91,7 @@ import { defineComponent, onBeforeMount, ref, watch } from "vue";
 import { Search } from "@element-plus/icons-vue";
 import { translate } from "@/core/helpers/i18n-translate";
 import NHDatatable from "@/components/nh-datatable/NHDatatable.vue";
-import { useFundDeclarationStore } from "@/stores/fund-declaration";
+import { useFundBalanceStore } from "@/stores/fund-balance";
 
 export default defineComponent({
   name: "apps-fund-balance",
@@ -94,7 +99,7 @@ export default defineComponent({
     NHDatatable,
   },
   setup() {
-    const store = useFundDeclarationStore();
+    const store = useFundBalanceStore();
     const formSearchData = ref({
       name: "",
       trading_code: "",
@@ -102,80 +107,100 @@ export default defineComponent({
     });
     const tableHeader = ref([
       {
-        label: "Order",
-        prop: "id",
-        visible: true,
-      },
-      {
         label: "fullName",
-        prop: "created_at",
+        prop: "cust_nm",
         visible: true,
       },
       {
         label: "vsdTradingCode",
-        prop: "fnd_co_cd",
+        prop: "trading_code",
         visible: true,
       },
       {
         label: "fundCode",
-        prop: "fnd_nm",
+        prop: "fund_code_text",
         visible: true,
       },
       {
         label: "fundName",
-        prop: "fnd_co_nm",
+        prop: "fnd_nm",
         visible: true,
       },
       {
         label: "totalQuantity",
-        prop: "fnd_status",
+        prop: "qty",
         visible: true,
       },
       {
         label: "blockQuantity",
-        prop: "issuers",
+        prop: "qty_blk",
         visible: true,
       },
       {
         label: "availableQuantity",
-        prop: "fluctuations",
+        prop: "qty_avail",
         visible: true,
       },
     ]);
     const loading = ref<boolean>(false);
     let dataRequestFundInfor = ref();
+    let pagination = ref();
     const userList = ref([]);
     let fundBalanceAction = ref("");
     const fundFormData = ref({});
 
     const getRequestFundInfor = async (
+      pageNo?: number,
+      pageSize = "10",
       fundName?: string,
       fromDate?: string,
       toDate?: string
     ) => {
       loading.value = true;
-      await store.getFundNhsvList({
+      await store.getFundListBalance({
         params: {
-          fnd_nm: fundName ? fundName : "",
-          fromDate: fromDate ? fromDate : "",
-          toDate: toDate ? toDate : "",
+          name: fundName ? fundName : "",
+          VsdTradingCode: fromDate ? fromDate : "",
+          fund_code: toDate ? toDate : "",
+          pageNo: pageNo,
+          pageSize: pageSize,
         },
       });
 
       const requestPageResponse = JSON.parse(
-        JSON.stringify(store.fundNhsvList)
+        JSON.stringify(store.fundListBalance)
       );
 
       dataRequestFundInfor.value = requestPageResponse.data;
+      pagination.value = {
+        totalPages: requestPageResponse.totalPages,
+        pageNo: +requestPageResponse.pageNo,
+        pageSize: requestPageResponse.pageSize,
+        totalCount: requestPageResponse.totalCount,
+        currentCount: +requestPageResponse.currentCount,
+      };
       loading.value = false;
     };
 
     const handleSearch = () => {
       const formData = JSON.parse(JSON.stringify(formSearchData.value));
-      getRequestFundInfor(formData.name ? formData.name : "");
+      getRequestFundInfor(
+        1,
+        pagination.value.pageSize,
+        formData.name ? formData.name : "",
+        formData.trading_code ? formData.trading_code : "",
+        formData.ccq_code ? formData.ccq_code : ""
+      );
     };
 
-    const handleCloseModal = () => {};
+    function changePage(page) {
+      getRequestFundInfor(page, pagination.value.pageSize);
+    }
+
+    const changePageSize = (pageSize) => {
+      pagination.value.pageSize = pageSize;
+      getRequestFundInfor(1, pageSize);
+    };
 
     onBeforeMount(() => {
       getRequestFundInfor();
@@ -190,9 +215,11 @@ export default defineComponent({
       Search,
       dataRequestFundInfor,
       fundFormData,
+      pagination,
       translate,
       handleSearch,
-      handleCloseModal,
+      changePage,
+      changePageSize,
     };
   },
 });
