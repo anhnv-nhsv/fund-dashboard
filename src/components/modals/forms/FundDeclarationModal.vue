@@ -188,6 +188,8 @@ export default defineComponent({
         today.getHours() + ":" + today.getMinutes() + ":" + formattedSeconds;
       const dateTime = date + " " + time;
 
+      const seconds = new Date().getTime();
+
       loading.value = true;
       if (!formEl) return;
       formEl.validate(async (valid, fields) => {
@@ -203,7 +205,10 @@ export default defineComponent({
           };
 
           if (props.action === "add") {
-            const result = await store.createFund(formData);
+            const result = await store.createFund({
+              ...formData,
+              found_value_p: seconds,
+            });
             if (result.data.success === true) {
               Swal.fire({
                 position: "center",

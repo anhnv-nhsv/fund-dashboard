@@ -23,8 +23,8 @@ const routes: Array<RouteRecordRaw> = [
         name: "apps-fund-management",
         component: () => import("@/views/apps/fund/FundMgmt.vue"),
         meta: {
-          pageTitle: "Fund management",
-          breadcrumbs: ["apps", "Fund"],
+          pageTitle: "fund",
+          breadcrumbs: ["apps", "fund"],
         },
       },
 
@@ -45,8 +45,8 @@ const routes: Array<RouteRecordRaw> = [
         name: "apps-fund-information",
         component: () => import("@/views/apps/fund-infor/FundInformation.vue"),
         meta: {
-          pageTitle: "Fund management",
-          breadcrumbs: ["apps", "Fund"],
+          pageTitle: "fundInformation",
+          breadcrumbs: ["apps", "fundInformation"],
         },
       },
 
@@ -68,8 +68,8 @@ const routes: Array<RouteRecordRaw> = [
         component: () =>
           import("@/views/apps/fund-declaration/FundDeclaration.vue"),
         meta: {
-          pageTitle: "Fund Declaration",
-          breadcrumbs: ["apps", "Fund Declaration"],
+          pageTitle: "fundDeclaration",
+          breadcrumbs: ["apps", "fundDeclaration"],
         },
       },
       // FUND DECLARATION END
@@ -81,8 +81,8 @@ const routes: Array<RouteRecordRaw> = [
         component: () =>
           import("@/views/apps/fund-certificate-balance/FundBalance.vue"),
         meta: {
-          pageTitle: "Fund Certificate Balance",
-          breadcrumbs: ["apps", "Fund Certificate Balance"],
+          pageTitle: "fundBalance",
+          breadcrumbs: ["apps", "fundBalance"],
         },
       },
       // FUND CERTIFICATE BALANCE END
