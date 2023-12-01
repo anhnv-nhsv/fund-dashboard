@@ -11,7 +11,7 @@
               autofocus
               v-model="formSearchData.name"
               size="large"
-              :placeholder="translate('searchFundName')"
+              :placeholder="translate('searchNameCode')"
               clearable
               :prefix-icon="Search"
             />

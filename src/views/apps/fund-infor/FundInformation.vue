@@ -37,7 +37,10 @@
         :table-data="dataRequestFundInfor"
         :loading="loading"
         :pagination="pagination"
-        userRole="all"
+        :show-overflow-tooltip="false"
+        :enable-items-per-page-dropdown="true"
+        @change-page="changePage"
+        @change-page-size="changePageSize"
       >
         <template v-slot:fnd_full_cd="{ row }">
           <div v-if="row.fnd_full_cd === null">-</div>
@@ -70,6 +73,12 @@
           <div v-if="row.buy_min_amt === null">-</div>
           <div v-if="row.buy_min_amt !== null">
             {{ row.buy_min_amt.toLocaleString() }}
+          </div>
+        </template>
+        <template v-slot:found_value="{ row }">
+          <div v-if="row.found_value === null">-</div>
+          <div v-if="row.found_value !== null">
+            {{ handleMstoDate(row.found_value) }}
           </div>
         </template>
         <template v-slot:nav="{ row }">
@@ -145,7 +154,7 @@ export default defineComponent({
       },
       {
         label: "Founded date",
-        prop: "found_dt",
+        prop: "found_value",
         visible: true,
       },
       {
@@ -171,11 +180,17 @@ export default defineComponent({
     ]);
     const loading = ref<boolean>(false);
 
-    const getRequestFundInfor = async (name?: string) => {
+    const getRequestFundInfor = async (
+      pageNo?: number,
+      pageSize = "10",
+      name?: string
+    ) => {
       loading.value = true;
       await store.getFundInforList({
         params: {
           name: name ? name : "",
+          pageNo: pageNo,
+          pageSize: pageSize,
         },
       });
 
@@ -184,6 +199,13 @@ export default defineComponent({
       );
 
       dataRequestFundInfor.value = formatDataGetFund(requestPageResponse.data);
+      pagination.value = {
+        totalPages: requestPageResponse.totalPages,
+        pageNo: +requestPageResponse.pageNo,
+        pageSize: requestPageResponse.pageSize,
+        totalCount: requestPageResponse.totalCount,
+        currentCount: +requestPageResponse.currentCount,
+      };
       loading.value = false;
     };
 
@@ -205,7 +227,11 @@ export default defineComponent({
 
     const handleSearch = () => {
       const formData = JSON.parse(JSON.stringify(formSearchData.value));
-      getRequestFundInfor(formData.name ? formData.name : "");
+      getRequestFundInfor(
+        1,
+        pagination.value.pageSize,
+        formData.name ? formData.name : ""
+      );
     };
 
     const formatDate = (val) => {
@@ -225,8 +251,38 @@ export default defineComponent({
       return cleanUrl;
     };
 
+    const converDate = (val) => {
+      const originalDate = new Date(val);
+
+      const day = originalDate.getDate();
+      const month = originalDate.getMonth() + 1;
+      const year = originalDate.getFullYear();
+
+      const formattedDay = day < 10 ? `0${day}` : day;
+      const formattedMonth = month < 10 ? `0${month}` : month;
+
+      const formattedDate = `${formattedDay}-${formattedMonth}-${year}`;
+
+      return formattedDate;
+    };
+    const handleMstoDate = (ms) => {
+      const milliseconds = +ms;
+      const date = new Date(milliseconds);
+
+      return converDate(date);
+    };
+
+    function changePage(page) {
+      getRequestFundInfor(page, pagination.value.pageSize);
+    }
+
+    const changePageSize = (pageSize) => {
+      pagination.value.pageSize = pageSize;
+      getRequestFundInfor(1, pageSize);
+    };
+
     onBeforeMount(() => {
-      getRequestFundInfor();
+      getRequestFundInfor(1);
     });
 
     return {
@@ -240,6 +296,9 @@ export default defineComponent({
       formatDate,
       handleSearch,
       cleanFundname,
+      changePage,
+      changePageSize,
+      handleMstoDate,
     };
   },
 });

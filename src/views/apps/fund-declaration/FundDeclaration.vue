@@ -73,6 +73,11 @@
         :table-header="tableHeader"
         :table-data="dataRequestFundInfor"
         :loading="loading"
+        :show-overflow-tooltip="false"
+        :pagination="pagination"
+        :enable-items-per-page-dropdown="true"
+        @change-page="changePage"
+        @change-page-size="changePageSize"
       >
         <template v-slot:fnd_status="{ row }">
           <div v-if="row.fnd_status === 'sell'">
@@ -178,6 +183,7 @@ export default defineComponent({
     ]);
     const loading = ref<boolean>(false);
     let dataRequestFundInfor = ref();
+    let pagination = ref();
     const userList = ref([]);
     let fundDeclaAction = ref("");
     const fundFormData = ref({});
@@ -247,6 +253,8 @@ export default defineComponent({
     };
 
     const getRequestFundInfor = async (
+      pageNo?: number,
+      pageSize = "10",
       fundName?: string,
       fromDate?: string,
       toDate?: string
@@ -257,6 +265,8 @@ export default defineComponent({
           fnd_nm: fundName ? fundName : "",
           fromDate: fromDate ? fromDate : "",
           toDate: toDate ? toDate : "",
+          pageNo: pageNo,
+          pageSize: pageSize,
         },
       });
 
@@ -265,12 +275,21 @@ export default defineComponent({
       );
 
       dataRequestFundInfor.value = requestPageResponse.data;
+      pagination.value = {
+        totalPages: requestPageResponse.totalPages,
+        pageNo: +requestPageResponse.pageNo,
+        pageSize: requestPageResponse.pageSize,
+        totalCount: requestPageResponse.totalCount,
+        currentCount: +requestPageResponse.currentCount,
+      };
       loading.value = false;
     };
 
     const handleSearch = () => {
       const formData = JSON.parse(JSON.stringify(formSearchData.value));
       getRequestFundInfor(
+        1,
+        pagination.value.pageSize,
         formData.name ? formData.name : "",
         fromDate.value,
         toDate.value
@@ -299,10 +318,19 @@ export default defineComponent({
       };
     };
 
+    function changePage(page) {
+      getRequestFundInfor(page, pagination.value.pageSize);
+    }
+
+    const changePageSize = (pageSize) => {
+      pagination.value.pageSize = pageSize;
+      getRequestFundInfor(1, pageSize);
+    };
+
     const handleCloseModal = () => {};
 
     onBeforeMount(() => {
-      getRequestFundInfor();
+      getRequestFundInfor(1);
     });
 
     return {
@@ -314,11 +342,14 @@ export default defineComponent({
       Search,
       dataRequestFundInfor,
       fundFormData,
+      pagination,
       translate,
       handleSearch,
       handleCloseModal,
       editFundDeclaration,
       addFundDeclaration,
+      changePageSize,
+      changePage,
     };
   },
 });
