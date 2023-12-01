@@ -1,4 +1,7 @@
 <template>
+  <button class="btn btn-lg back-btn" @click="handleBack">
+    <span><i class="fa fa-arrow-left fa-3x"></i></span>
+  </button>
   <div class="card">
     <div class="p-8" v-for="(item, index) in detailResponse" :key="index">
       <div class="text-center fs-3 fw-bolder">
@@ -301,6 +304,10 @@ export default defineComponent({
       return formattedJsonString;
     };
 
+    const handleBack = () => {
+      window.history.back();
+    };
+
     onBeforeMount(() => {
       getFundInforDetail();
     });
@@ -308,6 +315,7 @@ export default defineComponent({
     return {
       detailResponse,
       detailOrderResponse,
+      handleBack,
     };
   },
 });
@@ -318,6 +326,27 @@ export default defineComponent({
   border: 1px solid #d4d3d3;
   margin-top: 12px;
   border-radius: 4px;
+}
+
+.back-btn {
+  border-radius: 50%;
+  margin-bottom: 12px;
+  background-color: rgb(145 123 123 / 20%);
+  color: white;
+  border: none;
+  padding: 30px 30px;
+  z-index: 9999;
+  -webkit-transition: background-color 1s, color 1s, -webkit-transform 0.5s;
+  transition: background-color 1s, transform 0.5s;
+}
+
+.back-btn:hover {
+  background-color: rgb(241 231 231 / 80%);
+  color: black;
+  -webkit-transform: translateX(-5px);
+  -webkit-box-shadow: 5px 0px 18px 0px rgba(105, 105, 105, 0.8);
+  -moz-box-shadow: 5px 0px 18px 0px rgba(105, 105, 105, 0.8);
+  box-shadow: 5px 0px 18px 0px rgba(105, 105, 105, 0.8);
 }
 
 .line {

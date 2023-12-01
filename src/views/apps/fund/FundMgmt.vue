@@ -328,18 +328,6 @@ export default defineComponent({
         prop: "ord_stat",
         visible: true,
       },
-      {
-        label: "preBalance",
-        width: 150,
-        prop: "pre_balance",
-        visible: true,
-      },
-      {
-        label: "postBalance",
-        width: 150,
-        prop: "post_balance",
-        visible: true,
-      },
     ]);
     const loading = ref<boolean>(false);
 

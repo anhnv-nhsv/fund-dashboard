@@ -73,6 +73,19 @@ const routes: Array<RouteRecordRaw> = [
         },
       },
       // FUND DECLARATION END
+
+      // FUND CERTIFICATE BALANCE START
+      {
+        path: "/apps/fund-balance",
+        name: "apps-fund-balance",
+        component: () =>
+          import("@/views/apps/fund-certificate-balance/FundBalance.vue"),
+        meta: {
+          pageTitle: "Fund Certificate Balance",
+          breadcrumbs: ["apps", "Fund Certificate Balance"],
+        },
+      },
+      // FUND CERTIFICATE BALANCE END
     ],
   },
   {

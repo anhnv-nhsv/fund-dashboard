@@ -146,7 +146,7 @@ export default defineComponent({
         visible: true,
       },
       {
-        label: "Fund",
+        label: "Fund-NHSV",
         prop: "fnd_co_cd",
         visible: true,
       },
@@ -190,14 +190,14 @@ export default defineComponent({
           JSON.stringify(formSearchData.value.date_search)
         );
 
-        fromDate.value = customDate(formatData[0]);
-        toDate.value = customDate(formatData[1]);
+        fromDate.value = customFromDate(formatData[0]);
+        toDate.value = customToDate(formatData[1]);
       } else {
         formSearchData.value.date_search = [];
       }
     });
 
-    const customDate = (date) => {
+    const customFromDate = (date) => {
       if (date) {
         const dateComponents = date.split("-");
 
@@ -208,6 +208,30 @@ export default defineComponent({
         );
 
         dateObject.setHours(0, 0, 0, 0);
+
+        const formattedDate = `${("0" + dateObject.getDate()).slice(-2)}-${(
+          "0" +
+          (dateObject.getMonth() + 1)
+        ).slice(-2)}-${dateObject.getFullYear()} ${(
+          "0" + dateObject.getHours()
+        ).slice(-2)}:${("0" + dateObject.getMinutes()).slice(-2)}:${(
+          "0" + dateObject.getSeconds()
+        ).slice(-2)}`;
+
+        return formattedDate;
+      }
+    };
+    const customToDate = (date) => {
+      if (date) {
+        const dateComponents = date.split("-");
+
+        const dateObject = new Date(
+          dateComponents[2],
+          dateComponents[1] - 1,
+          dateComponents[0]
+        );
+
+        dateObject.setHours(23, 59, 59, 23);
 
         const formattedDate = `${("0" + dateObject.getDate()).slice(-2)}-${(
           "0" +

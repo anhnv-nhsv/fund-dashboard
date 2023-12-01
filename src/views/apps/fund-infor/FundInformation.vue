@@ -40,16 +40,19 @@
         userRole="all"
       >
         <template v-slot:fnd_full_cd="{ row }">
-          <router-link
-            :to="{
-              name: 'fund-infor-detail',
-              query: {
-                fundCode: row.fnd_co_cd,
-              },
-            }"
-          >
-            {{ row.fnd_full_cd }}
-          </router-link>
+          <div v-if="row.fnd_full_cd === null">-</div>
+          <div v-if="row.fnd_full_cd !== null">
+            <router-link
+              :to="{
+                name: 'fund-infor-detail',
+                query: {
+                  fundCode: row.fnd_co_cd,
+                },
+              }"
+            >
+              {{ row.fnd_full_cd }}
+            </router-link>
+          </div>
         </template>
         <template v-slot:found_dt="{ row }">
           <div v-if="row.found_dt">
@@ -57,13 +60,21 @@
           </div>
           <div v-if="row.found_dt === undefined">-</div>
         </template>
+        <template v-slot:fnd_nm="{ row }">
+          <div v-if="row.fnd_nm">
+            {{ cleanFundname(row.fnd_nm) }}
+          </div>
+          <div v-if="row.fnd_nm === undefined">-</div>
+        </template>
         <template v-slot:buy_min_amt="{ row }">
-          <div>
+          <div v-if="row.buy_min_amt === null">-</div>
+          <div v-if="row.buy_min_amt !== null">
             {{ row.buy_min_amt.toLocaleString() }}
           </div>
         </template>
         <template v-slot:nav="{ row }">
-          <div>
+          <div v-if="row.nav === null">-</div>
+          <div v-if="row.nav !== null">
             {{ row.nav.toLocaleString() }}
           </div>
         </template>
@@ -112,10 +123,15 @@ export default defineComponent({
     });
     const tableHeader = ref([
       {
-        label: "Fund",
+        label: "fundCode",
         prop: "fnd_full_cd",
         visible: true,
         fix: true,
+      },
+      {
+        label: "Fund-NHSV",
+        prop: "fnd_co_cd",
+        visible: true,
       },
       {
         label: "Fund name",
@@ -155,9 +171,13 @@ export default defineComponent({
     ]);
     const loading = ref<boolean>(false);
 
-    const getRequestFundInfor = async () => {
+    const getRequestFundInfor = async (name?: string) => {
       loading.value = true;
-      await store.getFundInforList();
+      await store.getFundInforList({
+        params: {
+          name: name ? name : "",
+        },
+      });
 
       const requestPageResponse = JSON.parse(
         JSON.stringify(store.fundInforList)
@@ -185,8 +205,7 @@ export default defineComponent({
 
     const handleSearch = () => {
       const formData = JSON.parse(JSON.stringify(formSearchData.value));
-      console.log("formData", formData);
-      getRequestFundInfor();
+      getRequestFundInfor(formData.name ? formData.name : "");
     };
 
     const formatDate = (val) => {
@@ -197,6 +216,13 @@ export default defineComponent({
       // Create the formatted date string
       const formattedDate = day + "-" + month + "-" + year;
       return formattedDate;
+    };
+
+    const cleanFundname = (name) => {
+      // eslint-disable-next-line no-useless-escape
+      let cleanUrl = name.replace(/^\"|\"$/g, "");
+
+      return cleanUrl;
     };
 
     onBeforeMount(() => {
@@ -213,6 +239,7 @@ export default defineComponent({
       translate,
       formatDate,
       handleSearch,
+      cleanFundname,
     };
   },
 });
