@@ -269,6 +269,7 @@ const messages = {
     totalQuantity: "Tổng số lượng",
     blockQuantity: "Số lượng phong toả",
     availableQuantity: "Số lượng có sẵn",
+    expiredToken: "Phiên của bạn đã hết hạn. vui lòng đăng nhập lại",
   },
   en: {
     home: "Home",
@@ -536,6 +537,7 @@ const messages = {
     totalQuantity: "Total Quantity",
     blockQuantity: "Block Quantity",
     availableQuantity: "Available Quantity",
+    expiredToken: "Your session has expired. Please sign in again",
   },
   // es: {
   //   dashboard: "Tablero",
