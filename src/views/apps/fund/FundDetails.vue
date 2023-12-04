@@ -334,7 +334,16 @@
             </div>
             <div v-if="item?.sync_order_form !== 'null'">
               <div v-if="getLastFile(item?.sync_order_form) == 'pdf'">
-                <NhPdf :pdfFund="cleanURLs(item?.sync_order_form)" />
+                <iframe
+                  id="fred"
+                  style="border: 1px solid #666ccc"
+                  title="PDF in an i-Frame"
+                  :src="cleanURLs(item?.sync_order_form)"
+                  frameborder="1"
+                  scrolling="auto"
+                  width="100%"
+                  height="600px"
+                ></iframe>
               </div>
               <div v-if="getLastFile(item?.sync_order_form) == 'png'">
                 <el-image
@@ -357,7 +366,16 @@
             </div>
             <div v-if="item?.sync_vsd_confirmation !== 'null'">
               <div v-if="getLastFile(item?.sync_vsd_confirmation) == 'pdf'">
-                <NhPdf :pdfFund="item?.sync_vsd_confirmation" />
+                <iframe
+                  id="fred"
+                  style="border: 1px solid #666ccc"
+                  title="PDF in an i-Frame"
+                  :src="cleanURLs(item?.sync_vsd_confirmation)"
+                  frameborder="1"
+                  scrolling="auto"
+                  width="100%"
+                  height="600px"
+                ></iframe>
               </div>
               <div v-if="getLastFile(item?.sync_vsd_confirmation) == 'png'">
                 <el-image
@@ -381,7 +399,6 @@
 
 <script lang="ts">
 import { defineComponent, onBeforeMount, ref } from "vue";
-import NhPdf from "@/components/pdf-fund/NHPdf.vue";
 import { useFundStore } from "@/stores/fund";
 
 import { translate } from "@/core/helpers/i18n-translate";
@@ -389,9 +406,7 @@ import { useRoute } from "vue-router";
 
 export default defineComponent({
   name: "apps-fund-details-management",
-  components: {
-    NhPdf,
-  },
+  components: {},
   setup() {
     const loading = ref<boolean>(false);
     const detailResponse = ref();
