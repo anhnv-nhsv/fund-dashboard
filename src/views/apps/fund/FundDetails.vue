@@ -334,7 +334,7 @@
             </div>
             <div v-if="item?.sync_order_form !== 'null'">
               <div v-if="getLastFile(item?.sync_order_form) == 'pdf'">
-                <NhPdf :pdfFund="item?.sync_order_form" />
+                <NhPdf :pdfFund="cleanURLs(item?.sync_order_form)" />
               </div>
               <div v-if="getLastFile(item?.sync_order_form) == 'png'">
                 <el-image
