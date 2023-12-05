@@ -1,71 +1,76 @@
 <template>
   <div class="card">
     <div class="card-header border-0 pt-6">
-      <div class="flex-column">
-        <form class="form row" autoComplete="on" @submit.prevent="handleSearch">
-          <div
-            class="col-md-4 d-flex align-items-center position-relative my-1"
-          >
-            <el-input
-              autofocus
-              v-model="formSearchData.name"
-              size="large"
-              :placeholder="translate('searchFundName')"
-              clearable
-              :prefix-icon="Search"
-            />
-          </div>
-          <div
-            class="col-md-5 d-flex align-items-center position-relative my-1"
-          >
-            <el-date-picker
-              v-model="formSearchData.date_search"
-              type="daterange"
-              :range-separator="translate('to')"
-              :start-placeholder="translate('startDate')"
-              :end-placeholder="translate('endDate')"
-              format="DD/MM/YYYY"
-              value-format="DD-MM-YYYY"
-              size="large"
-            />
-          </div>
-          <div
-            class="col-md-3 d-flex align-items-center position-relative my-1"
-          >
-            <button
-              :data-kt-indicator="false ? 'on' : null"
-              type="submit"
-              class="btn btn-primary"
+      <div class="d-flex-column w-100">
+        <form class="form" autoComplete="on" @submit.prevent="handleSearch">
+          <div class="row">
+            <div
+              class="col-md-3 d-flex align-items-center position-relative my-2"
             >
-              <span v-if="true" class="indicator-label">{{
-                translate("search")
-              }}</span>
-              <span v-if="false" class="indicator-progress"
-                >Please wait...
-                <span
-                  class="spinner-border spinner-border-sm align-middle ms-2"
-                ></span
-              ></span>
-            </button>
+              <el-input
+                autofocus
+                v-model="formSearchData.name"
+                size="large"
+                :placeholder="translate('searchFundName')"
+                clearable
+                :prefix-icon="Search"
+              />
+            </div>
+            <div
+              class="col-md-3 d-flex align-items-center position-relative my-2"
+            >
+              <el-date-picker
+                v-model="formSearchData.date_search"
+                type="daterange"
+                :range-separator="translate('to')"
+                :start-placeholder="translate('startDate')"
+                :end-placeholder="translate('endDate')"
+                format="DD/MM/YYYY"
+                value-format="DD-MM-YYYY"
+                size="large"
+              />
+            </div>
+            <div
+              class="col-md-3 d-flex align-items-center position-relative my-2"
+            >
+              <button
+                :data-kt-indicator="false ? 'on' : null"
+                type="submit"
+                class="btn btn-primary"
+              >
+                <span v-if="true" class="indicator-label">{{
+                  translate("search")
+                }}</span>
+                <span v-if="false" class="indicator-progress"
+                  >Please wait...
+                  <span
+                    class="spinner-border spinner-border-sm align-middle ms-2"
+                  ></span
+                ></span>
+              </button>
+            </div>
+
+            <div
+              class="card-toolbar col-md-3 flex-sm-row flex-xl-row-reverse flex-md-row-reverse"
+            >
+              <div
+                class="d-flex justify-content-end"
+                data-kt-customer-table-toolbar="base"
+              >
+                <button
+                  type="button"
+                  class="btn btn-primary"
+                  data-bs-toggle="modal"
+                  data-bs-target="#kt_fund_declaration_action_modal"
+                  @click="addFundDeclaration"
+                >
+                  <KTIcon icon-name="plus" icon-class="fs-2" />
+                  {{ translate("addBtn") }}
+                </button>
+              </div>
+            </div>
           </div>
         </form>
-      </div>
-      <div class="card-toolbar">
-        <div
-          class="d-flex justify-content-end"
-          data-kt-customer-table-toolbar="base"
-        >
-          <button
-            type="button"
-            class="btn btn-primary"
-            data-bs-toggle="modal"
-            data-bs-target="#kt_fund_declaration_action_modal"
-            @click="addFundDeclaration"
-          >
-            <KTIcon icon-name="plus" icon-class="fs-2" />
-            {{ translate("addBtn") }}
-          </button>
-        </div>
       </div>
     </div>
     <div class="card-body pt-0">

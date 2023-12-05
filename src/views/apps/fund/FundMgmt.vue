@@ -1,11 +1,11 @@
 <template>
   <div class="card">
     <div class="card-header border-0 pt-6">
-      <div class="flex-column">
-        <form class="form row" autoComplete="on" @submit.prevent="handleSearch">
+      <div class="flex-column w-100">
+        <form class="form" autoComplete="on" @submit.prevent="handleSearch">
           <div class="row">
             <div
-              class="col-md-3 d-flex align-items-center position-relative my-1"
+              class="col-md-3 d-flex align-items-center position-relative my-2"
             >
               <el-input
                 autofocus
@@ -17,7 +17,7 @@
               />
             </div>
             <div
-              class="col-md-3 d-flex align-items-center position-relative my-1"
+              class="col-md-3 d-flex align-items-center position-relative my-2"
             >
               <el-input
                 autofocus
@@ -29,7 +29,7 @@
               />
             </div>
             <div
-              class="col-md-3 d-flex align-items-center position-relative my-1"
+              class="col-md-3 d-flex align-items-center position-relative my-2"
             >
               <el-input
                 autofocus
@@ -41,7 +41,7 @@
               />
             </div>
             <div
-              class="col-md-3 d-flex align-items-center position-relative my-1"
+              class="col-md-3 d-flex align-items-center position-relative my-2"
             >
               <el-date-picker
                 v-model="formSearchData.date_search"
@@ -57,7 +57,7 @@
           </div>
           <div class="row my-6">
             <div
-              class="col-md-3 d-flex align-items-center position-relative my-1"
+              class="col-md-3 d-flex align-items-center position-relative my-2"
             >
               <el-select
                 :placeholder="translate('issuers')"
@@ -69,7 +69,7 @@
               </el-select>
             </div>
             <div
-              class="col-md-3 d-flex align-items-center position-relative my-1"
+              class="col-md-3 d-flex align-items-center position-relative my-2"
             >
               <el-select
                 :placeholder="translate('paymentStatus')"
@@ -86,7 +86,7 @@
               </el-select>
             </div>
             <div
-              class="col-md-3 d-flex align-items-center position-relative my-1"
+              class="col-md-3 d-flex align-items-center position-relative my-2"
             >
               <el-select
                 :placeholder="translate('commandStatus')"
@@ -103,7 +103,7 @@
               </el-select>
             </div>
             <div
-              class="col-md-3 d-flex align-items-center position-relative my-1"
+              class="col-md-3 d-flex align-items-center position-relative my-2"
             >
               <el-select
                 :placeholder="translate('commandType')"
@@ -259,72 +259,60 @@ export default defineComponent({
         label: "fullname",
         prop: "cust_nm",
         visible: true,
-        width: 260,
         fix: true,
       },
       {
         label: "vsdTradingCode",
         prop: "trading_code",
-        width: 200,
         visible: true,
       },
       {
         label: "date",
         prop: "created_at",
         visible: true,
-        width: 300,
       },
       {
         label: "orderType",
-        width: 150,
         prop: "ord_tp",
         visible: true,
       },
       {
         label: "fundCode",
-        width: 150,
         prop: "fnd_full_cd",
         visible: true,
       },
       {
         label: "issuers",
-        width: 150,
         prop: "fnd_co_nm",
         visible: true,
       },
       {
         label: "interestHole",
-        width: 150,
         prop: "fluctuations",
         visible: true,
       },
       {
         label: "amount",
-        width: 150,
         prop: "gross_amt",
         visible: true,
       },
       {
         label: "quantity",
-        width: 150,
         prop: "ord_qty",
         visible: true,
       },
       {
         label: "navShare",
-        width: 150,
         prop: "cert_nav",
         visible: true,
       },
       {
         label: "paymentStatus",
-        width: 150,
         prop: "pymt_stat",
         visible: true,
       },
       {
         label: "orderStatus",
-        width: 150,
         prop: "ord_stat",
         visible: true,
       },

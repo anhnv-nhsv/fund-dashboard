@@ -524,7 +524,7 @@ const messages = {
     nationality: "Nationality",
     gender: "Sex",
     DateofBirth: "Date of birth",
-    ownershipRegistration: "Ownership registration number",
+    ownershipRegistration: "Ownership number",
     typeRegistration: "Ownership Type",
     dateRange: "Date Range",
     issuedBy: "Issued by",
