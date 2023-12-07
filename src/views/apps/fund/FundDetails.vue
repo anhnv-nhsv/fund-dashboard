@@ -5,184 +5,374 @@
   <div class="card">
     <div class="row">
       <div class="col-lg-8 col-md-12 col-sm-12">
-        <div class="pb-8">
-          <h2 class="my-8 mx-8">{{ translate("personalInformation") }}</h2>
-          <div v-for="(item, index) in detailResponse" :key="index">
-            <div class="px-12">
-              <span class="line my-4"></span>
-              <div class="row px-4">
-                <div
-                  class="col-lg-6 col-md-12 col-sm-12 my-2 d-flex align-items-center"
-                >
-                  <div class="fs-5 text-muted" style="min-width: 50%">
-                    {{ translate("vsdTradingCode") }}
+        <div>
+          <div class="pb-8">
+            <h2 class="my-8 mx-8">{{ translate("personalInformation") }}</h2>
+            <div v-for="(item, index) in detailResponse" :key="index">
+              <div class="px-12">
+                <span class="line my-4"></span>
+                <div class="row px-4">
+                  <div
+                    class="col-lg-6 col-md-12 col-sm-12 my-2 d-flex align-items-center"
+                  >
+                    <div class="fs-5 text-muted" style="min-width: 50%">
+                      {{ translate("vsdTradingCode") }}
+                    </div>
+                    <span class="fs-5 text-dark ms-2" style="min-width: 50%">{{
+                      item?.trading_code === "null" ? "N/A" : item?.trading_code
+                    }}</span>
                   </div>
-                  <span class="fs-5 text-dark ms-2" style="min-width: 50%">{{
-                    item?.trading_code === "null" ? "N/A" : item?.trading_code
-                  }}</span>
-                </div>
-                <div
-                  class="col-lg-6 col-md-12 col-sm-12 my-2 d-flex align-items-center"
-                >
-                  <div class="fs-5 text-muted" style="min-width: 50%">
-                    {{ translate("fullName") }}
+                  <div
+                    class="col-lg-6 col-md-12 col-sm-12 my-2 d-flex align-items-center"
+                  >
+                    <div class="fs-5 text-muted" style="min-width: 50%">
+                      {{ translate("fullName") }}
+                    </div>
+                    <span class="fs-5 text-dark ms-2" style="min-width: 50%">{{
+                      item?.cust_nm
+                    }}</span>
                   </div>
-                  <span class="fs-5 text-dark ms-2" style="min-width: 50%">{{
-                    item?.cust_nm
-                  }}</span>
-                </div>
-              </div>
-            </div>
-            <div class="px-12">
-              <span class="line my-4"></span>
-              <div class="row px-4">
-                <div
-                  class="col-lg-6 col-md-12 col-sm-12 my-2 d-flex align-items-center"
-                >
-                  <div class="fs-5 text-muted" style="min-width: 50%">
-                    {{ translate("accountType") }}
-                  </div>
-                  <span class="fs-5 text-dark ms-2">N/A</span>
-                </div>
-                <div
-                  class="col-lg-6 col-md-12 col-sm-12 my-2 d-flex align-items-center"
-                >
-                  <div class="fs-5 text-muted" style="min-width: 50%">
-                    {{ translate("investorType") }}
-                  </div>
-                  <span class="fs-5 text-dark ms-2" style="min-width: 50%">{{
-                    item?.acnt_type
-                  }}</span>
                 </div>
               </div>
-            </div>
-            <div class="px-12">
-              <span class="line my-4"></span>
-              <div class="row px-4">
-                <div
-                  class="col-lg-6 col-md-12 col-sm-12 my-2 d-flex align-items-center"
-                >
-                  <div class="fs-5 text-muted" style="min-width: 50%">
-                    {{ translate("nationality") }}
+              <div class="px-12">
+                <span class="line my-4"></span>
+                <div class="row px-4">
+                  <div
+                    class="col-lg-6 col-md-12 col-sm-12 my-2 d-flex align-items-center"
+                  >
+                    <div class="fs-5 text-muted" style="min-width: 50%">
+                      {{ translate("accountType") }}
+                    </div>
+                    <span class="fs-5 text-dark ms-2">N/A</span>
                   </div>
-                  <span class="fs-5 text-dark ms-2" style="min-width: 50%">{{
-                    item?.nationality === "null" ? "N/A" : item?.nationality
-                  }}</span>
-                </div>
-                <div
-                  class="col-lg-6 col-md-12 col-sm-12 my-2 d-flex align-items-center"
-                >
-                  <div class="fs-5 text-muted" style="min-width: 50%">
-                    {{ translate("gender") }}
+                  <div
+                    class="col-lg-6 col-md-12 col-sm-12 my-2 d-flex align-items-center"
+                  >
+                    <div class="fs-5 text-muted" style="min-width: 50%">
+                      {{ translate("investorType") }}
+                    </div>
+                    <span class="fs-5 text-dark ms-2" style="min-width: 50%">{{
+                      item?.acnt_type
+                    }}</span>
                   </div>
-                  <span class="fs-5 text-dark ms-2" style="min-width: 50%">{{
-                    item?.sex_tp
-                  }}</span>
                 </div>
               </div>
-            </div>
-            <div class="px-12">
-              <span class="line my-4"></span>
-              <div class="row px-4">
-                <div
-                  class="col-lg-6 col-md-12 col-sm-12 my-2 d-flex align-items-center"
-                >
-                  <div class="fs-5 text-muted" style="min-width: 50%">
-                    {{ translate("DateofBirth") }}
+              <div class="px-12">
+                <span class="line my-4"></span>
+                <div class="row px-4">
+                  <div
+                    class="col-lg-6 col-md-12 col-sm-12 my-2 d-flex align-items-center"
+                  >
+                    <div class="fs-5 text-muted" style="min-width: 50%">
+                      {{ translate("nationality") }}
+                    </div>
+                    <span class="fs-5 text-dark ms-2" style="min-width: 50%">{{
+                      item?.nationality === "null" ? "N/A" : item?.nationality
+                    }}</span>
                   </div>
-                  <span class="fs-5 text-dark ms-2" style="min-width: 50%">{{
-                    item?.dob
-                  }}</span>
-                </div>
-                <div
-                  class="col-lg-6 col-md-12 col-sm-12 my-2 d-flex align-items-center"
-                >
-                  <div class="fs-5 text-muted" style="min-width: 50%">
-                    {{ translate("ownershipRegistration") }}
+                  <div
+                    class="col-lg-6 col-md-12 col-sm-12 my-2 d-flex align-items-center"
+                  >
+                    <div class="fs-5 text-muted" style="min-width: 50%">
+                      {{ translate("gender") }}
+                    </div>
+                    <span class="fs-5 text-dark ms-2" style="min-width: 50%">{{
+                      item?.sex_tp
+                    }}</span>
                   </div>
-                  <span class="fs-5 text-dark ms-2" style="min-width: 50%">{{
-                    item?.idno
-                  }}</span>
-                </div>
-              </div>
-            </div>
-            <div class="px-12">
-              <span class="line my-4"></span>
-              <div class="row px-4">
-                <div
-                  class="col-lg-6 col-md-12 col-sm-12 my-2 d-flex align-items-center"
-                >
-                  <div class="fs-5 text-muted" style="min-width: 50%">
-                    {{ translate("typeRegistration") }}
-                  </div>
-                  <span class="fs-5 text-dark ms-2" style="min-width: 50%">{{
-                    item?.id_type_text
-                  }}</span>
-                </div>
-                <div
-                  class="col-lg-6 col-md-12 col-sm-12 my-2 d-flex align-items-center"
-                >
-                  <div class="fs-5 text-muted" style="min-width: 50%">
-                    {{ translate("dateRange") }}
-                  </div>
-                  <span class="fs-5 text-dark ms-2" style="min-width: 50%">{{
-                    item?.idno_iss_dt
-                  }}</span>
                 </div>
               </div>
-            </div>
-            <div class="px-12">
-              <span class="line my-4"></span>
-              <div class="row px-4">
-                <div
-                  class="col-lg-6 col-md-12 col-sm-12 my-2 d-flex align-items-center"
-                >
-                  <div class="fs-5 text-muted" style="min-width: 50%">
-                    {{ translate("issuedBy") }}
+              <div class="px-12">
+                <span class="line my-4"></span>
+                <div class="row px-4">
+                  <div
+                    class="col-lg-6 col-md-12 col-sm-12 my-2 d-flex align-items-center"
+                  >
+                    <div class="fs-5 text-muted" style="min-width: 50%">
+                      {{ translate("DateofBirth") }}
+                    </div>
+                    <span class="fs-5 text-dark ms-2" style="min-width: 50%">{{
+                      item?.dob
+                    }}</span>
                   </div>
-                  <span class="fs-5 text-dark ms-2" style="min-width: 50%">{{
-                    item?.idno_iss_pl
-                  }}</span>
-                </div>
-                <div
-                  class="col-lg-6 col-md-12 col-sm-12 my-2 d-flex align-items-center"
-                >
-                  <div class="fs-5 text-muted" style="min-width: 50%">
-                    {{ translate("phoneNumber") }}
+                  <div
+                    class="col-lg-6 col-md-12 col-sm-12 my-2 d-flex align-items-center"
+                  >
+                    <div class="fs-5 text-muted" style="min-width: 50%">
+                      {{ translate("ownershipRegistration") }}
+                    </div>
+                    <span class="fs-5 text-dark ms-2" style="min-width: 50%">{{
+                      item?.idno
+                    }}</span>
                   </div>
-                  <span class="fs-5 text-dark ms-2" style="min-width: 50%">{{
-                    item?.tel
-                  }}</span>
-                </div>
-              </div>
-            </div>
-            <div class="px-12">
-              <span class="line my-4"></span>
-              <div class="row px-4">
-                <div
-                  class="col-lg-6 col-md-12 col-sm-12 my-2 d-flex align-items-center"
-                >
-                  <div class="fs-5 text-muted" style="min-width: 50%">
-                    {{ translate("address") }}
-                  </div>
-                  <span class="fs-5 text-dark ms-2" style="min-width: 50%">{{
-                    item?.addr
-                  }}</span>
-                </div>
-                <div
-                  class="col-lg-6 col-md-12 col-sm-12 my-2 d-flex align-items-center"
-                >
-                  <div class="fs-5 text-muted" style="min-width: 50%">
-                    {{ translate("email") }}
-                  </div>
-                  <span class="fs-5 text-dark ms-2" style="min-width: 50%">{{
-                    item?.email
-                  }}</span>
                 </div>
               </div>
+              <div class="px-12">
+                <span class="line my-4"></span>
+                <div class="row px-4">
+                  <div
+                    class="col-lg-6 col-md-12 col-sm-12 my-2 d-flex align-items-center"
+                  >
+                    <div class="fs-5 text-muted" style="min-width: 50%">
+                      {{ translate("typeRegistration") }}
+                    </div>
+                    <span class="fs-5 text-dark ms-2" style="min-width: 50%">{{
+                      item?.id_type_text
+                    }}</span>
+                  </div>
+                  <div
+                    class="col-lg-6 col-md-12 col-sm-12 my-2 d-flex align-items-center"
+                  >
+                    <div class="fs-5 text-muted" style="min-width: 50%">
+                      {{ translate("dateRange") }}
+                    </div>
+                    <span class="fs-5 text-dark ms-2" style="min-width: 50%">{{
+                      item?.idno_iss_dt
+                    }}</span>
+                  </div>
+                </div>
+              </div>
+              <div class="px-12">
+                <span class="line my-4"></span>
+                <div class="row px-4">
+                  <div
+                    class="col-lg-6 col-md-12 col-sm-12 my-2 d-flex align-items-center"
+                  >
+                    <div class="fs-5 text-muted" style="min-width: 50%">
+                      {{ translate("issuedBy") }}
+                    </div>
+                    <span class="fs-5 text-dark ms-2" style="min-width: 50%">{{
+                      item?.idno_iss_pl
+                    }}</span>
+                  </div>
+                  <div
+                    class="col-lg-6 col-md-12 col-sm-12 my-2 d-flex align-items-center"
+                  >
+                    <div class="fs-5 text-muted" style="min-width: 50%">
+                      {{ translate("phoneNumber") }}
+                    </div>
+                    <span class="fs-5 text-dark ms-2" style="min-width: 50%">{{
+                      item?.tel
+                    }}</span>
+                  </div>
+                </div>
+              </div>
+              <div class="px-12">
+                <span class="line my-4"></span>
+                <div class="row px-4">
+                  <div
+                    class="col-lg-6 col-md-12 col-sm-12 my-2 d-flex align-items-center"
+                  >
+                    <div class="fs-5 text-muted" style="min-width: 50%">
+                      {{ translate("address") }}
+                    </div>
+                    <span class="fs-5 text-dark ms-2" style="min-width: 50%">{{
+                      item?.addr
+                    }}</span>
+                  </div>
+                  <div
+                    class="col-lg-6 col-md-12 col-sm-12 my-2 d-flex align-items-center"
+                  >
+                    <div class="fs-5 text-muted" style="min-width: 50%">
+                      {{ translate("email") }}
+                    </div>
+                    <span class="fs-5 text-dark ms-2" style="min-width: 50%">{{
+                      item?.email
+                    }}</span>
+                  </div>
+                </div>
+              </div>
+              <div class="px-12">
+                <span class="line my-4"></span>
+              </div>
             </div>
+          </div>
+        </div>
+        <div class="mb-8">
+          <h2 class="my-8 mx-8">{{ translate("transactionDetails") }}</h2>
+          <div v-for="(item, index) in detailOrderResponse" :key="index">
             <div class="px-12">
-              <span class="line my-4"></span>
+              <div class="container-transaction">
+                <div class="">
+                  <div class="px-4 mt-4">
+                    <div class="d-flex align-items-center">
+                      <div class="fs-5 text-muted" style="min-width: 50%">
+                        {{ translate("vsdTradingCode") }}
+                      </div>
+                      <span class="fs-5 transaction-right">{{
+                        item?.trading_code === "null"
+                          ? "N/A"
+                          : item?.trading_code
+                      }}</span>
+                    </div>
+                  </div>
+                  <span class="line my-4"></span>
+                  <div class="px-4">
+                    <div class="d-flex align-items-center">
+                      <div class="fs-5 text-muted" style="min-width: 50%">
+                        {{ translate("fundCode") }}
+                      </div>
+                      <span class="fs-5 transaction-right">{{
+                        item?.fnd_full_cd
+                      }}</span>
+                    </div>
+                  </div>
+                  <span class="line my-4"></span>
+                  <div class="px-4">
+                    <div class="d-flex align-items-center">
+                      <div class="fs-5 text-muted" style="min-width: 50%">
+                        {{ translate("type") }}
+                      </div>
+                      <span class="fs-5 transaction-right">{{
+                        item?.ord_tp
+                      }}</span>
+                    </div>
+                  </div>
+                  <span class="line my-4"></span>
+                  <div class="px-4">
+                    <div class="d-flex align-items-center">
+                      <div class="fs-5 text-muted" style="min-width: 50%">
+                        Gross amount
+                      </div>
+                      <span class="fs-5 transaction-right">{{
+                        item?.gross_amt.toLocaleString()
+                      }}</span>
+                    </div>
+                  </div>
+                  <span class="line my-4"></span>
+                  <div class="px-4">
+                    <div class="d-flex align-items-center">
+                      <div class="fs-5 text-muted" style="min-width: 50%">
+                        Quantity
+                      </div>
+                      <span class="fs-5 transaction-right">{{
+                        item?.ord_qty
+                      }}</span>
+                    </div>
+                  </div>
+                  <span class="line my-4"></span>
+                  <div class="px-4">
+                    <div class="d-flex align-items-center">
+                      <div class="fs-5 text-muted" style="min-width: 50%">
+                        {{ translate("fee") }}
+                      </div>
+                      <span class="fs-5 transaction-right"
+                        >{{ (item?.fee_rt * 100).toFixed(2) }}%</span
+                      >
+                    </div>
+                  </div>
+                  <span class="line my-4"></span>
+                  <div class="px-4">
+                    <div class="d-flex align-items-center">
+                      <div class="fs-5 text-muted" style="min-width: 50%">
+                        Estimate fee
+                      </div>
+                      <span class="fs-5 transaction-right">{{
+                        item?.fee_amt.toLocaleString()
+                      }}</span>
+                    </div>
+                  </div>
+                  <span class="line my-4"></span>
+                  <div class="px-4">
+                    <div class="d-flex align-items-center">
+                      <div class="fs-5 text-muted" style="min-width: 50%">
+                        Tax
+                      </div>
+                      <span class="fs-5 transaction-right"
+                        >{{ (item?.tax_rt * 100).toFixed(2) }}%</span
+                      >
+                    </div>
+                  </div>
+                  <span class="line my-4"></span>
+                  <div class="px-4">
+                    <div class="d-flex align-items-center">
+                      <div class="fs-5 text-muted" style="min-width: 50%">
+                        Estimate tax
+                      </div>
+                      <span class="fs-5 transaction-right">{{
+                        item?.tax_amt
+                      }}</span>
+                    </div>
+                  </div>
+                  <span class="line my-4"></span>
+                  <div class="px-4">
+                    <div class="d-flex align-items-center">
+                      <div class="fs-5 text-muted" style="min-width: 50%">
+                        Net amount
+                      </div>
+                      <span class="fs-5 transaction-right">{{
+                        item?.net_amt
+                      }}</span>
+                    </div>
+                  </div>
+                  <span class="line my-4"></span>
+                  <div class="px-4">
+                    <div class="d-flex align-items-center">
+                      <div class="fs-5 text-muted" style="min-width: 50%">
+                        {{ translate("unitPrice") }}
+                      </div>
+                      <span class="fs-5 transaction-right">{{
+                        item?.unit_pri_amt
+                      }}</span>
+                    </div>
+                  </div>
+                  <span class="line my-4"></span>
+                  <div class="px-4">
+                    <div class="d-flex align-items-center">
+                      <div class="fs-5 text-muted" style="min-width: 50%">
+                        NAV/Share
+                      </div>
+                      <span class="fs-5 transaction-right">{{
+                        item?.cert_nav.toLocaleString()
+                      }}</span>
+                    </div>
+                  </div>
+                  <span class="line my-4"></span>
+                  <div class="px-4">
+                    <div class="d-flex align-items-center">
+                      <div class="fs-5 text-muted" style="min-width: 50%">
+                        NAV
+                      </div>
+                      <span class="fs-5 transaction-right">{{
+                        item?.nav.toLocaleString()
+                      }}</span>
+                    </div>
+                  </div>
+                  <span class="line my-4"></span>
+                  <div class="px-4">
+                    <div class="d-flex align-items-center">
+                      <div class="fs-5 text-muted" style="min-width: 50%">
+                        NAV Date
+                      </div>
+                      <span class="fs-5 transaction-right">{{
+                        item?.nav_upd_dt
+                      }}</span>
+                    </div>
+                  </div>
+                  <span class="line my-4"></span>
+                  <div class="px-4">
+                    <div class="d-flex align-items-center">
+                      <div class="fs-5 text-muted" style="min-width: 50%">
+                        {{ translate("status") }}
+                      </div>
+                      <span class="fs-5 transaction-right">{{
+                        item?.ord_stat
+                      }}</span>
+                    </div>
+                  </div>
+                  <span class="line my-4"></span>
+                  <div class="px-4 pb-4">
+                    <div class="d-flex align-items-center">
+                      <div class="fs-5 text-muted" style="min-width: 50%">
+                        {{ translate("paymentStatus") }}
+                      </div>
+                      <span class="fs-5 transaction-right">{{
+                        item?.pymt_stat
+                      }}</span>
+                    </div>
+                  </div>
+                </div>
+              </div>
             </div>
           </div>
         </div>
@@ -250,194 +440,6 @@
                   :initial-index="4"
                   fit="cover"
                 />
-              </div>
-            </div>
-          </div>
-        </div>
-      </div>
-    </div>
-    <div class="row">
-      <div class="pb-8 col-lg-8 col-md-12 col-sm-12">
-        <h2 class="my-8 mx-8">{{ translate("transactionDetails") }}</h2>
-        <div v-for="(item, index) in detailOrderResponse" :key="index">
-          <div class="px-12">
-            <div class="container-transaction">
-              <div class="">
-                <div class="px-4 mt-4">
-                  <div class="d-flex align-items-center">
-                    <div class="fs-5 text-muted" style="min-width: 50%">
-                      {{ translate("vsdTradingCode") }}
-                    </div>
-                    <span class="fs-5 transaction-right">{{
-                      item?.trading_code === "null" ? "N/A" : item?.trading_code
-                    }}</span>
-                  </div>
-                </div>
-                <span class="line my-4"></span>
-                <div class="px-4">
-                  <div class="d-flex align-items-center">
-                    <div class="fs-5 text-muted" style="min-width: 50%">
-                      {{ translate("fundCode") }}
-                    </div>
-                    <span class="fs-5 transaction-right">{{
-                      item?.fnd_full_cd
-                    }}</span>
-                  </div>
-                </div>
-                <span class="line my-4"></span>
-                <div class="px-4">
-                  <div class="d-flex align-items-center">
-                    <div class="fs-5 text-muted" style="min-width: 50%">
-                      {{ translate("type") }}
-                    </div>
-                    <span class="fs-5 transaction-right">{{
-                      item?.ord_tp
-                    }}</span>
-                  </div>
-                </div>
-                <span class="line my-4"></span>
-                <div class="px-4">
-                  <div class="d-flex align-items-center">
-                    <div class="fs-5 text-muted" style="min-width: 50%">
-                      Gross amount
-                    </div>
-                    <span class="fs-5 transaction-right">{{
-                      item?.gross_amt.toLocaleString()
-                    }}</span>
-                  </div>
-                </div>
-                <span class="line my-4"></span>
-                <div class="px-4">
-                  <div class="d-flex align-items-center">
-                    <div class="fs-5 text-muted" style="min-width: 50%">
-                      Quantity
-                    </div>
-                    <span class="fs-5 transaction-right">{{
-                      item?.ord_qty
-                    }}</span>
-                  </div>
-                </div>
-                <span class="line my-4"></span>
-                <div class="px-4">
-                  <div class="d-flex align-items-center">
-                    <div class="fs-5 text-muted" style="min-width: 50%">
-                      {{ translate("fee") }}
-                    </div>
-                    <span class="fs-5 transaction-right"
-                      >{{ (item?.fee_rt * 100).toFixed(2) }}%</span
-                    >
-                  </div>
-                </div>
-                <span class="line my-4"></span>
-                <div class="px-4">
-                  <div class="d-flex align-items-center">
-                    <div class="fs-5 text-muted" style="min-width: 50%">
-                      Estimate fee
-                    </div>
-                    <span class="fs-5 transaction-right">{{
-                      item?.fee_amt.toLocaleString()
-                    }}</span>
-                  </div>
-                </div>
-                <span class="line my-4"></span>
-                <div class="px-4">
-                  <div class="d-flex align-items-center">
-                    <div class="fs-5 text-muted" style="min-width: 50%">
-                      Tax
-                    </div>
-                    <span class="fs-5 transaction-right"
-                      >{{ (item?.tax_rt * 100).toFixed(2) }}%</span
-                    >
-                  </div>
-                </div>
-                <span class="line my-4"></span>
-                <div class="px-4">
-                  <div class="d-flex align-items-center">
-                    <div class="fs-5 text-muted" style="min-width: 50%">
-                      Estimate tax
-                    </div>
-                    <span class="fs-5 transaction-right">{{
-                      item?.tax_amt
-                    }}</span>
-                  </div>
-                </div>
-                <span class="line my-4"></span>
-                <div class="px-4">
-                  <div class="d-flex align-items-center">
-                    <div class="fs-5 text-muted" style="min-width: 50%">
-                      Net amount
-                    </div>
-                    <span class="fs-5 transaction-right">{{
-                      item?.net_amt
-                    }}</span>
-                  </div>
-                </div>
-                <span class="line my-4"></span>
-                <div class="px-4">
-                  <div class="d-flex align-items-center">
-                    <div class="fs-5 text-muted" style="min-width: 50%">
-                      {{ translate("unitPrice") }}
-                    </div>
-                    <span class="fs-5 transaction-right">{{
-                      item?.unit_pri_amt
-                    }}</span>
-                  </div>
-                </div>
-                <span class="line my-4"></span>
-                <div class="px-4">
-                  <div class="d-flex align-items-center">
-                    <div class="fs-5 text-muted" style="min-width: 50%">
-                      NAV/Share
-                    </div>
-                    <span class="fs-5 transaction-right">{{
-                      item?.cert_nav.toLocaleString()
-                    }}</span>
-                  </div>
-                </div>
-                <span class="line my-4"></span>
-                <div class="px-4">
-                  <div class="d-flex align-items-center">
-                    <div class="fs-5 text-muted" style="min-width: 50%">
-                      NAV
-                    </div>
-                    <span class="fs-5 transaction-right">{{
-                      item?.nav.toLocaleString()
-                    }}</span>
-                  </div>
-                </div>
-                <span class="line my-4"></span>
-                <div class="px-4">
-                  <div class="d-flex align-items-center">
-                    <div class="fs-5 text-muted" style="min-width: 50%">
-                      NAV Date
-                    </div>
-                    <span class="fs-5 transaction-right">{{
-                      item?.nav_upd_dt
-                    }}</span>
-                  </div>
-                </div>
-                <span class="line my-4"></span>
-                <div class="px-4">
-                  <div class="d-flex align-items-center">
-                    <div class="fs-5 text-muted" style="min-width: 50%">
-                      {{ translate("status") }}
-                    </div>
-                    <span class="fs-5 transaction-right">{{
-                      item?.ord_stat
-                    }}</span>
-                  </div>
-                </div>
-                <span class="line my-4"></span>
-                <div class="px-4 pb-4">
-                  <div class="d-flex align-items-center">
-                    <div class="fs-5 text-muted" style="min-width: 50%">
-                      {{ translate("paymentStatus") }}
-                    </div>
-                    <span class="fs-5 transaction-right">{{
-                      item?.pymt_stat
-                    }}</span>
-                  </div>
-                </div>
               </div>
             </div>
           </div>

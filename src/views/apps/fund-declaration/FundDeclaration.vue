@@ -161,27 +161,27 @@ export default defineComponent({
         visible: true,
       },
       {
-        label: "Fund name",
+        label: "fundName",
         prop: "fnd_nm",
         visible: true,
       },
       {
-        label: "Fund company",
+        label: "fundCompany",
         prop: "fnd_co_nm",
         visible: true,
       },
       {
-        label: "Status",
+        label: "status",
         prop: "fnd_status",
         visible: true,
       },
       {
-        label: "Created user",
+        label: "createdUser",
         prop: "issuers",
         visible: true,
       },
       {
-        label: "Edited Infor",
+        label: "editUser",
         prop: "fluctuations",
         visible: true,
       },
