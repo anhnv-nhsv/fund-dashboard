@@ -14,7 +14,7 @@
             <div class="col-lg-6 col-md-12 col-sm-12 line py-4">
               <div class="d-flex mt-4 align-items-center">
                 <div class="fs-5 text-muted" style="min-width: 40%">
-                  Fund code
+                  {{ translate("fundCode") }}
                 </div>
                 <span class="fs-5 text-dark ms-1" style="min-width: 60%">{{
                   item?.fnd_full_cd
@@ -22,7 +22,7 @@
               </div>
               <div class="d-flex mt-4 align-items-center">
                 <div class="fs-5 text-muted" style="min-width: 40%">
-                  Fund name
+                  {{ translate("fundName") }}
                 </div>
                 <span class="fs-5 text-dark ms-1" style="min-width: 60%">{{
                   item?.fnd_nm
@@ -30,7 +30,7 @@
               </div>
               <div class="d-flex mt-4 align-items-center">
                 <div class="fs-5 text-muted" style="min-width: 40%">
-                  Company name
+                  {{ translate("companyName") }}
                 </div>
                 <span class="fs-5 text-dark ms-1" style="min-width: 60%">{{
                   item?.fnd_co_nm
@@ -38,7 +38,7 @@
               </div>
               <div class="d-flex mt-4 align-items-center">
                 <div class="fs-5 text-muted" style="min-width: 40%">
-                  Strategy
+                  {{ translate("strategy") }}
                 </div>
                 <span class="fs-5 text-dark ms-1" style="min-width: 60%">{{
                   item?.strategy
@@ -46,7 +46,7 @@
               </div>
               <div class="d-flex mt-4 align-items-center">
                 <div class="fs-5 text-muted" style="min-width: 40%">
-                  Trading date
+                  {{ translate("tradingDate") }}
                 </div>
                 <span class="fs-5 text-dark ms-1" style="min-width: 60%">{{
                   item?.trd_dt
@@ -54,7 +54,7 @@
               </div>
               <div class="d-flex mt-4 align-items-center">
                 <div class="fs-5 text-muted" style="min-width: 40%">
-                  Closing time
+                  {{ translate("closingTime") }}
                 </div>
                 <span class="fs-5 text-dark ms-1" style="min-width: 60%">{{
                   item?.ord_cls_tm
@@ -112,7 +112,7 @@
               </div>
               <div class="d-flex mt-4 align-items-center">
                 <div class="fs-5 text-muted" style="min-width: 40%">
-                  Bank name
+                  {{ translate("bankName") }}
                 </div>
                 <span class="fs-5 text-dark ms-1" style="min-width: 60%">{{
                   item.bank_nm
@@ -120,7 +120,7 @@
               </div>
               <div class="d-flex mt-4 align-items-center">
                 <div class="fs-5 text-muted" style="min-width: 40%">
-                  Bank acccount name
+                  {{ translate("bankAcccountName") }}
                 </div>
                 <span class="fs-5 text-dark ms-1" style="min-width: 60%">{{
                   item.bank_acnt_nm
@@ -128,7 +128,7 @@
               </div>
               <div class="d-flex mt-4 align-items-center">
                 <div class="fs-5 text-muted" style="min-width: 40%">
-                  Bank acccount number
+                  {{ translate("bankAcccountNumber") }}
                 </div>
                 <span class="fs-5 text-dark ms-1" style="min-width: 60%">{{
                   item.bank_acnt_no
@@ -138,7 +138,7 @@
             <div class="col-lg-6 col-md-12 col-sm-12 py-4">
               <div class="d-flex mt-4 align-items-center">
                 <div class="fs-5 text-muted" style="min-width: 40%">
-                  Buy minmum amount
+                  {{ translate("buyMinmum") }}
                 </div>
                 <span class="fs-5" style="min-width: 60%"
                   >{{ item?.buy_min_amt.toLocaleString() }} VND</span
@@ -326,6 +326,7 @@
 <script lang="ts">
 import { defineComponent, onBeforeMount, ref } from "vue";
 import { useFundInforStore } from "@/stores/fund-infor";
+import { translate } from "@/core/helpers/i18n-translate";
 import { useRoute } from "vue-router";
 
 export default defineComponent({
@@ -379,6 +380,7 @@ export default defineComponent({
     return {
       detailResponse,
       detailOrderResponse,
+      translate,
       handleBack,
     };
   },

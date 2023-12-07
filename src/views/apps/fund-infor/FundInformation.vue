@@ -143,17 +143,17 @@ export default defineComponent({
         visible: true,
       },
       {
-        label: "Fund name",
+        label: "fundName",
         prop: "fnd_nm",
         visible: true,
       },
       {
-        label: "Fund company",
+        label: "fundCompany",
         prop: "fnd_co_nm",
         visible: true,
       },
       {
-        label: "Founded date",
+        label: "foundedDate",
         prop: "found_value",
         visible: true,
       },
