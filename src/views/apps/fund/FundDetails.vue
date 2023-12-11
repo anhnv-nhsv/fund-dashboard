@@ -312,7 +312,7 @@
                         {{ translate("unitPrice") }}
                       </div>
                       <span class="fs-5 transaction-right">{{
-                        item?.unit_pri_amt
+                        (item?.unit_pri_amt).toLocaleString()
                       }}</span>
                     </div>
                   </div>
