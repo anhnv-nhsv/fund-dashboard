@@ -180,6 +180,11 @@
             {{ row.cert_nav.toLocaleString() }}
           </div>
         </template>
+        <template v-slot:unit_pri_amt="{ row }">
+          <div>
+            {{ row.unit_pri_amt.toLocaleString() }}
+          </div>
+        </template>
         <template v-slot:fnd_full_cd="{ row }">
           <div class="text-uppercase">
             {{ row.fnd_full_cd }}
@@ -299,6 +304,11 @@ export default defineComponent({
       {
         label: "quantity",
         prop: "ord_qty",
+        visible: true,
+      },
+      {
+        label: "unitPrice",
+        prop: "unit_pri_amt",
         visible: true,
       },
       {
